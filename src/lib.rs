@@ -2,9 +2,9 @@ pub struct Checker<T> {
     value : T
 }
 
-impl Checker<String> {
+impl Checker<&str> {
 
-    pub fn new(value: String) -> Self {
+    pub fn new(value: &str) -> Checker<&str> {
         Checker {
             value
         }
@@ -28,9 +28,16 @@ mod tests {
     use super::*;
 
     #[test]
-    fn it_works() {
-        let checker = assert_that!(String::from("dani"));
+    fn given_string_when_is_equal_to_called_then_works() {
+        let text =String::from("test string");
 
-        checker.is_equal_to("s")
+        assert_that!(&text).is_equal_to("test string");
+    }
+
+    #[test]
+    fn given_str_when_is_equal_to_called_then_works() {
+        let text = "test string";
+
+        assert_that!(text).is_equal_to("test string");
     }
 }
