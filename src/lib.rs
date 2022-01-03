@@ -11,7 +11,7 @@ impl Checker<&str> {
     }
 
     pub fn is_equal_to(self, expected_value: &str) {
-        println!("hello from is is equal method");
+        assert_eq!(self.value, expected_value);
     }
 }
 
@@ -29,7 +29,7 @@ mod tests {
 
     #[test]
     fn given_string_when_is_equal_to_called_then_works() {
-        let text =String::from("test string");
+        let text = String::from("test string");
 
         assert_that!(&text).is_equal_to("test string");
     }
