@@ -1,6 +1,12 @@
+//Idiomatic rust https://cheats.rs/#idiomatic-rust
+
+//TODO: implement assert_that method when we have the stuff implemented
+
+
 pub struct Asserter<T> {
     value : T
 }
+
 
 impl Asserter<&str> {
 
@@ -10,6 +16,7 @@ impl Asserter<&str> {
         }
     }
 
+    //TODO: add doc for all the functions
     pub fn is_equal_to(self, expected_value: &str) {
         assert_eq!(self.value, expected_value);
     }
@@ -20,7 +27,14 @@ impl Asserter<&str> {
             panic!("The text {} is not present in string {}", expected_value_to_be_contained, self.value)
         }
     }
+
+    //TODO: startsWith, endsWith, isEmpty, isNothEmpty
+    
+    
+    //TODO: has length
 }
+
+//TODO: struct assertions with lambda like in c#
 
 #[macro_export]
 macro_rules! assert_that {
@@ -29,7 +43,6 @@ macro_rules! assert_that {
     };
 }
 
-
 mod panic_asserter;
 
 #[cfg(test)]
@@ -37,6 +50,7 @@ mod tests {
     use crate::panic_asserter::assert_that_panics;
 
     use super::*;
+
 
     #[test]
     fn test_is_equal_to_for_string() {
@@ -65,4 +79,8 @@ mod tests {
 
         assert_that_panics(|| assert_that!(&text).contains("asd"));
     }
+
+    //TODO: add different assertion message? check asserteq
+
 }
+
