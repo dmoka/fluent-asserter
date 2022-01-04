@@ -2,7 +2,6 @@
 
 //TODO: implement assert_that method when we have the stuff implemented
 
-
 pub struct Asserter<T> {
     value : T
 }
