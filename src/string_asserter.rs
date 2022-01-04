@@ -1,3 +1,5 @@
+use super::*;
+
 impl Asserter<&str> {
 
     pub fn new(value: &str) -> Asserter<&str> {
@@ -21,8 +23,6 @@ impl Asserter<&str> {
     //TODO: startsWith, endsWith, isEmpty, isNothEmpty, has length
 }
 
-mod panic_asserter;
-
 #[cfg(test)]
 mod test {
     use crate::panic_asserter::assert_that_panics;
@@ -36,6 +36,7 @@ mod test {
 
         assert_that!(&text).is_equal_to("test string");
     }
+
 
     #[test]
     fn test_is_equal_to_for_str() {
@@ -51,12 +52,6 @@ mod test {
         assert_that!(&text).contains("st");
     }
 
-    #[test]
-    fn when_string_contains_string_then_no_error() {
-        let text = String::from("ring");
-
-        assert_that!(&text).contains("st");
-    }
 
     #[test]
     fn when_string_does_contains_string_then_panics() {
