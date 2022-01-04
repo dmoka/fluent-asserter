@@ -14,3 +14,5 @@ fn catch_unwind_silent<F: FnOnce() -> R + panic::UnwindSafe, R>(f: F) -> std::th
     result
 }
 
+//TODO: add test for assert panics
+
