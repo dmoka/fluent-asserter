@@ -1,10 +1,9 @@
 use std::panic;
 
-//TODO: make syntax like: assert_thatCode(lambda).panics()
+//TODO: add to test utils as only used for tests. We should not eat our own dog food
 pub fn assert_that_panics<F: FnOnce() -> R + panic::UnwindSafe, R>(f: F) {
     let result = catch_unwind_silent(f);
 
-    //TODO: add better panic error message
     assert!(result.is_err())
 }
 
