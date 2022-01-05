@@ -31,15 +31,24 @@ impl Asserter<&str> {
     }
 
     pub fn ends_with(self, expected_start: &str) {
-        let starts_with = self.value.ends_with(expected_start);
+        let ends_with = self.value.ends_with(expected_start);
 
-        if !starts_with {
+        if !ends_with {
             panic!("The actual text {} does not end with {}", self.value, expected_start)
         }
-
     }
 
-    //TODO: isEmpty, isNothEmpty, has length
+    pub fn is_empty(self){
+        if !self.value.is_empty() {
+            panic!("The text {} is not empty", self.value)
+        }
+    }
+
+    pub fn is_not_empty(self){
+        if self.value.is_empty() {
+            panic!("The text {} is empty", self.value)
+        }
+    }
 }
 
 #[cfg(test)]
@@ -52,31 +61,29 @@ mod test {
     #[test]
     fn test_is_equal_to_for_string() {
         assert_that!(&String::from("test string")).is_equal_to("test string");
-
         assert_that!(&String::from("bitcoin")).is_equal_to("bitcoin");
+
+        assert_that_panics(|| assert_that!(&String::from("test string")).is_equal_to("test"));
+        assert_that_panics(|| assert_that!(&String::from("bitcoin")).is_equal_to("ethereum"));
     }
 
 
     #[test]
     fn test_is_equal_to_for_str() {
         assert_that!("test string").is_equal_to("test string");
-        
         assert_that!("bitcoin").is_equal_to("bitcoin");
+
+        assert_that_panics(|| assert_that!("test string").is_equal_to("string"));
+        assert_that_panics(|| assert_that!("bitcoin").is_equal_to("ethereum"));
     }
 
     #[test]
-    fn when_string_contains_string_then_no_error() {
+    fn test_string_contains() {
         assert_that!(&String::from("test string")).contains("st");
+        assert_that!(&String::from("bitcoin")).contains("co");
 
-        assert_that!(&String::from("test string")).contains("ing");
-    }
-
-
-    #[test]
-    fn when_string_does_not_contain_string_then_panics() {
         assert_that_panics(|| assert_that!(&String::from("test string")).contains("asd"));
-
-        assert_that_panics(|| assert_that!(&String::from("bitcoin")).contains("ethereum"));
+        assert_that_panics(|| assert_that!(&String::from("bitcoin")).contains("eth"));
     }
 
     #[test]
@@ -96,6 +103,23 @@ mod test {
         assert_that_panics(|| assert_that!(&String::from("test string")).ends_with("asd"));
         assert_that_panics(|| assert_that!(&String::from("bitcoin")).ends_with("eth"));
     }
+
+    #[test]
+    fn test_string_is_empty() {
+        assert_that!(&String::from("")).is_empty();
+        assert_that!("").is_empty();
+
+        assert_that_panics(|| assert_that!(&String::from("test string")).is_empty());
+    }
+
+    #[test]
+    fn test_string_is_not_empty() {
+        assert_that!(&String::from("test string")).is_not_empty();
+        assert_that!("bitcoin").is_not_empty();
+
+        assert_that_panics(|| assert_that!(&String::from("")).is_not_empty());
+    }
+
 
     //TODO: add different assertion message? check asserteq
 
