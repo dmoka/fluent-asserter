@@ -1,25 +1,25 @@
 use std::panic;
+use super::*;
+
+//TODO: add answer to this SO question: https://stackoverflow.com/questions/26469715/how-do-i-write-a-rust-unit-test-that-ensures-that-a-panic-has-occurred
 
 #[macro_export]
 macro_rules! assert_that_code {
     ($value:expr) => {
-        FunctionAsserter::new($value) //TODO: only restrict it to pass function, and nothing else
+        PanicAsserter::new($value) //TODO: only restrict it to pass function, and nothing else
     };
 }
 
-pub fn assert_that_code<F: FnOnce() -> R + panic::UnwindSafe, R>(f: F) -> FunctionAsserter<F, R> where F: FnOnce() -> R + panic::UnwindSafe {
-    FunctionAsserter {
+pub fn assert_that_code<F: FnOnce() -> R + panic::UnwindSafe, R>(f: F) -> PanicAsserter<F, R> where F: FnOnce() -> R + panic::UnwindSafe {
+    PanicAsserter {
         value: f
     }
 }
 
-pub struct FunctionAsserter <F, R> where F: FnOnce() -> R + panic::UnwindSafe {
-    value :  F
-}
 
-impl<F, R> FunctionAsserter<F, R>  where F: FnOnce() -> R + panic::UnwindSafe{
+impl<F, R> PanicAsserter<F, R>  where F: FnOnce() -> R + panic::UnwindSafe{
     pub fn new(f:  F) -> Self {
-        FunctionAsserter{
+        PanicAsserter{
             value: f
         }
     }
