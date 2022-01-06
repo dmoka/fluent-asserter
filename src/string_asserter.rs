@@ -49,6 +49,12 @@ impl Asserter<&str> {
             panic!("The text {} is empty", self.value)
         }
     }
+
+    pub fn has_length(self, expected_length: usize){
+        let len = self.value.len();
+
+        assert_eq!(len, expected_length); //TODO: use custom panic
+    }
 }
 
 #[cfg(test)]
@@ -109,6 +115,14 @@ mod test {
         assert_that!("").is_empty();
 
         assert_that_panics(|| assert_that!(&String::from("test string")).is_empty());
+    }
+
+    #[test]
+    fn test_has_length() {
+        assert_that!(&String::from("bitcoin")).has_length(7);
+        assert_that!("ethereum").has_length(8);
+
+        assert_that_panics(|| assert_that!(&String::from("test string")).has_length(1));
     }
 
     #[test]
