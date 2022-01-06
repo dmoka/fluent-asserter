@@ -6,10 +6,6 @@ pub struct Asserter<T> {
     value : T
 }
 
-pub struct FunctionAsserter <F, R> where F: FnOnce() -> R + panic::UnwindSafe {
-    value :  F
-}
-
 //TODO: struct assertions with lambda like in c#
 
 #[macro_export]
