@@ -53,10 +53,9 @@ impl Asserter<&str> {
 
 #[cfg(test)]
 mod test {
-    use crate::panic_asserter::assert_that_panics;
+    use crate::panic_asserter_helper::assert_that_panics;
 
     use super::*;
-
 
     #[test]
     fn test_is_equal_to_for_string() {
