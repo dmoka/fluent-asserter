@@ -11,18 +11,18 @@ impl Asserter<&str> {
     }
 
     //TODO: add doc for all the functions
-    pub fn is_equal_to(self, expected_value: &str) {
+    pub fn is_equal_to(&self, expected_value: &str) {
         assert_eq!(self.value, expected_value);
     }
 
-    pub fn contains(self, expected_value_to_be_contained: &str) {
+    pub fn contains(&self, expected_value_to_be_contained: &str) {
         let is_present = self.value.contains(expected_value_to_be_contained);
         if !is_present {
             panic!("The text {} is not present in string {}", expected_value_to_be_contained, self.value)
         }
     }
 
-    pub fn starts_with(self, expected_start: &str) {
+    pub fn starts_with(&self, expected_start: &str) {
         let starts_with = self.value.starts_with(expected_start);
 
         if !starts_with {
@@ -30,7 +30,7 @@ impl Asserter<&str> {
         }
     }
 
-    pub fn ends_with(self, expected_start: &str) {
+    pub fn ends_with(&self, expected_start: &str) {
         let ends_with = self.value.ends_with(expected_start);
 
         if !ends_with {
@@ -38,19 +38,19 @@ impl Asserter<&str> {
         }
     }
 
-    pub fn is_empty(self){
+    pub fn is_empty(&self){
         if !self.value.is_empty() {
             panic!("The text {} is not empty", self.value)
         }
     }
 
-    pub fn is_not_empty(self){
+    pub fn is_not_empty(&self){
         if self.value.is_empty() {
             panic!("The text {} is empty", self.value)
         }
     }
 
-    pub fn has_length(self, expected_length: usize){
+    pub fn has_length(&self, expected_length: usize){
         let len = self.value.len();
 
         assert_eq!(len, expected_length); //TODO: use custom panic
