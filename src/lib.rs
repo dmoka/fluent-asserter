@@ -3,6 +3,7 @@
 //TODO: follow these practices: https://pascalhertleif.de/artikel/good-practices-for-writing-rust-libraries/
 
 mod panic_asserter_helper;
+mod string_extensions;
 mod string_asserter;
 mod panic_asserter;
 
@@ -50,6 +51,16 @@ impl<TFunction, TCatchPanicResult>  PanicAssert<TFunction, TCatchPanicResult> fo
     }
 } 
 
+
+trait Should<T> {
+    fn should(self) -> T;
+}
+
+impl<T> Should<T> for T {
+    fn should(self) -> T {
+        self
+    }
+}
 
 //TODO: struct assertions with lambda like in c#
 
