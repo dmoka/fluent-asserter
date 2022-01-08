@@ -16,8 +16,17 @@ pub struct PanicAsserter <F, R> where F: FnOnce() -> R + panic::UnwindSafe {
     value :  F
 }
 
-struct Assert;
+//TODO: add this?
 
+impl<T> Asserter<T> {
+    pub fn new(value: T) -> Asserter<T> {
+        Asserter {
+            value
+        }
+    }
+}
+
+struct Assert;
 
 trait GenericAssert<TValue> {
     fn that(value: TValue) -> Asserter<TValue>;
@@ -27,7 +36,7 @@ trait PanicAssert<TFunction, TCatchPanicResult> {
     fn that_code(f: TFunction) -> PanicAsserter<TFunction, TCatchPanicResult> where TFunction: FnOnce() -> TCatchPanicResult + panic::UnwindSafe;
 }
 
-impl<TValue>  GenericAssert<TValue> for Assert {
+impl<TValue> GenericAssert<TValue> for Assert {
     fn that(value: TValue) -> Asserter<TValue> {
         Asserter {
             value
