@@ -1,6 +1,6 @@
 use super::*;
 
-trait StringAsserters {
+trait StringAsserters { //TODO: use better naming
     fn be_empty(&self);
     
     fn be_equal_to(&self, expected_value: &str);

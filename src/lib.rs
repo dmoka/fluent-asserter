@@ -3,9 +3,10 @@
 //TODO: follow these practices: https://pascalhertleif.de/artikel/good-practices-for-writing-rust-libraries/
 
 mod panic_asserter_helper;
-mod string_extensions;
 mod string_asserter;
 mod panic_asserter;
+mod string_extensions;
+mod panic_extensions;
 
 use std::panic;
 
