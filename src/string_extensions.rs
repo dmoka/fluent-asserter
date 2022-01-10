@@ -52,22 +52,14 @@ impl<'a> StringAsserters for ShouldRoot<'a, String> {
 
 #[cfg(test)]
 mod test {
-    use crate::panic_asserter_helper::assert_that_panics;
+    //use crate::panic_asserter_helper::assert_that_panics;
 
     use super::*;
 
     #[test]
     fn sanity_check() {
         let str = String::from(""); 
-        &str.should().be_empty();
-        let s = &str.should().be_empty();
-        let s = str.should().be_empty();
-
-        //&str.have_length(0);
-
-        /*to problems to fix:
-        A -> be_empty should be able to be called after Should().
-        */
-
+        str.should().be_empty();
+        str.should().be_empty();
     }
 }
