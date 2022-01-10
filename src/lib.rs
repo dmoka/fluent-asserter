@@ -82,7 +82,7 @@ mod test {
     use super::*;
 
     #[test]
-    fn TestRootAssert() {
+    fn sanity_check_for_assertions() {
         Assert::that_code(|| panic!("")).panics();
 
         Assert::that("value").is_not_empty();
