@@ -3,7 +3,7 @@
 use super::*;
 
 trait StringAsserters {
-    fn be_empty(self);
+    fn be_empty(&self);
     
     fn be_equal_to(&self, expected_value: &str);
 
@@ -20,7 +20,7 @@ trait StringAsserters {
 
 impl StringAsserters for String {
     
-    fn be_empty(self){
+    fn be_empty(&self){
         assert_that!(&self).is_empty();
     }
 
@@ -58,6 +58,16 @@ mod test {
 
     #[test]
     fn sanity_check() {
-        String::from("").be_empty();
+        let str = String::from(""); 
+        &str.be_empty();
+
+        &str.have_length(0);
+
+
+        /*to problems to fix:
+        A -> be_empty should be able to be called after Should().
+        B -> the function can not be called second time because it has been moved. 
+        */
+
     }
 }
