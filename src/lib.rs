@@ -51,14 +51,19 @@ impl<TFunction, TCatchPanicResult>  PanicAssert<TFunction, TCatchPanicResult> fo
     }
 } 
 
+struct ShouldRoot<'a, T> {
+    value: &'a T
+}
 
 trait Should<T> {
-    fn should(self) -> T;
+    fn should(&self) -> ShouldRoot<T>;
 }
 
 impl<T> Should<T> for T {
-    fn should(self) -> T {
-        self
+    fn should(&self) -> ShouldRoot<T> {
+        ShouldRoot {
+            value: &self
+        }
     }
 }
 

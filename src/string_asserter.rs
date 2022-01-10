@@ -2,7 +2,7 @@ use super::*;
 use std::fmt;
 
 //TODO: add and
-impl<T> Asserter<T> where T : fmt::Display {
+impl<T> Asserter<T> where T : fmt::Display { //TODO: Display is also implemented for int,etc, so it would work
     pub fn is_equal_to(&self, expected_value: &str) {
         assert_eq!(self.value.to_string(), expected_value);
     }
