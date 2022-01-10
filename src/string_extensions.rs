@@ -1,5 +1,3 @@
-
-
 use super::*;
 
 trait StringAsserters {
@@ -52,14 +50,22 @@ impl<'a> StringAsserters for ShouldRoot<'a, String> {
 
 #[cfg(test)]
 mod test {
-    //use crate::panic_asserter_helper::assert_that_panics;
-
     use super::*;
+    use crate::panic_asserter_helper::assert_that_panics;
 
     #[test]
-    fn sanity_check() {
-        let str = String::from(""); 
-        str.should().be_empty();
-        str.should().be_empty();
+    fn sanity_checks_for_extension_methods() {
+        //The corresponding functionality is already tested comprehensively in the string_asserter test module
+        //This is just a sanity check if the extension method work properly
+        let str = String::from("bitcoin"); 
+
+        str.should().not_be_empty();
+        str.should().be_equal_to("bitcoin");
+        str.should().contain("coin");
+        str.should().start_with("bit");
+        str.should().end_with("in");
+        str.should().have_length(7);
+
+        assert_that_panics(|| assert_that!(str.should().be_empty()));
     }
 }
