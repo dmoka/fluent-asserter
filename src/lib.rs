@@ -7,6 +7,7 @@ mod string_asserter;
 mod panic_asserter;
 mod string_extensions;
 mod panic_extensions;
+mod number_asserter;
 
 use std::panic;
 
