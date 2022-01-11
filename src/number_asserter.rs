@@ -1,7 +1,5 @@
 use super::*;
 
-use num::Float;
-
 impl<T> Asserter<T> where T : Copy + PartialOrd + std::fmt::Debug {
     pub fn is_equal_to2(&self, expected_value: T) {
         assert_eq!(self.value, expected_value);
