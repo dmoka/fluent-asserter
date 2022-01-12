@@ -7,7 +7,9 @@ mod string_asserter;
 mod panic_asserter;
 mod number_asserter;
 
-use std::panic;
+use std::{panic};
+use std::borrow::Borrow;
+use std::fmt::Debug;
 
 pub struct Asserter<T> {
     value : T
@@ -19,11 +21,16 @@ pub struct PanicAsserter <F, R> where F: FnOnce() -> R + panic::UnwindSafe {
 
 //TODO: add this?
 
-impl<T> Asserter<T> {
+impl<T> Asserter<T> where T: Debug + PartialEq {
     pub fn new(value: T) -> Asserter<T> {
         Asserter {
             value
         }
+    }
+
+    pub fn is_equal_to<E>(&self, expected_value: E) where E: Borrow<T> {
+        let expected = expected_value.borrow();
+        assert_eq!(&self.value, expected);
     }
 }
 

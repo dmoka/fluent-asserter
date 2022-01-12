@@ -3,12 +3,6 @@ use std::fmt;
 
 //TODO: add and
 impl<T> Asserter<T> where T : Into<String> + Clone{ //TODO: Display is also implemented for int,etc, so it would work
-    pub fn is_equal_to(&self, expected_value: &str) {
-        let string = self.value.clone().into();
-
-        assert_eq!(string, expected_value);
-    }
-
     pub fn contains(&self, expected_value_to_be_contained: &str) {
         let string = self.value.clone().into();
         let is_present = string.contains(expected_value_to_be_contained);
@@ -68,11 +62,11 @@ mod test {
 
     #[test]
     fn test_is_equal_to_for_string() {
-        assert_that!(&String::from("test string")).is_equal_to("test string");
-        assert_that!(&String::from("bitcoin")).is_equal_to("bitcoin");
+        assert_that!(&String::from("test string")).is_equal_to(&String::from("test string"));
+        assert_that!(&String::from("bitcoin")).is_equal_to(&String::from("bitcoin"));
 
-        assert_that_panics(|| assert_that!(&String::from("test string")).is_equal_to("test"));
-        assert_that_panics(|| assert_that!(&String::from("bitcoin")).is_equal_to("ethereum"));
+        assert_that_panics(|| assert_that!(&String::from("test string")).is_equal_to(&String::from("test")));
+        assert_that_panics(|| assert_that!(&String::from("bitcoin")).is_equal_to(&String::from("ethereum")));
     }
 
 
