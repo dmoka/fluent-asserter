@@ -2,48 +2,59 @@ use super::*;
 use std::fmt;
 
 //TODO: add and
-impl<T> Asserter<T> where T : fmt::Display { //TODO: Display is also implemented for int,etc, so it would work
+impl<T> Asserter<T> where T : Into<String> + Clone{ //TODO: Display is also implemented for int,etc, so it would work
     pub fn is_equal_to(&self, expected_value: &str) {
-        assert_eq!(self.value.to_string(), expected_value);
+        let string = self.value.clone().into();
+
+        assert_eq!(string, expected_value);
     }
 
     pub fn contains(&self, expected_value_to_be_contained: &str) {
-        let is_present = self.value.to_string().contains(expected_value_to_be_contained);
+        let string = self.value.clone().into();
+        let is_present = string.contains(expected_value_to_be_contained);
+        
         if !is_present {
-            panic!("The text {} is not present in string {}", expected_value_to_be_contained, self.value)
+            panic!("The text {} is not present in string {}", expected_value_to_be_contained, string)
         }
     }
 
     pub fn starts_with(&self, expected_start: &str) {
-        let starts_with = self.value.to_string().starts_with(expected_start);
+        let string = self.value.clone().into();
+        let starts_with = string.starts_with(expected_start);
 
         if !starts_with {
-            panic!("The actual text {} does not start with {}", self.value, expected_start)
+            panic!("The actual text {} does not start with {}", string, expected_start)
         }
     }
 
     pub fn ends_with(&self, expected_start: &str) {
-        let ends_with = self.value.to_string().ends_with(expected_start);
+        let string = self.value.clone().into();
+        let ends_with = string.ends_with(expected_start);
 
         if !ends_with {
-            panic!("The actual text {} does not end with {}", self.value, expected_start)
+            panic!("The actual text {} does not end with {}", string, expected_start)
         }
     }
 
     pub fn is_empty(&self){
-        if !self.value.to_string().is_empty() {
-            panic!("The text {} is not empty", self.value)
+        let string = self.value.clone().into();
+
+        if !string.is_empty() {
+            panic!("The text {} is not empty", string)
         }
     }
 
     pub fn is_not_empty(&self){
-        if self.value.to_string().is_empty() {
-            panic!("The text {} is empty", self.value)
+        let string = self.value.clone().into();
+
+        if string.is_empty() {
+            panic!("The text {} is empty", string)
         }
     }
 
     pub fn has_length(&self, expected_length: usize){
-        let len = self.value.to_string().len();
+        let string = self.value.clone().into();
+        let len = string.len();
 
         assert_eq!(len, expected_length); //TODO: use custom panic
     }

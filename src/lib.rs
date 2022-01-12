@@ -5,8 +5,6 @@
 mod panic_asserter_helper;
 mod string_asserter;
 mod panic_asserter;
-mod string_extensions;
-mod panic_extensions;
 mod number_asserter;
 
 use std::panic;
@@ -53,23 +51,6 @@ impl<TFunction, TCatchPanicResult>  PanicAssert<TFunction, TCatchPanicResult> fo
     }
 } 
 
-struct ShouldRoot<'a, T> {
-    value: &'a T
-}
-
-trait Should<T> {
-    fn should(&self) -> ShouldRoot<T>;
-}
-
-impl<T> Should<T> for T {
-    fn should(&self) -> ShouldRoot<T> {
-        ShouldRoot {
-            value: &self
-        }
-    }
-}
-
-//TODO: struct assertions with lambda like in c#
 
 #[macro_export]
 macro_rules! assert_that {
