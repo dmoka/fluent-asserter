@@ -30,6 +30,15 @@ impl<T> Asserter<T> where T : Copy + PartialOrd + std::fmt::Debug + std::fmt::Di
             panic!("The value {} is not in range [{},{}]", self.value, expected_lower_range,expected_upper_range);
         }
     }
+
+    pub fn is_not_in_range(self, expected_lower_range: T, expected_upper_range : T) {
+        if self.value >= expected_lower_range && self.value <= expected_upper_range {
+            panic!("The value {} is unexpectedly in range [{},{}]", self.value, expected_lower_range,expected_upper_range);
+        }
+    }
+
+
+    //Approximately
 }
 
 #[cfg(test)]
@@ -79,5 +88,15 @@ mod test {
 
         assert_that_panics(||assert_that!(0).is_in_range(1,10));
         assert_that_panics(||assert_that!(11).is_in_range(1,10));
+    }
+
+    #[test]
+    fn test_is_not_in_range() {
+        assert_that!(0).is_not_in_range(1,10);
+        assert_that!(11).is_not_in_range(1,10);
+
+        assert_that_panics(||assert_that!(1).is_not_in_range(1,10));
+        assert_that_panics(||assert_that!(2).is_not_in_range(1,10));
+        assert_that_panics(||assert_that!(10).is_not_in_range(1,10));
     }
 }
