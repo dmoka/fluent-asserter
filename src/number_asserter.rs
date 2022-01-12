@@ -10,10 +10,14 @@ mod test {
     use crate::panic_asserter_helper::assert_that_panics;
 
 
+    //TODO: We should add these tests to lib.rs
     #[test]
-    fn sanity_check_for_assertions() { 
-        assert_that!(3).is_equal_to(3);
+    fn test_is_equal_to() { 
+        assert_that!(1u32).is_equal_to(1);
+        assert_that!(2i32).is_equal_to(2);
         assert_that!(3.0).is_equal_to(3.0);
-        assert_that!(-5).is_equal_to(-5);
+        assert_that!(-4).is_equal_to(-4);
+
+        assert_that_panics(|| assert_that!(3.0).is_equal_to(4.0))
     }
 }
