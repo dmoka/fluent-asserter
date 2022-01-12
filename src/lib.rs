@@ -21,8 +21,6 @@ pub struct PanicAsserter <F, R> where F: FnOnce() -> R + panic::UnwindSafe {
     value :  F
 }
 
-//TODO: add this?
-
 impl<T> Asserter<T> where T: Debug + PartialEq {
     pub fn new(value: T) -> Asserter<T> {
         Asserter {
@@ -33,6 +31,11 @@ impl<T> Asserter<T> where T: Debug + PartialEq {
     pub fn is_equal_to(&self, expected_value: T) {
         let expected = expected_value.borrow();
         assert_eq!(&self.value, expected);
+    }
+
+    pub fn is_not_equal_to(&self, expected_value: T) {
+        let expected = expected_value.borrow();
+        assert_ne!(&self.value, expected);
     }
 }
 
@@ -73,11 +76,52 @@ macro_rules! assert_that {
 mod test {
     use super::*;
 
+    use crate::panic_asserter_helper::assert_that_panics;
+
     #[test]
     fn sanity_check_for_assertions() {
         Assert::that_code(|| panic!("")).panics();
 
         Assert::that("value").is_not_empty();
+    }
+
+    #[test]
+    fn test_is_equal_to_for_numerics() { 
+        assert_that!(1u32).is_equal_to(1);
+        assert_that!(2i32).is_equal_to(2);
+        assert_that!(3.0).is_equal_to(3.0);
+        assert_that!(-4).is_equal_to(-4);
+
+        assert_that_panics(|| assert_that!(3.0).is_equal_to(4.0))
+    }
+
+    #[test]
+    fn test_is_not_equal_to_for_numerics() { 
+        assert_that!(1u32).is_not_equal_to(2);
+        assert_that!(2i32).is_not_equal_to(3);
+        assert_that!(3.0).is_not_equal_to(4.0);
+        assert_that!(-4).is_not_equal_to(-5);
+
+        assert_that_panics(|| assert_that!(3.0).is_not_equal_to(3.0))
+    }
+
+    #[test]
+    fn test_is_equal_to_for_string() {
+        assert_that!(&String::from("test string")).is_equal_to(&String::from("test string"));
+        assert_that!(&String::from("bitcoin")).is_equal_to(&String::from("bitcoin"));
+
+        assert_that_panics(|| assert_that!(&String::from("test string")).is_equal_to(&String::from("test")));
+        assert_that_panics(|| assert_that!(&String::from("bitcoin")).is_equal_to(&String::from("ethereum")));
+    }
+
+
+    #[test]
+    fn test_is_equal_to_for_str() {
+        assert_that!("test string").is_equal_to("test string");
+        assert_that!("bitcoin").is_equal_to("bitcoin");
+        
+        assert_that_panics(|| assert_that!("test string").is_equal_to("string"));
+        assert_that_panics(|| assert_that!("bitcoin").is_equal_to("ethereum"));
     }
 }
 
