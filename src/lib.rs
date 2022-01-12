@@ -28,7 +28,8 @@ impl<T> Asserter<T> where T: Debug + PartialEq {
         }
     }
 
-    pub fn is_equal_to<E>(&self, expected_value: E) where E: Borrow<T> {
+    //Borrow trait is used to treat borrowed types like owned types
+    pub fn is_equal_to(&self, expected_value: T) {
         let expected = expected_value.borrow();
         assert_eq!(&self.value, expected);
     }
