@@ -2,7 +2,7 @@
 
 //TODO: follow these practices: https://pascalhertleif.de/artikel/good-practices-for-writing-rust-libraries/
 
-//TODO: add theory
+//TODO: add theory via annotation
 
 mod panic_asserter_helper;
 mod string_asserter;
