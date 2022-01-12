@@ -2,6 +2,8 @@
 
 //TODO: follow these practices: https://pascalhertleif.de/artikel/good-practices-for-writing-rust-libraries/
 
+//TODO: add theory
+
 mod panic_asserter_helper;
 mod string_asserter;
 mod panic_asserter;
@@ -28,7 +30,6 @@ impl<T> Asserter<T> where T: Debug + PartialEq {
         }
     }
 
-    //Borrow trait is used to treat borrowed types like owned types
     pub fn is_equal_to(&self, expected_value: T) {
         let expected = expected_value.borrow();
         assert_eq!(&self.value, expected);
