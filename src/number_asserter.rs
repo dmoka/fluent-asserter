@@ -9,10 +9,21 @@ impl<T> Asserter<T> where T : Copy + PartialOrd + std::fmt::Debug + std::fmt::Di
 
     pub fn is_smaller_than_or_equal_to(self, expected: T) {
         if self.value > expected {
-            panic!("The value {} is not smaller than {}", self.value, expected)
+            panic!("The value {} is not smaller than or equal to {}", self.value, expected)
         }
     }
-    //TODO: add further number stuff
+
+    pub fn is_greater_than(self, expected: T) {
+        if self.value <= expected {
+            panic!("The value {} is not greater than {}", self.value, expected)
+        }
+    }
+
+    pub fn is_greater_than_or_equal_to(self, expected: T) {
+        if self.value < expected {
+            panic!("The value {} is not greater than {}", self.value, expected)
+        }
+    }
 }
 
 #[cfg(test)]
@@ -35,5 +46,22 @@ mod test {
         assert_that!(21.0).is_smaller_than_or_equal_to(21.1);
 
         assert_that_panics(||assert_that!(4.01).is_smaller_than_or_equal_to(4.0));
+    }
+
+    #[test]
+    fn test_is_greater_than() {
+        assert_that!(1).is_greater_than(0);
+        assert_that!(15).is_greater_than(14);
+
+        assert_that_panics(||assert_that!(15).is_greater_than(15));
+        assert_that_panics(||assert_that!(10).is_greater_than(15));
+    }
+
+    #[test]
+    fn test_is_greater_than_or_equal_to() {
+        assert_that!(11).is_greater_than_or_equal_to(10);
+        assert_that!(10).is_greater_than_or_equal_to(10);
+
+        assert_that_panics(||assert_that!(9).is_greater_than(10));
     }
 }
