@@ -1,5 +1,4 @@
 use super::*;
-use std::fmt;
 
 //TODO: add and
 impl<T> Asserter<T> where T : Into<String> + Clone{ //TODO: Display is also implemented for int,etc, so it would work
@@ -51,6 +50,15 @@ impl<T> Asserter<T> where T : Into<String> + Clone{ //TODO: Display is also impl
         let len = string.len();
 
         assert_eq!(len, expected_length); //TODO: use custom panic
+    }
+
+    pub fn contains_all(&self, args: &[&str]) {
+        let string = self.value.clone().into();
+        let contains_all = args.into_iter().all(|&w| self.value.clone().into().contains(&w));
+
+        if !contains_all {
+            panic!("The word {} does not contain all the words specified",string);
+        }
     }
 }
 
@@ -128,6 +136,13 @@ mod test {
         assert_that!("bitcoin").is_not_empty();
 
         assert_that_panics(|| assert_that!(&String::from("")).is_not_empty());
+    }
+
+    #[test]
+    fn test_contains_all() {
+        assert_that!("bitcoin ethereum solana").contains_all(&["ethereum", "bitcoin", "solana"]);
+
+        assert_that_panics(|| assert_that!("bitcoin ethereum solana").contains_all(&["ethereum", "bitcoin", "solana", "polygon"]));
     }
 
 
