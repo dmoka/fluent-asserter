@@ -53,11 +53,22 @@ impl<T> Asserter<T> where T : Into<String> + Clone{ //TODO: Display is also impl
     }
 
     pub fn contains_all(&self, args: &[&str]) {
+        //TODO: create ctor field value with string?
         let string = self.value.clone().into();
         let contains_all = args.into_iter().all(|&w| self.value.clone().into().contains(&w));
 
         if !contains_all {
             panic!("The word {} does not contain all the words specified",string);
+        }
+    }
+
+    pub fn contains_any(&self, args: &[&str]) {
+        let string = self.value.clone().into();
+
+        let contains_any = args.into_iter().any(|&w| self.value.clone().into().contains(&w));
+
+        if !contains_any {
+            panic!("The word {} does not contain any of the words specified",string);
         }
     }
 }
@@ -143,6 +154,13 @@ mod test {
         assert_that!("bitcoin ethereum solana").contains_all(&["ethereum", "bitcoin", "solana"]);
 
         assert_that_panics(|| assert_that!("bitcoin ethereum solana").contains_all(&["ethereum", "bitcoin", "solana", "polygon"]));
+    }
+
+    #[test]
+    fn test_contains_any() {
+        assert_that!("bitcoin ethereum solana").contains_any(&["solana"]);
+
+        assert_that_panics(|| assert_that!("bitcoin ethereum solana").contains_any(&["tezos", "litecoin", "luna"]));
     }
 
 
