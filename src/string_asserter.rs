@@ -55,8 +55,9 @@ impl<T> Asserter<T> where T : Into<String> + Clone{ //TODO: Display is also impl
     pub fn contains_all(&self, args: &[&str]) {
         //TODO: create ctor field value with string?
         let string = self.value.clone().into();
-        let contains_all = args.into_iter().all(|&w| self.value.clone().into().contains(&w));
+        let contains_all = args.into_iter().all(|&w| string.contains(&w));
 
+        //TODO: add the words in the error message which are not present
         if !contains_all {
             panic!("The word {} does not contain all the words specified",string);
         }
@@ -64,11 +65,10 @@ impl<T> Asserter<T> where T : Into<String> + Clone{ //TODO: Display is also impl
 
     pub fn contains_any(&self, args: &[&str]) {
         let string = self.value.clone().into();
-
-        let contains_any = args.into_iter().any(|&w| self.value.clone().into().contains(&w));
+        let contains_any = args.into_iter().any(|&w| string.contains(&w));
 
         if !contains_any {
-            panic!("The word {} does not contain any of the words specified",string);
+            panic!("The word {} does not contain any of the words specified", string);
         }
     }
 }
