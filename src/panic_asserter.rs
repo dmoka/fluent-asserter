@@ -3,7 +3,6 @@ use super::*;
 use std::{
     sync::{Arc, Mutex},
 };
-//TODO: add answer to this SO question: https://stackoverflow.com/questions/26469715/how-do-i-write-a-rust-unit-test-that-ensures-that-a-panic-has-occurred
 
 #[macro_export]
 macro_rules! assert_that_code {
@@ -68,23 +67,17 @@ impl<F, R> PanicAsserter<F, R>  where F: FnOnce() -> R + panic::UnwindSafe{
         let panic_message;
     
         match result {
-            Ok(res) => {
-                panic!("There was no panic, but it was expected!")
+            Ok(_res) => {
+                //assert!(result.is_err());
+                panic!("There was no panic, but it was expected!") //TODO: add better panic error message
             },
             Err(_) => {
                 panic_message = global_buffer.lock().unwrap();
-                /*println!("caught panic!");
-                println!("I captured:\n\n{}", global_buffer.lock().unwrap())*/
             }
         }
-    
-        let actual_panic_message : String = panic_message.to_string();
-    
-        //TODO: add better panic error message
-        assert!(result.is_err());
-        
+            
         WithMessage {
-            actual_panic_message
+            actual_panic_message: panic_message.to_string()
         }
     }
     
