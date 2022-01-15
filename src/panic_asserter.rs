@@ -11,6 +11,7 @@ macro_rules! assert_that_code {
     };
 }
 
+//TODO: remove this? It is more expressive to use the macro
 pub fn assert_that_code<F: FnOnce() -> R + panic::UnwindSafe, R>(f: F) -> PanicAsserter<F, R> where F: FnOnce() -> R + panic::UnwindSafe {
     PanicAsserter {
         value: f
