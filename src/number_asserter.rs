@@ -1,6 +1,14 @@
 use super::*;
+use std::ops::Neg;
+use num::{traits::Zero, Integer, Signed, Bounded}; // 0.2.0
 
-impl<T> Asserter<T> where T : Copy + PartialOrd + std::fmt::Debug + std::fmt::Display {
+//TODO: here use the trait from num crate, like in the approximately method
+
+//approx: Signed + Integer + Zero + Neg + Bounded + Copy
+//old asserter: Copy + PartialOrd + std::ops::Sub  + std::fmt::Debug + std::fmt::Display
+//mixed:Zero + Neg + Signed + Bounded + Copy + PartialOrd + std::fmt::Debug + std::fmt::Display
+
+impl<T> Asserter<T> where T : Copy + PartialOrd + std::ops::Sub  + std::fmt::Debug + std::fmt::Display {
     pub fn is_smaller_than(self, expected: T) {
         if self.value >= expected {
             panic!("The value {} is not smaller than {}", self.value, expected)
@@ -37,9 +45,36 @@ impl<T> Asserter<T> where T : Copy + PartialOrd + std::fmt::Debug + std::fmt::Di
         }
     }
 
-
-    //Approximately
 }
+
+trait ApproximatelyEqual<T> {
+    fn is_equal_to_approximately(self, expected: T, delta: T);
+}
+
+impl<T> ApproximatelyEqual<T> for Asserter<T> where T : Signed + Integer + Zero + Neg + Bounded + Copy {
+    fn is_equal_to_approximately(self, expected: T, delta: T) {
+        let dif = self.value - expected;
+        let abs = abs_signed(dif);
+
+        match abs {
+            Ok(diff_abs) => {
+                if diff_abs > delta {
+                    panic!("AssertionError: not equal") //TODO: improve error message
+                }
+            },
+            Err(_) => todo!(),
+        }
+    }
+}
+
+pub fn abs_signed<T>(x: T) -> Result<T, String> where T: Signed + Integer + Zero + Neg + Bounded + Copy{
+    match x {
+        x if x == T::min_value() => Err("Overflow".to_string()),
+        x if x < T::zero() => Ok(-x),
+        _ => Ok(x),
+    }
+}
+
 
 #[cfg(test)]
 mod test {
@@ -98,5 +133,15 @@ mod test {
         assert_that_panics(||assert_that!(1).is_not_in_range(1,10));
         assert_that_panics(||assert_that!(2).is_not_in_range(1,10));
         assert_that_panics(||assert_that!(10).is_not_in_range(1,10));
+    }
+
+    
+    #[test]
+    fn test_is_equal_to_approximately_for_signed() {
+        assert_that!(3).is_equal_to_approximately(2,1);
+        assert_that!(3).is_equal_to_approximately(3,1);
+        assert_that!(3).is_equal_to_approximately(4,1);
+
+        assert_that_panics(||assert_that!(3).is_equal_to_approximately(5,1));
     }
 }
