@@ -106,18 +106,6 @@ mod test {
     use super::*;
 
     #[test]
-    fn test_panics_with_message() {
-        assert_that_code!(|| panic!("specific panic message"))
-                                .panics()
-                                .with_message("specific panic message");
-
-        assert_that_panics(||assert_that_code!(|| panic!("specific panic message"))
-                                    .panics()
-                                    .with_message("another expected panic message"));
-
-    }
-
-    #[test]
     fn test_assert_that_panics() {
         assert_that_code!(|| panic!("error")).panics();
         assert_that_code(|| panic!("error")).panics();
@@ -133,5 +121,17 @@ mod test {
 
         assert_that_code!(|| println!("WAGMI")).does_not_panic();
         assert_that_code(|| println!("WAGMI")).does_not_panic();
+    }
+
+    #[test]
+    fn test_panics_with_message() {
+        assert_that_code!(|| panic!("specific panic message"))
+                                .panics()
+                                .with_message("specific panic message");
+
+        assert_that_panics(||assert_that_code!(|| panic!("specific panic message"))
+                                    .panics()
+                                    .with_message("another expected panic message"));
+
     }
 }
