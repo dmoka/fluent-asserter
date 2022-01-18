@@ -55,17 +55,17 @@ impl ApproximatelyEqualMarker for IntegerApproximatelyEqual{}
 impl ApproximatelyEqualMarker for FloatApproximatelyEqual{}
 
 trait ApproximatelyEqual<T, S:ApproximatelyEqualMarker  > {
-    fn is_equal_to_approximately(self, expected: T, delta: T);
+    fn is_approx_equal_to(self, expected: T, delta: T);
 }
 
 impl<T> ApproximatelyEqual<T, IntegerApproximatelyEqual> for Asserter<T> where T : Signed + Integer + Zero + Neg + Bounded + Copy {
-    fn is_equal_to_approximately(self, expected: T, delta: T) { //Rename to is_approx_equal_to
+    fn is_approx_equal_to(self, expected: T, delta: T) { //Rename to is_approx_equal_to
         diff_eq!(self.value,expected,delta);
     }
 }
 
 impl<T> ApproximatelyEqual<T,FloatApproximatelyEqual> for Asserter<T> where T : Float + Zero + Neg + Copy + std::fmt::Display{
-    fn is_equal_to_approximately(self, expected: T, delta: T) {
+    fn is_approx_equal_to(self, expected: T, delta: T) {
         diff_eq!(self.value,expected,delta)
     }
 }
@@ -132,11 +132,11 @@ mod test {
     
     #[test]
     fn test_is_equal_to_approximately_for_signed() {
-        assert_that!(3).is_equal_to_approximately(2,1);
-        assert_that!(3).is_equal_to_approximately(3,1);
-        assert_that!(3).is_equal_to_approximately(4,1);
+        assert_that!(3).is_approx_equal_to(2,1);
+        assert_that!(3).is_approx_equal_to(3,1);
+        assert_that!(3).is_approx_equal_to(4,1);
 
-        assert_that_panics(||assert_that!(3).is_equal_to_approximately(5,1));
+        assert_that_panics(||assert_that!(3).is_approx_equal_to(5,1));
     }
 
     /*
