@@ -1,12 +1,7 @@
 use super::*;
 use std::ops::Neg;
+use std::ops::Mul;
 use num::{traits::Zero, Integer, Signed, Bounded, Float}; // 0.2.0
-
-//TODO: here use the trait from num crate, like in the approximately method
-
-//approx: Signed + Integer + Zero + Neg + Bounded + Copy
-//old asserter: Copy + PartialOrd + std::ops::Sub  + std::fmt::Debug + std::fmt::Display
-//mixed:Zero + Neg + Signed + Bounded + Copy + PartialOrd + std::fmt::Debug + std::fmt::Display
 
 impl<T> Asserter<T> where T : Copy + PartialOrd + std::ops::Sub  + Default + std::fmt::Debug + std::fmt::Display {
     pub fn is_smaller_than(self, expected: T) {
@@ -60,13 +55,20 @@ trait ApproximatelyEqual<T, S:ApproximatelyEqualMarker  > {
 
 impl<T> ApproximatelyEqual<T, IntegerApproximatelyEqual> for Asserter<T> where T : Signed + Integer + Zero + Neg + Bounded + Copy {
     fn is_approx_equal_to(self, expected: T, delta: T) {
-        diff_eq!(self.value,expected,delta);
+        abs_diff_eq!(self.value,expected,delta);
     }
 }
 
-impl<T> ApproximatelyEqual<T,FloatApproximatelyEqual> for Asserter<T> where T : Float + Zero + Neg + Copy + std::fmt::Display{
+impl<T> ApproximatelyEqual<T,FloatApproximatelyEqual> for Asserter<T> where T : Mul<Output= T> + Float + Zero + Neg + Copy + std::fmt::Display{
     fn is_approx_equal_to(self, expected: T, delta: T) {
-        diff_eq!(self.value,expected,delta)
+        let diff = abs_diff!(self.value,expected);
+
+        let diff_f64 : f64 = format!("{:.10}",diff).parse().unwrap();
+        let delta_f64 : f64 = format!("{:.10}",delta).parse().unwrap();
+
+        if diff_f64 > delta_f64 {
+            panic!("AssertionError: Not equal")
+        }
     }
 }
 
@@ -137,13 +139,18 @@ mod test {
         assert_that!(3).is_approx_equal_to(4,1);
 
         assert_that_panics(||assert_that!(3).is_approx_equal_to(5,1));
+
     }
 
-    /*
+    //TODO: add test for unsigned
+
+    
     #[test]
     fn test_is_equal_to_approximately_for_floats() {
-        assert_that!(3.14).is_equal_to_approximately(3.16,0.02);
-       // assert_that!(3.14).is_equal_to_approximately(3.14,0.00);
-        //assert_that!(3.14159).is_equal_to_approximately(3.14157,0.00002);
-    }*/
+        assert_that!(3.14).is_approx_equal_to(3.16,0.02);
+        assert_that!(3.14).is_approx_equal_to(3.14,0.00);
+        assert_that!(3.14159).is_approx_equal_to(3.14157,0.00002);
+
+        assert_that_panics(||assert_that!(3.14159).is_approx_equal_to(3.14157,0.00001));
+    }
 }

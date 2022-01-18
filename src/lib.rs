@@ -14,9 +14,16 @@ use std::borrow::Borrow;
 use std::fmt::Debug;
 
 #[macro_export] //TODO: place it in number asserter
-macro_rules! diff_eq {
+macro_rules! abs_diff_eq {
     ($x:expr, $y:expr, $d:expr) => {
         if (($x - $y).abs() > $d) { panic!("AssertionError: not equal"); }
+    }
+}
+
+#[macro_export] 
+macro_rules! abs_diff {
+    ($x:expr, $y:expr) => {
+        ($x - $y).abs()
     }
 }
 
