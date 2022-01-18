@@ -59,7 +59,7 @@ impl<T> ApproximatelyEqual<T, IntegerApproximatelyEqual> for Asserter<T> where T
     }
 }
 
-impl<T> ApproximatelyEqual<T,FloatApproximatelyEqual> for Asserter<T> where T : Mul<Output= T> + Float + Zero + Neg + Copy + std::fmt::Display{
+impl<T> ApproximatelyEqual<T,FloatApproximatelyEqual> for Asserter<T> where T :Float + Zero + Neg + Copy + std::fmt::Display{
     fn is_approx_equal_to(self, expected: T, delta: T) {
         let diff = abs_diff!(self.value,expected);
 
