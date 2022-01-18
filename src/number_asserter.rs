@@ -1,6 +1,6 @@
 use super::*;
 use std::ops::Neg;
-use num::{traits::Zero, Integer, Signed, Bounded}; // 0.2.0
+use num::{traits::Zero, Integer, Signed, Bounded, Float}; // 0.2.0
 
 //TODO: here use the trait from num crate, like in the approximately method
 
@@ -8,7 +8,7 @@ use num::{traits::Zero, Integer, Signed, Bounded}; // 0.2.0
 //old asserter: Copy + PartialOrd + std::ops::Sub  + std::fmt::Debug + std::fmt::Display
 //mixed:Zero + Neg + Signed + Bounded + Copy + PartialOrd + std::fmt::Debug + std::fmt::Display
 
-impl<T> Asserter<T> where T : Copy + PartialOrd + std::ops::Sub  + std::fmt::Debug + std::fmt::Display {
+impl<T> Asserter<T> where T : Copy + PartialOrd + std::ops::Sub  + Default + std::fmt::Debug + std::fmt::Display {
     pub fn is_smaller_than(self, expected: T) {
         if self.value >= expected {
             panic!("The value {} is not smaller than {}", self.value, expected)
@@ -47,34 +47,28 @@ impl<T> Asserter<T> where T : Copy + PartialOrd + std::ops::Sub  + std::fmt::Deb
 
 }
 
-trait ApproximatelyEqual<T> {
+pub trait ApproximatelyEqualMarker {}
+struct IntegerApproximatelyEqual;
+struct FloatApproximatelyEqual;
+
+impl ApproximatelyEqualMarker for IntegerApproximatelyEqual{}
+impl ApproximatelyEqualMarker for FloatApproximatelyEqual{}
+
+trait ApproximatelyEqual<T, S:ApproximatelyEqualMarker  > {
     fn is_equal_to_approximately(self, expected: T, delta: T);
 }
 
-impl<T> ApproximatelyEqual<T> for Asserter<T> where T : Signed + Integer + Zero + Neg + Bounded + Copy {
+impl<T> ApproximatelyEqual<T, IntegerApproximatelyEqual> for Asserter<T> where T : Signed + Integer + Zero + Neg + Bounded + Copy {
+    fn is_equal_to_approximately(self, expected: T, delta: T) { //Rename to is_approx_equal_to
+        diff_eq!(self.value,expected,delta);
+    }
+}
+
+impl<T> ApproximatelyEqual<T,FloatApproximatelyEqual> for Asserter<T> where T : Float + Zero + Neg + Copy + std::fmt::Display{
     fn is_equal_to_approximately(self, expected: T, delta: T) {
-        let dif = self.value - expected;
-        let abs = abs_signed(dif);
-
-        match abs {
-            Ok(diff_abs) => {
-                if diff_abs > delta {
-                    panic!("AssertionError: not equal") //TODO: improve error message
-                }
-            },
-            Err(_) => todo!(),
-        }
+        diff_eq!(self.value,expected,delta)
     }
 }
-
-pub fn abs_signed<T>(x: T) -> Result<T, String> where T: Signed + Integer + Zero + Neg + Bounded + Copy{
-    match x {
-        x if x == T::min_value() => Err("Overflow".to_string()),
-        x if x < T::zero() => Ok(-x),
-        _ => Ok(x),
-    }
-}
-
 
 #[cfg(test)]
 mod test {
@@ -144,4 +138,12 @@ mod test {
 
         assert_that_panics(||assert_that!(3).is_equal_to_approximately(5,1));
     }
+
+    /*
+    #[test]
+    fn test_is_equal_to_approximately_for_floats() {
+        assert_that!(3.14).is_equal_to_approximately(3.16,0.02);
+       // assert_that!(3.14).is_equal_to_approximately(3.14,0.00);
+        //assert_that!(3.14159).is_equal_to_approximately(3.14157,0.00002);
+    }*/
 }
