@@ -59,7 +59,7 @@ trait ApproximatelyEqual<T, S:ApproximatelyEqualMarker  > {
 }
 
 impl<T> ApproximatelyEqual<T, IntegerApproximatelyEqual> for Asserter<T> where T : Signed + Integer + Zero + Neg + Bounded + Copy {
-    fn is_approx_equal_to(self, expected: T, delta: T) { //Rename to is_approx_equal_to
+    fn is_approx_equal_to(self, expected: T, delta: T) {
         diff_eq!(self.value,expected,delta);
     }
 }
