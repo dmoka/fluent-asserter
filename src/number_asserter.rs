@@ -61,21 +61,37 @@ impl<T> ApproximatelyEqual<T, IntegerApproximatelyEqual> for Asserter<T> where T
 
 impl<T> ApproximatelyEqual<T,FloatApproximatelyEqual> for Asserter<T> where T :Float + Zero + Neg + Copy + std::fmt::Display{
     fn is_approx_equal_to(self, expected: T, delta: T) {
-        let diff = abs_diff!(self.value,expected);
-                
-        let delta_len : f64 = delta.to_string().split(".").last().unwrap().len().to_string().parse().unwrap();
-        let divider = 10f64.pow(delta_len);
-
-        let diff_f64 : f64 = format!("{}",diff).parse().unwrap();
-        let diff_f64: f64 = (diff_f64 * divider).round() / divider;
+        let rounder = 10f64.pow(get_length_of_rounder(delta));
         
-        let delta_f64 : f64 = format!("{}",delta).parse().unwrap();
-        let delta_f64: f64 = (delta_f64 * divider).round() / divider;
+        let diff = abs_diff!(self.value,expected);
+
+        let diff_f64 = round(diff, rounder);
+        let delta_f64 =  round(delta, rounder);
 
         if diff_f64 > delta_f64 {
             panic!("AssertionError: Not equal")
         }
     }
+}
+
+
+//TODO: add abstraction for this, either in a new struct with new or some logic class
+fn get_length_of_rounder<T>(delta: T) -> f64 where T: ToString {
+    return delta.to_string()
+        .split(".")
+        .last()
+        .unwrap()
+        .len()
+        .to_string()
+        .parse()
+        .unwrap();
+}
+
+fn round<T>(diff: T, rounder: f64) -> f64 where T: std::fmt::Display {
+    let number : f64 = format!("{}",diff).parse().unwrap();
+    let number: f64 = (number * rounder).round() / rounder;
+    
+    number
 }
 
 #[cfg(test)]
