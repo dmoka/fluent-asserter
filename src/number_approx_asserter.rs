@@ -1,8 +1,7 @@
 use super::*;
-use std::ops::Neg;
 use num::Unsigned;
 use num::traits::Pow;
-use num::{traits::Zero, Integer, Signed, Bounded, Float}; // 0.2.0
+use num::{Integer, Signed, Float}; // 0.2.0
 
 macro_rules! abs_diff_unsigned {
     ($x:expr, $y:expr, $d:expr) => {
@@ -42,19 +41,19 @@ trait ApproximatelyEqual<T, S:ApproxEqualMarkerTrait  > {
 }
 
 
-impl<T> ApproximatelyEqual<T, UnsignedIntApproxEqual> for Asserter<T> where T : Unsigned + Integer + Zero  + Bounded + Copy {
+impl<T> ApproximatelyEqual<T, UnsignedIntApproxEqual> for Asserter<T> where T : Unsigned + Integer {
     fn is_approx_equal_to(self, expected: T, delta: T) {
         abs_diff_unsigned!(self.value,expected,delta);
     }
 }
 
-impl<T> ApproximatelyEqual<T, SignedIntApproxEqual> for Asserter<T> where T : Signed + Integer + Zero + Neg + Bounded + Copy {
+impl<T> ApproximatelyEqual<T, SignedIntApproxEqual> for Asserter<T> where T : Signed + Integer {
     fn is_approx_equal_to(self, expected: T, delta: T) {
         abs_diff_eq!(self.value,expected,delta);
     }
 }
 
-impl<T> ApproximatelyEqual<T,FloatApproxEqual> for Asserter<T> where T :Float + Zero + Neg + Copy + std::fmt::Display{
+impl<T> ApproximatelyEqual<T,FloatApproxEqual> for Asserter<T> where T :Float + std::fmt::Display{
     fn is_approx_equal_to(self, expected: T, delta: T) {
         let rounder = 10f64.pow(get_length_of_rounder(delta));
         
