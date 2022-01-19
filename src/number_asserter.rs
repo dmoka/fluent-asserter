@@ -1,5 +1,6 @@
 use super::*;
 use std::ops::Neg;
+use num::Unsigned;
 use num::traits::Pow;
 use num::{traits::Zero, Integer, Signed, Bounded, Float}; // 0.2.0
 
@@ -43,17 +44,25 @@ impl<T> Asserter<T> where T : Copy + PartialOrd + std::ops::Sub  + Default + std
 }
 
 pub trait ApproxEqualMarkerTrait {}
-struct IntApproxEqual;
+struct UnsignedIntApproxEqual;
+struct SignedIntApproxEqual;
 struct FloatApproxEqual;
 
-impl ApproxEqualMarkerTrait for IntApproxEqual{}
+impl ApproxEqualMarkerTrait for SignedIntApproxEqual{}
 impl ApproxEqualMarkerTrait for FloatApproxEqual{}
+impl ApproxEqualMarkerTrait for UnsignedIntApproxEqual{}
 
 trait ApproximatelyEqual<T, S:ApproxEqualMarkerTrait  > {
     fn is_approx_equal_to(self, expected: T, delta: T);
 }
 
-impl<T> ApproximatelyEqual<T, IntApproxEqual> for Asserter<T> where T : Signed + Integer + Zero + Neg + Bounded + Copy {
+impl<T> ApproximatelyEqual<T, UnsignedIntApproxEqual> for Asserter<T> where T : Unsigned + Integer + Zero  + Bounded + Copy {
+    fn is_approx_equal_to(self, expected: T, delta: T) {
+        abs_diff_unsigned!(self.value,expected,delta);
+    }
+}
+
+impl<T> ApproximatelyEqual<T, SignedIntApproxEqual> for Asserter<T> where T : Signed + Integer + Zero + Neg + Bounded + Copy {
     fn is_approx_equal_to(self, expected: T, delta: T) {
         abs_diff_eq!(self.value,expected,delta);
     }
@@ -153,19 +162,26 @@ mod test {
         assert_that_panics(||assert_that!(10).is_not_in_range(1,10));
     }
 
+
+    #[test]
+    fn test_is_equal_to_approximately_for_unsigned() {
+        assert_that!(3u32).is_approx_equal_to(2,1);
+        assert_that!(3u32).is_approx_equal_to(3,1);
+        assert_that!(3u32).is_approx_equal_to(4,1);
+
+        assert_that_panics(||assert_that!(3u32).is_approx_equal_to(5,1));
+
+    }
     
     #[test]
     fn test_is_equal_to_approximately_for_signed() {
-        assert_that!(3).is_approx_equal_to(2,1);
-        assert_that!(3).is_approx_equal_to(3,1);
-        assert_that!(3).is_approx_equal_to(4,1);
+        assert_that!(3i32).is_approx_equal_to(2,1);
+        assert_that!(3i32).is_approx_equal_to(3,1);
+        assert_that!(3i32).is_approx_equal_to(4,1);
 
-        assert_that_panics(||assert_that!(3).is_approx_equal_to(5,1));
+        assert_that_panics(||assert_that!(3i32).is_approx_equal_to(5,1));
 
     }
-
-    //TODO: add test for unsigned
-
     
     #[test]
     fn test_is_equal_to_approximately_for_floats() {

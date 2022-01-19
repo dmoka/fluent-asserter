@@ -20,6 +20,20 @@ macro_rules! abs_diff_eq {
     }
 }
 
+#[macro_export] //TODO: place it in number asserter, without export
+macro_rules! abs_diff_unsigned {
+    ($x:expr, $y:expr, $d:expr) => {
+        if (if $x > $y {
+            $x - $y 
+        } else {
+            $y - $x
+        }) > $d {
+            panic!("AssertionError: not equal");
+        }
+    }
+}
+
+
 #[macro_export] 
 //TODO: place it in number asserter, without export
 macro_rules! abs_diff {
