@@ -42,24 +42,24 @@ impl<T> Asserter<T> where T : Copy + PartialOrd + std::ops::Sub  + Default + std
 
 }
 
-pub trait ApproximatelyEqualMarker {}
-struct IntegerApproximatelyEqual;
-struct FloatApproximatelyEqual;
+pub trait ApproxEqualMarkerTrait {}
+struct IntApproxEqual;
+struct FloatApproxEqual;
 
-impl ApproximatelyEqualMarker for IntegerApproximatelyEqual{}
-impl ApproximatelyEqualMarker for FloatApproximatelyEqual{}
+impl ApproxEqualMarkerTrait for IntApproxEqual{}
+impl ApproxEqualMarkerTrait for FloatApproxEqual{}
 
-trait ApproximatelyEqual<T, S:ApproximatelyEqualMarker  > {
+trait ApproximatelyEqual<T, S:ApproxEqualMarkerTrait  > {
     fn is_approx_equal_to(self, expected: T, delta: T);
 }
 
-impl<T> ApproximatelyEqual<T, IntegerApproximatelyEqual> for Asserter<T> where T : Signed + Integer + Zero + Neg + Bounded + Copy {
+impl<T> ApproximatelyEqual<T, IntApproxEqual> for Asserter<T> where T : Signed + Integer + Zero + Neg + Bounded + Copy {
     fn is_approx_equal_to(self, expected: T, delta: T) {
         abs_diff_eq!(self.value,expected,delta);
     }
 }
 
-impl<T> ApproximatelyEqual<T,FloatApproximatelyEqual> for Asserter<T> where T :Float + Zero + Neg + Copy + std::fmt::Display{
+impl<T> ApproximatelyEqual<T,FloatApproxEqual> for Asserter<T> where T :Float + Zero + Neg + Copy + std::fmt::Display{
     fn is_approx_equal_to(self, expected: T, delta: T) {
         let rounder = 10f64.pow(get_length_of_rounder(delta));
         
