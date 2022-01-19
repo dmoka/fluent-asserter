@@ -13,35 +13,6 @@ use std::{panic};
 use std::borrow::Borrow;
 use std::fmt::Debug;
 
-#[macro_export] //TODO: place it in number asserter, without export
-macro_rules! abs_diff_eq {
-    ($x:expr, $y:expr, $d:expr) => {
-        if (($x - $y).abs() > $d) { panic!("AssertionError: not equal"); }
-    }
-}
-
-#[macro_export] //TODO: place it in number asserter, without export
-macro_rules! abs_diff_unsigned {
-    ($x:expr, $y:expr, $d:expr) => {
-        if (if $x > $y {
-            $x - $y 
-        } else {
-            $y - $x
-        }) > $d {
-            panic!("AssertionError: not equal");
-        }
-    }
-}
-
-
-#[macro_export] 
-//TODO: place it in number asserter, without export
-macro_rules! abs_diff {
-    ($x:expr, $y:expr) => {
-        ($x - $y).abs()
-    }
-}
-
 pub struct Asserter<T> {
     value : T
 }
