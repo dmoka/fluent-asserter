@@ -62,28 +62,15 @@ impl<T> ApproximatelyEqual<T, IntegerApproximatelyEqual> for Asserter<T> where T
 impl<T> ApproximatelyEqual<T,FloatApproximatelyEqual> for Asserter<T> where T :Float + Zero + Neg + Copy + std::fmt::Display{
     fn is_approx_equal_to(self, expected: T, delta: T) {
         let diff = abs_diff!(self.value,expected);
-        
-        //use the length of the decimals after point in the format in a macro
-        
-        let delta_len = format!("{}",delta).len();
-        let len: f64 = delta_len.to_string().parse().unwrap();
-
-        /*let mut h = "Hello".to_string();
-        let w = "World";
-
-        let s : f64 = round!(diff,5.0);*/
-
-        let divider = 10f64.pow(len);
+                
+        let delta_len : f64 = delta.to_string().split(".").last().unwrap().len().to_string().parse().unwrap();
+        let divider = 10f64.pow(delta_len);
 
         let diff_f64 : f64 = format!("{}",diff).parse().unwrap();
         let diff_f64: f64 = (diff_f64 * divider).round() / divider;
         
         let delta_f64 : f64 = format!("{}",delta).parse().unwrap();
         let delta_f64: f64 = (delta_f64 * divider).round() / divider;
-
-
-        /*let diff_f64 : f64 = format!("{:.10}",diff).parse().unwrap();
-        let delta_f64 : f64 = format!("{:.10}",delta).parse().unwrap();*/
 
         if diff_f64 > delta_f64 {
             panic!("AssertionError: Not equal")
