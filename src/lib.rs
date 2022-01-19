@@ -8,6 +8,7 @@ mod panic_asserter_helper;
 mod string_asserter;
 mod panic_asserter;
 mod number_asserter;
+mod number_approx_asserter;
 
 use std::{panic};
 use std::borrow::Borrow;
