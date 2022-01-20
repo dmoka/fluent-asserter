@@ -1,7 +1,7 @@
 use super::*;
 use num::Unsigned;
 use num::traits::Pow;
-use num::{Integer, Signed, Float}; // 0.2.0
+use num::{Integer, Signed, Float};
 
 macro_rules! abs_diff_unsigned {
     ($x:expr, $y:expr, $d:expr) => {
@@ -10,14 +10,14 @@ macro_rules! abs_diff_unsigned {
         } else {
             $y - $x
         }) > $d {
-            panic!("AssertionError: not equal");
+            panic!("AssertionError: not equal within delta");
         }
     }
 }
 
 macro_rules! abs_diff_eq {
     ($x:expr, $y:expr, $d:expr) => {
-        if (($x - $y).abs() > $d) { panic!("AssertionError: not equal"); }
+        if (($x - $y).abs() > $d) { panic!("AssertionError: not equal within delta"); }
     }
 }
 
@@ -28,6 +28,7 @@ macro_rules! abs_diff {
 }
 
 pub trait ApproxEqualMarkerTrait {}
+
 struct UnsignedIntApproxEqual;
 struct SignedIntApproxEqual;
 struct FloatApproxEqual;
@@ -50,6 +51,7 @@ impl<T> ApproximatelyEqual<T, UnsignedIntApproxEqual> for Asserter<T> where T : 
 impl<T> ApproximatelyEqual<T, SignedIntApproxEqual> for Asserter<T> where T : Signed + Integer {
     fn is_approx_equal_to(self, expected: T, delta: T) {
         abs_diff_eq!(self.value,expected,delta);
+        //TODO: use macro so, passing type (f32,f64) so it can also work with f32
     }
 }
 
@@ -71,6 +73,7 @@ impl<T> ApproximatelyEqual<T,FloatApproxEqual> for Asserter<T> where T :Float + 
 
 //TODO: add abstraction for this, either in a new struct with new or some logic class
 fn get_length_of_rounder<T>(delta: T) -> f64 where T: ToString {
+    //TODO: Shall we handle error here?
     return delta.to_string()
         .split(".")
         .last()
