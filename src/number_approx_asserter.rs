@@ -54,6 +54,7 @@ impl<T> ApproximatelyEqual<T, SignedIntApproxEqual> for Asserter<T> where T : Si
     }
 }
 
+//TODO: is it fine for f32, or we should create separate for that?
 impl<T> ApproximatelyEqual<T,FloatApproxEqual> for Asserter<T> where T :Float + std::fmt::Display{
     fn is_approx_equal_to(self, expected: T, delta: T) {
         let rounder = 10f64.pow(get_length_of_rounder(delta));
@@ -117,6 +118,7 @@ mod test {
     
     #[test]
     fn test_is_equal_to_approximately_for_f64() {
+        assert_that!(3.14f64).is_approx_equal_to(3.16,0.0);
         assert_that!(3.14f64).is_approx_equal_to(3.16,0.02);
         assert_that!(3.14f64).is_approx_equal_to(3.14,0.00);
         assert_that!(3.14159f64).is_approx_equal_to(3.14157,0.00002);
@@ -126,6 +128,7 @@ mod test {
 
     #[test]
     fn test_is_equal_to_approximately_for_f32() {
+        assert_that!(3.14f32).is_approx_equal_to(3.16,0.0);
         assert_that!(3.14f32).is_approx_equal_to(3.16,0.02);
         assert_that!(3.14f32).is_approx_equal_to(3.14,0.00);
         assert_that!(3.14159f32).is_approx_equal_to(3.14157,0.00002);
