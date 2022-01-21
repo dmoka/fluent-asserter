@@ -35,7 +35,6 @@ impl WithMessage {
     }
 }
 
-
 impl<F, R> PanicAsserter<F, R>  where F: FnOnce() -> R + panic::UnwindSafe{
     pub fn new(f:  F) -> Self {
         PanicAsserter{

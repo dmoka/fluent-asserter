@@ -27,7 +27,6 @@ macro_rules! abs_diff {
     }
 }
 
-
 impl<T> ApproximatelyEqual<T, UnsignedIntApproxEqual> for Asserter<T> where T : Unsigned + Integer {
     fn is_approx_equal_to(self, expected: T, delta: T) {
         abs_diff_unsigned_eq!(self.value,expected,delta);

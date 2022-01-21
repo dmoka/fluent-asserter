@@ -27,7 +27,6 @@ macro_rules! assert_that_code {
     };
 }
 
-
 pub struct Asserter<T> {
     value : T
 }
@@ -93,11 +92,10 @@ pub trait ApproximatelyEqual<T, S:ApproxEqualMarkerTrait  > {
     fn is_approx_equal_to(self, expected: T, delta: T);
 }
 
-
 #[cfg(test)]
 mod test {
     use super::*;
-
+    
     #[test]
     fn sanity_check_for_assertions() {
         Assert::that_code(|| panic!("")).panics();

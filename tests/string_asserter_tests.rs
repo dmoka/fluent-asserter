@@ -91,8 +91,4 @@ mod test_string_asserter {
 
         assert_that_panics(|| assert_that!("bitcoin ethereum solana").contains_any(&["tezos", "litecoin", "luna"]));
     }
-
-
-    //TODO: add different assertion message? check asserteq
-
 }

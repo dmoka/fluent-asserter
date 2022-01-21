@@ -15,7 +15,6 @@ mod test_number_approx_asserter {
         assert_that!(3u32).is_approx_equal_to(4,1);
 
         assert_that_panics(||assert_that!(3u32).is_approx_equal_to(5,1));
-
     }
     
     #[test]
@@ -25,7 +24,6 @@ mod test_number_approx_asserter {
         assert_that!(3i32).is_approx_equal_to(4,1);
 
         assert_that_panics(||assert_that!(3i32).is_approx_equal_to(5,1));
-
     }
     
     #[test]
@@ -48,5 +46,4 @@ mod test_number_approx_asserter {
         assert_that_panics(||assert_that!(3.14159f32).is_approx_equal_to(3.14157,0.00001));
     }
 
-    
 }
