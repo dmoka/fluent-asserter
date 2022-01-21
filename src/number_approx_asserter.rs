@@ -27,20 +27,6 @@ macro_rules! abs_diff {
     }
 }
 
-pub trait ApproxEqualMarkerTrait {}
-
-struct UnsignedIntApproxEqual;
-struct SignedIntApproxEqual;
-struct FloatApproxEqual;
-
-impl ApproxEqualMarkerTrait for SignedIntApproxEqual{}
-impl ApproxEqualMarkerTrait for FloatApproxEqual{}
-impl ApproxEqualMarkerTrait for UnsignedIntApproxEqual{}
-
-trait ApproximatelyEqual<T, S:ApproxEqualMarkerTrait  > {
-    fn is_approx_equal_to(self, expected: T, delta: T);
-}
-
 
 impl<T> ApproximatelyEqual<T, UnsignedIntApproxEqual> for Asserter<T> where T : Unsigned + Integer {
     fn is_approx_equal_to(self, expected: T, delta: T) {
@@ -91,50 +77,3 @@ fn round<T>(diff: T, rounder: f64) -> f64 where T: std::fmt::Display {
     number
 }
 
-#[cfg(test)]
-mod test {
-    use super::*;
-    use crate::panic_asserter_helper::assert_that_panics;
-
-    #[test]
-    fn test_is_equal_to_approximately_for_unsigned() {
-        assert_that!(3u32).is_approx_equal_to(2,1);
-        assert_that!(3u32).is_approx_equal_to(3,1);
-        assert_that!(3u32).is_approx_equal_to(4,1);
-
-        assert_that_panics(||assert_that!(3u32).is_approx_equal_to(5,1));
-
-    }
-    
-    #[test]
-    fn test_is_equal_to_approximately_for_signed() {
-        assert_that!(3i32).is_approx_equal_to(2,1);
-        assert_that!(3i32).is_approx_equal_to(3,1);
-        assert_that!(3i32).is_approx_equal_to(4,1);
-
-        assert_that_panics(||assert_that!(3i32).is_approx_equal_to(5,1));
-
-    }
-    
-    #[test]
-    fn test_is_equal_to_approximately_for_f64() {
-        assert_that!(3.14f64).is_approx_equal_to(3.16,0.0);
-        assert_that!(3.14f64).is_approx_equal_to(3.16,0.02);
-        assert_that!(3.14f64).is_approx_equal_to(3.14,0.00);
-        assert_that!(3.14159f64).is_approx_equal_to(3.14157,0.00002);
-
-        assert_that_panics(||assert_that!(3.14159f64).is_approx_equal_to(3.14157,0.00001));
-    }
-
-    #[test]
-    fn test_is_equal_to_approximately_for_f32() {
-        assert_that!(3.14f32).is_approx_equal_to(3.16,0.0);
-        assert_that!(3.14f32).is_approx_equal_to(3.16,0.02);
-        assert_that!(3.14f32).is_approx_equal_to(3.14,0.00);
-        assert_that!(3.14159f32).is_approx_equal_to(3.14157,0.00002);
-
-        assert_that_panics(||assert_that!(3.14159f32).is_approx_equal_to(3.14157,0.00001));
-    }
-
-    
-}

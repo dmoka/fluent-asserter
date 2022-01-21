@@ -14,6 +14,21 @@ use std::{panic};
 use std::borrow::Borrow;
 use std::fmt::Debug;
 
+#[macro_export]
+macro_rules! assert_that {
+    ($value:expr) => {
+        Asserter::new($value)
+    };
+}
+
+#[macro_export]
+macro_rules! assert_that_code {
+    ($value:expr) => {
+        PanicAsserter::new($value) //TODO: only restrict it to pass function, and nothing else
+    };
+}
+
+
 pub struct Asserter<T> {
     value : T
 }
@@ -64,12 +79,19 @@ impl<TFunction, TCatchPanicResult>  PanicAssert<TFunction, TCatchPanicResult> fo
     }
 } 
 
+//TODO: can we put these to approx class? If we put there, we can not use is_approx_equal_to method in test project
+pub trait ApproxEqualMarkerTrait {}
 
-#[macro_export]
-macro_rules! assert_that {
-    ($value:expr) => {
-        Asserter::new($value)
-    };
+pub struct UnsignedIntApproxEqual;
+pub struct SignedIntApproxEqual;
+pub struct FloatApproxEqual;
+
+impl ApproxEqualMarkerTrait for SignedIntApproxEqual{}
+impl ApproxEqualMarkerTrait for FloatApproxEqual{}
+impl ApproxEqualMarkerTrait for UnsignedIntApproxEqual{}
+
+pub trait ApproximatelyEqual<T, S:ApproxEqualMarkerTrait  > {
+    fn is_approx_equal_to(self, expected: T, delta: T);
 }
 
 
