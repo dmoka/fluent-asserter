@@ -4,13 +4,6 @@ use std::{
     sync::{Arc, Mutex},
 };
 
-#[macro_export]
-macro_rules! assert_that_code {
-    ($value:expr) => {
-        PanicAsserter::new($value) //TODO: only restrict it to pass function, and nothing else
-    };
-}
-
 fn register_panic_hook_to_capture_output(global_buffer: &Arc<Mutex<String>>) {
     panic::set_hook({
         let global_buffer = global_buffer.clone();
