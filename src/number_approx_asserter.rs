@@ -51,7 +51,6 @@ impl<T> ApproximatelyEqual<T, UnsignedIntApproxEqual> for Asserter<T> where T : 
 impl<T> ApproximatelyEqual<T, SignedIntApproxEqual> for Asserter<T> where T : Signed + Integer {
     fn is_approx_equal_to(self, expected: T, delta: T) {
         abs_diff_eq!(self.value,expected,delta);
-        //TODO: use macro so, passing type (f32,f64) so it can also work with f32
     }
 }
 
@@ -117,11 +116,22 @@ mod test {
     }
     
     #[test]
-    fn test_is_equal_to_approximately_for_floats() {
-        assert_that!(3.14).is_approx_equal_to(3.16,0.02);
-        assert_that!(3.14).is_approx_equal_to(3.14,0.00);
-        assert_that!(3.14159).is_approx_equal_to(3.14157,0.00002);
+    fn test_is_equal_to_approximately_for_f64() {
+        assert_that!(3.14f64).is_approx_equal_to(3.16,0.02);
+        assert_that!(3.14f64).is_approx_equal_to(3.14,0.00);
+        assert_that!(3.14159f64).is_approx_equal_to(3.14157,0.00002);
 
-        assert_that_panics(||assert_that!(3.14159).is_approx_equal_to(3.14157,0.00001));
+        assert_that_panics(||assert_that!(3.14159f64).is_approx_equal_to(3.14157,0.00001));
     }
+
+    #[test]
+    fn test_is_equal_to_approximately_for_f32() {
+        assert_that!(3.14f32).is_approx_equal_to(3.16,0.02);
+        assert_that!(3.14f32).is_approx_equal_to(3.14,0.00);
+        assert_that!(3.14159f32).is_approx_equal_to(3.14157,0.00002);
+
+        assert_that_panics(||assert_that!(3.14159f32).is_approx_equal_to(3.14157,0.00001));
+    }
+
+    
 }
