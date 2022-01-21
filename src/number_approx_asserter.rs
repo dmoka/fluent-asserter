@@ -3,7 +3,7 @@ use num::Unsigned;
 use num::traits::Pow;
 use num::{Integer, Signed, Float};
 
-macro_rules! abs_diff_unsigned {
+macro_rules! abs_diff_unsigned_eq {
     ($x:expr, $y:expr, $d:expr) => {
         if (if $x > $y {
             $x - $y 
@@ -15,7 +15,7 @@ macro_rules! abs_diff_unsigned {
     }
 }
 
-macro_rules! abs_diff_eq {
+macro_rules! abs_diff_signed_eq {
     ($x:expr, $y:expr, $d:expr) => {
         if (($x - $y).abs() > $d) { panic!("AssertionError: not equal within delta"); }
     }
@@ -44,13 +44,13 @@ trait ApproximatelyEqual<T, S:ApproxEqualMarkerTrait  > {
 
 impl<T> ApproximatelyEqual<T, UnsignedIntApproxEqual> for Asserter<T> where T : Unsigned + Integer {
     fn is_approx_equal_to(self, expected: T, delta: T) {
-        abs_diff_unsigned!(self.value,expected,delta);
+        abs_diff_unsigned_eq!(self.value,expected,delta);
     }
 }
 
 impl<T> ApproximatelyEqual<T, SignedIntApproxEqual> for Asserter<T> where T : Signed + Integer {
     fn is_approx_equal_to(self, expected: T, delta: T) {
-        abs_diff_eq!(self.value,expected,delta);
+        abs_diff_signed_eq!(self.value,expected,delta);
     }
 }
 
