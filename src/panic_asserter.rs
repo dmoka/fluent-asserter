@@ -22,7 +22,7 @@ pub struct WithMessage {
 }
 
 impl WithMessage {
-    pub fn new(self, actual_panic_message: String) -> WithMessage {
+    pub fn new(actual_panic_message: String) -> WithMessage {
         WithMessage {
             actual_panic_message
         }  

@@ -60,7 +60,7 @@ impl<T> ApproximatelyEqual<T,FloatApproxEqual> for Asserter<T> where T :Float + 
 fn get_length_of_rounder<T>(delta: T) -> f64 where T: ToString {
     //TODO: Shall we handle error here?
     return delta.to_string()
-        .split(".")
+        .split('.')
         .last()
         .unwrap()
         .len()

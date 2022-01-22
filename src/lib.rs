@@ -88,6 +88,7 @@ impl ApproxEqualMarkerTrait for SignedIntApproxEqual{}
 impl ApproxEqualMarkerTrait for FloatApproxEqual{}
 impl ApproxEqualMarkerTrait for UnsignedIntApproxEqual{}
 
+#[allow(clippy::wrong_self_convention)] 
 pub trait ApproximatelyEqual<T, S:ApproxEqualMarkerTrait  > {
     fn is_approx_equal_to(self, expected: T, delta: T);
 }
