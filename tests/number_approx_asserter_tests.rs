@@ -28,22 +28,22 @@ mod test_number_approx_asserter {
     
     #[test]
     fn test_is_equal_to_approximately_for_f64() {
-        assert_that!(3.14f64).is_approx_equal_to(3.16,0.0);
-        assert_that!(3.14f64).is_approx_equal_to(3.16,0.02);
-        assert_that!(3.14f64).is_approx_equal_to(3.14,0.00);
-        assert_that!(3.14159f64).is_approx_equal_to(3.14157,0.00002);
+        assert_that!(6.14f64).is_approx_equal_to(6.16,0.0);
+        assert_that!(6.14f64).is_approx_equal_to(6.16,0.02);
+        assert_that!(6.14f64).is_approx_equal_to(6.14,0.00);
+        assert_that!(6.14159f64).is_approx_equal_to(6.14157,0.00002);
 
-        assert_that_panics(||assert_that!(3.14159f64).is_approx_equal_to(3.14157,0.00001));
+        assert_that_panics(||assert_that!(6.14159f64).is_approx_equal_to(6.14157,0.00001));
     }
 
     #[test]
     fn test_is_equal_to_approximately_for_f32() {
-        assert_that!(3.14f32).is_approx_equal_to(3.16,0.0);
-        assert_that!(3.14f32).is_approx_equal_to(3.16,0.02);
-        assert_that!(3.14f32).is_approx_equal_to(3.14,0.00);
-        assert_that!(3.14159f32).is_approx_equal_to(3.14157,0.00002);
+        assert_that!(6.14f32).is_approx_equal_to(6.16,0.0);
+        assert_that!(6.14f32).is_approx_equal_to(6.16,0.02);
+        assert_that!(6.14f32).is_approx_equal_to(6.14,0.00);
+        assert_that!(6.14159f32).is_approx_equal_to(6.14157,0.00002);
 
-        assert_that_panics(||assert_that!(3.14159f32).is_approx_equal_to(3.14157,0.00001));
+        assert_that_panics(||assert_that!(6.14159f32).is_approx_equal_to(6.14157,0.00001));
     }
 
 }
