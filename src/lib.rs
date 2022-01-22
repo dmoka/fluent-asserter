@@ -93,14 +93,22 @@ pub trait ApproximatelyEqual<T, S:ApproxEqualMarkerTrait  > {
     fn is_approx_equal_to(self, expected: T, delta: T);
 }
 
+//TODO: S - add this to tests folder
 #[cfg(test)]
 mod test {
     use super::*;
     
     #[test]
-    fn sanity_check_for_assertions() {
+    fn test_basic_syntax() {
         Assert::that_code(|| panic!("")).panics();
 
         Assert::that("value").is_not_empty();
+    }
+
+    #[test]
+    fn test_macro_syntax() {
+        assert_that_code!(|| panic!("")).panics();
+
+        assert_that!("value").is_not_empty();
     }
 }
