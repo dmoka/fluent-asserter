@@ -8,12 +8,12 @@ mod string_asserter;
 mod panic_asserter;
 mod number_asserter;
 mod number_approx_asserter;
-mod assertion_message;
+mod assertion_failure_message;
 
 use std::{panic};
 use std::borrow::Borrow;
 use std::fmt::Debug;
-use assertion_message::*;
+use assertion_failure_message::*;
 
 #[macro_export]
 macro_rules! assert_that {
