@@ -13,6 +13,7 @@ mod assertion_message;
 use std::{panic};
 use std::borrow::Borrow;
 use std::fmt::Debug;
+use assertion_message::*;
 
 #[macro_export]
 macro_rules! assert_that {
@@ -36,7 +37,7 @@ pub struct PanicAsserter <F, R> where F: FnOnce() -> R + panic::UnwindSafe {
     value :  F
 }
 
-impl<T> Asserter<T> where T: Debug + PartialEq {
+impl<T> Asserter<T> where T: Debug + PartialEq + ToString {
     pub fn new(value: T) -> Asserter<T> {
         Asserter {
             value
@@ -45,7 +46,11 @@ impl<T> Asserter<T> where T: Debug + PartialEq {
 
     pub fn is_equal_to(&self, expected_value: T) {
         let expected = expected_value.borrow();
-        assert_eq!(&self.value, expected);
+        if &self.value != expected {
+            let error_message = AssertionFailureMessage::new(self.value.to_string(), expected.to_string());
+            
+            panic!("{}",error_message.panic_message())
+        }
     }
 
     pub fn is_not_equal_to(&self, expected_value: T) {

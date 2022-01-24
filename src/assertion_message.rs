@@ -1,7 +1,7 @@
 use super::*;
 
 
-struct AssertionFailureMessage {
+pub struct AssertionFailureMessage {
     actual: String,
     expected: String
 }
@@ -15,9 +15,10 @@ impl AssertionFailureMessage {
     }
 
     pub fn panic_message(&self) -> String {
-        format!("AssertionFailure:\nThe expected value is different from the actual one\nExpected: {}\nActual: {}", self.expected, self.actual)
+        format!("AssertionFailure:\nThe expected value is different from the actual one\nExpected: {}\nActual: {}\n", self.expected, self.actual)
     }
 }
+//TODO: add color
 
 
 //TODO: S - add this to tests folder
@@ -33,7 +34,7 @@ mod assertion {
 
         let panic_message: String = failure.panic_message();
 
-        assert_that!(panic_message).is_equal_to(String::from("AssertionFailure:\nThe expected value is different from the actual one\nExpected: test2\nActual: test"))
+        assert_that!(panic_message).is_equal_to(String::from("AssertionFailure:\nThe expected value is different from the actual one\nExpected: test2\nActual: test\n"))
     }
 
 }
