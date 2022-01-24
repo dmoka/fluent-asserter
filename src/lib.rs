@@ -8,6 +8,7 @@ mod string_asserter;
 mod panic_asserter;
 mod number_asserter;
 mod number_approx_asserter;
+mod assertion_message;
 
 use std::{panic};
 use std::borrow::Borrow;
@@ -111,4 +112,5 @@ mod test {
 
         assert_that!("value").is_not_empty();
     }
+
 }
