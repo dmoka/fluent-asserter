@@ -4,9 +4,8 @@ use fluent_asserter::*;
 mod common;
 
 mod test_string_asserter {
-    use common::assert_that_panics;
-
     use super::*;
+    use common::assert_that_panics;
 
     #[test]
     fn test_is_equal_to_for_string() {
@@ -90,5 +89,17 @@ mod test_string_asserter {
         assert_that!("bitcoin ethereum solana").contains_any(&["solana"]);
 
         assert_that_panics(|| assert_that!("bitcoin ethereum solana").contains_any(&["tezos", "litecoin", "luna"]));
+    }
+
+    #[ignore = "ignored as there is a bug with the panic catching logic. Waiting for response in the rust forum"]
+    #[test]
+    fn test_is_equal_to_panics_with_message() {
+        let code = ||assert_that!("test1").is_equal_to("test2");
+
+        assert_that_code!(code)
+            .panics()
+            .with_message(
+                "AssertionFailure:\nThe expected value is different from the actual one\nExpected: test2\nActual: test1\n");
+
     }
 }
