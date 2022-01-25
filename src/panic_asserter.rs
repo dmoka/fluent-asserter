@@ -10,7 +10,13 @@ fn register_panic_hook_to_capture_output(global_buffer: &Arc<Mutex<String>>) {
         Box::new(move |info| {
             let mut global_buffer = global_buffer.lock().unwrap();
 
+            //Capture for string literal like panic("some string")
             if let Some(s) = info.payload().downcast_ref::<&str>() {
+                global_buffer.push_str(s);
+            }
+
+            //Check for dynamically created String like panic("some {}", "string")
+            if let Some(s) = info.payload().downcast_ref::<String>() {
                 global_buffer.push_str(s);
             }
         })

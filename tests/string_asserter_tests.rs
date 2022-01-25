@@ -91,7 +91,6 @@ mod test_string_asserter {
         assert_that_panics(|| assert_that!("bitcoin ethereum solana").contains_any(&["tezos", "litecoin", "luna"]));
     }
 
-    #[ignore = "ignored as there is a bug with the panic catching logic. Waiting for response in the rust forum"]
     #[test]
     fn test_is_equal_to_panics_with_message() {
         let code = ||assert_that!("test1").is_equal_to("test2");
