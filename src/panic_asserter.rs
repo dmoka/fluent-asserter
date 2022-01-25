@@ -1,27 +1,6 @@
 use std::panic;
 use super::*;
-use std::{
-    sync::{Arc, Mutex},
-};
-
-fn register_panic_hook_to_capture_output(global_buffer: &Arc<Mutex<String>>) {
-    panic::set_hook({
-        let global_buffer = global_buffer.clone();
-        Box::new(move |info| {
-            let mut global_buffer = global_buffer.lock().unwrap();
-
-            //Capture for string literal like panic("some string")
-            if let Some(s) = info.payload().downcast_ref::<&str>() {
-                global_buffer.push_str(s);
-            }
-
-            //Check for dynamically created String like panic("some {}", "string")
-            if let Some(s) = info.payload().downcast_ref::<String>() {
-                global_buffer.push_str(s);
-            }
-        })
-    });
-}
+use std::sync::{Arc, Mutex};
 
 pub struct WithMessage {
     actual_panic_message: String,
@@ -87,4 +66,24 @@ impl<F, R> PanicAsserter<F, R>  where F: FnOnce() -> R + panic::UnwindSafe{
         panic::set_hook(prev_hook);
         result
     }
+}
+
+
+fn register_panic_hook_to_capture_output(global_buffer: &Arc<Mutex<String>>) {
+    panic::set_hook({
+        let global_buffer = global_buffer.clone();
+        Box::new(move |info| {
+            let mut global_buffer = global_buffer.lock().unwrap();
+
+            //Capture for string literal like panic("some string")
+            if let Some(s) = info.payload().downcast_ref::<&str>() {
+                global_buffer.push_str(s);
+            }
+
+            //Check for dynamically created String like panic("some {}", "string")
+            if let Some(s) = info.payload().downcast_ref::<String>() {
+                global_buffer.push_str(s);
+            }
+        })
+    });
 }
