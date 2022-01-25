@@ -3,14 +3,14 @@ use super::*;
 impl Asserter<bool> {
     pub fn is_true(&self) 
     {
-        if self.value != true {
+        if !self.value {
             panic!("AssertionFailure");//TODO: use proper error message
         }
     }
 
     pub fn is_false(&self) 
     {
-        if self.value != false {
+        if self.value {
             panic!("AssertionFailure");//TODO: use proper error message
         }
     }
