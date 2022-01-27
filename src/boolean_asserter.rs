@@ -11,7 +11,7 @@ impl Asserter<bool> {
     pub fn is_false(&self) 
     {
         if self.value {
-            panic!("Expected boolean to be false, but was true");//TODO: use proper error message
+            panic!("Expected {} to be false, but was true", self.name);//TODO: use proper error message
         }
     }
 }
@@ -34,6 +34,11 @@ mod test {
         assert_that_code!(||assert_that!(false_var).is_true())
             .panics()
             .with_message("Expected false_var to be true, but was false");
+
+        let true_var = true;
+        assert_that_code!(||assert_that!(true_var).is_false())
+            .panics()
+            .with_message("Expected true_var to be false, but was true");
     }
 
     #[test]
@@ -41,8 +46,7 @@ mod test {
         assert_that!(false).is_false();
 
         assert_that_code!(||assert_that!(true).is_false())
-            .panics()
-            .with_message("Expected boolean to be false, but was true");
+            .panics();
     }
 
     
