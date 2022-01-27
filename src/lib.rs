@@ -19,7 +19,7 @@ use assertion_failure_message::*;
 #[macro_export]
 macro_rules! assert_that {
     ($value:expr) => {
-        Asserter::new($value)
+        Asserter::new($value, stringify!($value).to_string())
     };
 }
 
@@ -31,7 +31,8 @@ macro_rules! assert_that_code {
 }
 
 pub struct Asserter<T> {
-    value : T
+    value : T,
+    name: String
 }
 
 pub struct PanicAsserter <F, R> where F: FnOnce() -> R + panic::UnwindSafe {
@@ -39,9 +40,10 @@ pub struct PanicAsserter <F, R> where F: FnOnce() -> R + panic::UnwindSafe {
 }
 
 impl<T> Asserter<T> where T: Debug + PartialEq + ToString {
-    pub fn new(value: T) -> Asserter<T> {
+    pub fn new(value: T, name: String) -> Asserter<T> {
         Asserter {
-            value
+            value,
+            name
         }
     }
 
@@ -60,6 +62,7 @@ impl<T> Asserter<T> where T: Debug + PartialEq + ToString {
     }
 }
 
+//TODO: if we can not pass the name of the variable, then remove it 
 struct Assert;
 
 trait GenericAssert<TValue> {
@@ -73,7 +76,8 @@ trait PanicAssert<TFunction, TCatchPanicResult> {
 impl<TValue> GenericAssert<TValue> for Assert {
     fn that(value: TValue) -> Asserter<TValue> {
         Asserter {
-            value
+            value,
+            name: String::from("TODO")
         }
     }
 } 
