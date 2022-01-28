@@ -4,6 +4,8 @@
 
 //TODO: add theory via annotation
 
+//TODO: add our answer here: https://stackoverflow.com/questions/26469715/how-do-i-write-a-rust-unit-test-that-ensures-that-a-panic-has-occurred
+//and also to other place
 mod string_asserter;
 mod panic_asserter;
 mod number_asserter;
