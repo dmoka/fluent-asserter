@@ -1,6 +1,9 @@
 use std::panic;
 use super::*;
 use std::sync::{Arc, Mutex};
+/*
+Idea how to solve: One option could be to make a panic hook that delegates to some thread-local state. Have all of your tests install that hook and then setup the thread local hook to what they want.
+*/
 
 pub struct WithMessage {
     actual_panic_message: String,
