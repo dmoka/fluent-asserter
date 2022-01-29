@@ -98,7 +98,17 @@ mod test_string_asserter {
         assert_that_code!(code)
             .panics()
             .with_message(
-                "AssertionFailure:\nThe expected value is different from the actual one\nExpected: test2\nActual: test1\n");
+                "Expected \"test1\" to be 'test2', but was 'test1'");
+    }
 
+    #[test]
+    fn test_is_equal_to_panics_with_message_containing_variable_name() {
+        let string_var = "test1";
+        let code = ||assert_that!(string_var).is_equal_to("test2");
+
+        assert_that_code!(code)
+            .panics()
+            .with_message(
+                "Expected string_var to be 'test2', but was 'test1'");
     }
 }

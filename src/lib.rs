@@ -58,9 +58,8 @@ impl<T> Asserter<T> where T: Debug + PartialEq + ToString {
     pub fn is_equal_to(&self, expected_value: T) {
         let expected = expected_value.borrow();
         if &self.value != expected {
-            let error_message = AssertionFailureMessage::new(self.value.to_string(), expected.to_string());
-            
-            panic!("{}",error_message.panic_message())
+            let error_msg = format!("Expected {} to be '{}', but was '{}'",self.name,expected_value.to_string(),self.value.to_string());
+            panic!("{}",error_msg)
         }
     }
 
