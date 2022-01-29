@@ -92,7 +92,7 @@ mod test_string_asserter {
     }
 
     #[test]
-    fn error_message_contains_inline_value_when_fails_with_panic() {
+    fn test_that_error_message_contains_variable_name() {
         let code = ||assert_that!("test1").is_equal_to("test2");
 
         assert_that_code!(code)
@@ -102,7 +102,7 @@ mod test_string_asserter {
     }
 
     #[test]
-    fn error_message_contains_variable_name_value_when_fails_with_panic() {
+    fn test_that_error_message_contains_inline_value() {
         let string_var = "test1";
         let code = ||assert_that!(string_var).is_equal_to("test2");
 

@@ -60,4 +60,25 @@ mod test_number_asserter {
         assert_that_panics(||assert_that!(2).is_not_in_range(1,10));
         assert_that_panics(||assert_that!(10).is_not_in_range(1,10));
     }
+
+    #[test]
+    fn test_that_error_message_contains_variable_name() {
+        let variable_name = 1;
+
+        assert_that_code!(||assert_that!(variable_name).is_equal_to(2))
+            .panics()
+            .with_message("Expected variable_name to be '2', but was '1'")
+    }
+
+    #[test]
+    fn test_that_error_message_contains_inline_value() {
+        assert_that_code!(||assert_that!(1).is_equal_to(2))
+            .panics()
+            .with_message("Expected 1 to be '2', but was '1'");
+
+        assert_that_code!(||assert_that!(1u32).is_equal_to(2u32))
+            .panics()
+            .with_message("Expected 1u32 to be '2', but was '1'")
+    }
+    
 }
