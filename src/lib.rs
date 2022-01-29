@@ -17,6 +17,12 @@ use std::{panic};
 use std::borrow::Borrow;
 use std::fmt::Debug;
 use assertion_failure_message::*;
+use lazy_static::lazy_static;
+use std::sync::Mutex;
+
+lazy_static! {
+    static ref LOCK_FOR_PANIC_ASSERTER: std::sync::Mutex<()> = Mutex::new(());
+}
 
 #[macro_export]
 macro_rules! assert_that {

@@ -2,6 +2,7 @@ use std::panic;
 use super::*;
 use std::sync::{Arc, Mutex};
 /*
+TODO: this is non-deterministic and results in failing test due set_hook set the panic handling globally!!!
 Idea how to solve: One option could be to make a panic hook that delegates to some thread-local state. Have all of your tests install that hook and then setup the thread local hook to what they want.
 */
 
@@ -31,6 +32,8 @@ impl<F, R> PanicAsserter<F, R>  where F: FnOnce() -> R + panic::UnwindSafe{
     }
 
     pub fn panics(self) -> WithMessage {
+        let _guard = LOCK_FOR_PANIC_ASSERTER.lock().unwrap(); //even with this, it does not work
+
         let global_buffer = Arc::new(Mutex::new(String::new()));
         let old_hook = panic::take_hook();
     
