@@ -69,32 +69,6 @@ impl<T> Asserter<T> where T: Debug + PartialEq + ToString {
     }
 }
 
-//TODO: if we can not pass the name of the variable, then remove it 
-struct Assert;
-
-trait GenericAssert<TValue> {
-    fn that(value: TValue) -> Asserter<TValue>;
-}
-
-trait PanicAssert<TFunction, TCatchPanicResult> {
-    fn that_code(f: TFunction) -> PanicAsserter<TFunction, TCatchPanicResult> where TFunction: FnOnce() -> TCatchPanicResult + panic::UnwindSafe;
-}
-
-impl<TValue> GenericAssert<TValue> for Assert {
-    fn that(value: TValue) -> Asserter<TValue> {
-        Asserter {
-            value,
-            name: String::from("TODO")
-        }
-    }
-} 
-
-impl<TFunction, TCatchPanicResult>  PanicAssert<TFunction, TCatchPanicResult> for Assert {
-    fn that_code(f: TFunction) -> PanicAsserter<TFunction, TCatchPanicResult> where TFunction: FnOnce() -> TCatchPanicResult + panic::UnwindSafe {
-        PanicAsserter::new(f)
-    }
-} 
-
 //TODO: can we put these to approx class? If we put there, we can not use is_approx_equal_to method in test project
 pub trait ApproxEqualMarkerTrait {}
 
@@ -115,13 +89,6 @@ pub trait ApproximatelyEqual<T, S:ApproxEqualMarkerTrait  > {
 #[cfg(test)]
 mod test {
     use super::*;
-    
-    #[test]
-    fn test_basic_syntax() {
-        Assert::that_code(|| panic!("")).panics();
-
-        Assert::that("value").is_not_empty();
-    }
 
     #[test]
     fn test_macro_syntax() {
