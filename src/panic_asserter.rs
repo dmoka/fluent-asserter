@@ -32,8 +32,7 @@ impl<F, R> PanicAsserter<F, R>  where F: FnOnce() -> R + panic::UnwindSafe{
     }
 
     pub fn panics(self) -> WithMessage {
-        let _guard = LOCK_FOR_PANIC_ASSERTER.lock().unwrap(); //even with this, it does not work
-
+        let _guard = LOCK_FOR_PANIC_ASSERTER.lock(); //even with this, it does not work
         let global_buffer = Arc::new(Mutex::new(String::new()));
         let old_hook = panic::take_hook();
     
@@ -52,7 +51,7 @@ impl<F, R> PanicAsserter<F, R>  where F: FnOnce() -> R + panic::UnwindSafe{
                 panic_message = global_buffer.lock().unwrap();
             }
         }
-            
+        
         WithMessage {
             actual_panic_message: panic_message.to_string()
         }
