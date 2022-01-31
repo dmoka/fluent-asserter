@@ -17,9 +17,9 @@ impl WithMessage {
         }  
     }
     
-    pub fn with_message(self, expected_panic_message: &str) {
+    pub fn with_message(self, expected_panic_message: &str) {        
         if self.actual_panic_message != expected_panic_message {
-            panic!("\nAssertionError: The expected panic message is different from the actual one.\n Expected: {} \n Actual: {}",self.actual_panic_message, expected_panic_message)
+            panic!("Expected a panic message '{}', but found '{}'",self.actual_panic_message, expected_panic_message)
         }
     }
 }
