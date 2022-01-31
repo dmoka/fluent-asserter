@@ -1,8 +1,6 @@
 extern crate fluent_asserter;
 use fluent_asserter::*;
 
-mod common;
-
 #[cfg(test)]
 mod test_number_approx_asserter {
     use super::*;
