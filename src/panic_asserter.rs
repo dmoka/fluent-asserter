@@ -60,9 +60,10 @@ impl<F, R> PanicAsserter<F, R>  where F: FnOnce() -> R + panic::UnwindSafe{
     
     pub fn does_not_panic(self) {
         let result = self.catch_unwind_silent();
-    
-        //TODO: add better panic error message
-        assert!(result.is_ok())
+        
+        if result.is_err() {
+            panic!("Expected code to panic, but it does not panic.");
+        }
     }
 
     fn catch_unwind_silent(self) -> std::thread::Result<R> {

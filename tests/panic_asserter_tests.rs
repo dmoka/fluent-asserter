@@ -20,6 +20,9 @@ mod test {
         assert_that_code!(|| println!("gm")).does_not_panic();
 
         assert_that_code!(|| println!("WAGMI")).does_not_panic();
+
+        let failing_assertion = ||assert_that_code!(|| panic!("WAGMI")).does_not_panic();
+        assert_that_code!(failing_assertion).panics().with_message("Expected code to panic, but it does not panic.")
     }
 
     #[test]
@@ -31,6 +34,6 @@ mod test {
         assert_that_panics(||assert_that_code!(|| panic!("specific panic message"))
                                     .panics()
                                     .with_message("another expected panic message"));
-
     }
+
 }
