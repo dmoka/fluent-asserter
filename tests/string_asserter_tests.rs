@@ -5,15 +5,14 @@ mod common;
 
 mod test_string_asserter {
     use super::*;
-    use common::assert_that_panics;
 
     #[test]
     fn test_is_equal_to_for_string() {
         assert_that!(&String::from("test string")).is_equal_to(&String::from("test string"));
         assert_that!(&String::from("bitcoin")).is_equal_to(&String::from("bitcoin"));
 
-        assert_that_panics(|| assert_that!(&String::from("test string")).is_equal_to(&String::from("test")));
-        assert_that_panics(|| assert_that!(&String::from("bitcoin")).is_equal_to(&String::from("ethereum")));
+        assert_that_code!(|| assert_that!(&String::from("test string")).is_equal_to(&String::from("test"))).panics();
+        assert_that_code!(|| assert_that!(&String::from("bitcoin")).is_equal_to(&String::from("ethereum"))).panics();
     }
 
 
@@ -22,8 +21,8 @@ mod test_string_asserter {
         assert_that!("test string").is_equal_to("test string");
         assert_that!("bitcoin").is_equal_to("bitcoin");
         
-        assert_that_panics(|| assert_that!("test string").is_equal_to("string"));
-        assert_that_panics(|| assert_that!("bitcoin").is_equal_to("ethereum"));
+        assert_that_code!(|| assert_that!("test string").is_equal_to("string")).panics();
+        assert_that_code!(|| assert_that!("bitcoin").is_equal_to("ethereum")).panics();
     }
 
     #[test]
@@ -31,8 +30,8 @@ mod test_string_asserter {
         assert_that!(&String::from("test string")).contains("st");
         assert_that!(&String::from("bitcoin")).contains("co");
 
-        assert_that_panics(|| assert_that!(&String::from("test string")).contains("asd"));
-        assert_that_panics(|| assert_that!(&String::from("bitcoin")).contains("eth"));
+        assert_that_code!(|| assert_that!(&String::from("test string")).contains("asd")).panics();
+        assert_that_code!(|| assert_that!(&String::from("bitcoin")).contains("eth")).panics();
     }
 
     #[test]
@@ -40,8 +39,8 @@ mod test_string_asserter {
         assert_that!(&String::from("test string")).starts_with("te");
         assert_that!(&String::from("bitcoin")).starts_with("bitcoin");
 
-        assert_that_panics(|| assert_that!(&String::from("test string")).contains("asd"));
-        assert_that_panics(|| assert_that!(&String::from("bitcoin")).contains("eth"));
+        assert_that_code!(|| assert_that!(&String::from("test string")).contains("asd")).panics();
+        assert_that_code!(|| assert_that!(&String::from("bitcoin")).contains("eth")).panics();
     }
 
     #[test]
@@ -49,8 +48,8 @@ mod test_string_asserter {
         assert_that!(&String::from("test string")).ends_with("ng");
         assert_that!(&String::from("bitcoin")).ends_with("coin");
 
-        assert_that_panics(|| assert_that!(&String::from("test string")).ends_with("asd"));
-        assert_that_panics(|| assert_that!(&String::from("bitcoin")).ends_with("eth"));
+        assert_that_code!(|| assert_that!(&String::from("test string")).ends_with("asd")).panics();
+        assert_that_code!(|| assert_that!(&String::from("bitcoin")).ends_with("eth")).panics();
     }
 
     #[test]
@@ -58,7 +57,7 @@ mod test_string_asserter {
         assert_that!(&String::from("")).is_empty();
         assert_that!("").is_empty();
 
-        assert_that_panics(|| assert_that!(&String::from("test string")).is_empty());
+        assert_that_code!(|| assert_that!(&String::from("test string")).is_empty()).panics();
     }
 
     #[test]
@@ -66,7 +65,7 @@ mod test_string_asserter {
         assert_that!(&String::from("bitcoin")).has_length(7);
         assert_that!("ethereum").has_length(8);
 
-        assert_that_panics(|| assert_that!(&String::from("test string")).has_length(1));
+        assert_that_code!(|| assert_that!(&String::from("test string")).has_length(1)).panics();
     }
 
     #[test]
@@ -74,21 +73,21 @@ mod test_string_asserter {
         assert_that!(&String::from("test string")).is_not_empty();
         assert_that!("bitcoin").is_not_empty();
 
-        assert_that_panics(|| assert_that!(&String::from("")).is_not_empty());
+        assert_that_code!(|| assert_that!(&String::from("")).is_not_empty()).panics();
     }
 
     #[test]
     fn test_contains_all() {
         assert_that!("bitcoin ethereum solana").contains_all(&["ethereum", "bitcoin", "solana"]);
 
-        assert_that_panics(|| assert_that!("bitcoin ethereum solana").contains_all(&["ethereum", "bitcoin", "solana", "polygon"]));
+        assert_that_code!(|| assert_that!("bitcoin ethereum solana").contains_all(&["ethereum", "bitcoin", "solana", "polygon"])).panics();
     }
 
     #[test]
     fn test_contains_any() {
         assert_that!("bitcoin ethereum solana").contains_any(&["solana"]);
 
-        assert_that_panics(|| assert_that!("bitcoin ethereum solana").contains_any(&["tezos", "litecoin", "luna"]));
+        assert_that_code!(|| assert_that!("bitcoin ethereum solana").contains_any(&["tezos", "litecoin", "luna"])).panics();
     }
 
     #[test]

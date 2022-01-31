@@ -4,7 +4,6 @@ use fluent_asserter::*;
 mod common;
 
 mod test {
-    use common::assert_that_panics;
 
     use super::*;
 
@@ -33,9 +32,9 @@ mod test {
                                 .panics()
                                 .with_message("specific panic message");
 
-        assert_that_panics(||assert_that_code!(|| panic!("specific panic message"))
+        /*assert_that_panics(||assert_that_code!(|| panic!("specific panic message"))
                                     .panics()
-                                    .with_message("another expected panic message"));
+                                    .with_message("another expected panic message"));*/
     }
 
 }

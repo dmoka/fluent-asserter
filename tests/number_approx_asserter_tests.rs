@@ -6,7 +6,6 @@ mod common;
 #[cfg(test)]
 mod test_number_approx_asserter {
     use super::*;
-    use common::assert_that_panics;
 
     #[test]
     fn test_is_equal_to_approximately_for_unsigned() {
@@ -14,7 +13,7 @@ mod test_number_approx_asserter {
         assert_that!(3u32).is_approx_equal_to(3,1);
         assert_that!(3u32).is_approx_equal_to(4,1);
 
-        assert_that_panics(||assert_that!(3u32).is_approx_equal_to(5,1));
+        assert_that_code!(||assert_that!(3u32).is_approx_equal_to(5,1)).panics();
     }
     
     #[test]
@@ -23,7 +22,7 @@ mod test_number_approx_asserter {
         assert_that!(3i32).is_approx_equal_to(3,1);
         assert_that!(3i32).is_approx_equal_to(4,1);
 
-        assert_that_panics(||assert_that!(3i32).is_approx_equal_to(5,1));
+        assert_that_code!(||assert_that!(3i32).is_approx_equal_to(5,1)).panics();
     }
     
     #[test]
@@ -33,7 +32,7 @@ mod test_number_approx_asserter {
         assert_that!(6.14f64).is_approx_equal_to(6.14,0.00);
         assert_that!(6.14159f64).is_approx_equal_to(6.14157,0.00002);
 
-        assert_that_panics(||assert_that!(6.14159f64).is_approx_equal_to(6.14157,0.00001));
+        assert_that_code!(||assert_that!(6.14159f64).is_approx_equal_to(6.14157,0.00001)).panics();
     }
 
     #[test]
@@ -43,7 +42,7 @@ mod test_number_approx_asserter {
         assert_that!(6.14f32).is_approx_equal_to(6.14,0.00);
         assert_that!(6.14159f32).is_approx_equal_to(6.14157,0.00002);
 
-        assert_that_panics(||assert_that!(6.14159f32).is_approx_equal_to(6.14157,0.00001));
+        assert_that_code!(||assert_that!(6.14159f32).is_approx_equal_to(6.14157,0.00001)).panics();
     }
 
 }
