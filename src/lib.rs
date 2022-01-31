@@ -5,6 +5,7 @@
 //TODO: add theory via annotation
 
 //TODO: add our answer here: https://stackoverflow.com/questions/26469715/how-do-i-write-a-rust-unit-test-that-ensures-that-a-panic-has-occurred
+//And here too± https://stackoverflow.com/questions/60965319/problems-using-paniccatch-unwind-in-a-macro-context-test-for-panics-in-unit-te
 //and also to other place
 mod string_asserter;
 mod panic_asserter;
@@ -16,7 +17,6 @@ mod boolean_asserter;
 use std::{panic};
 use std::borrow::Borrow;
 use std::fmt::Debug;
-use assertion_failure_message::*;
 use lazy_static::lazy_static;
 use std::sync::Mutex;
 
