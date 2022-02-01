@@ -40,6 +40,7 @@ impl<F, R> PanicAsserter<F, R>  where F: FnOnce() -> R + panic::UnwindSafe{
         register_panic_hook_to_capture_output(&global_buffer);
         let result = panic::catch_unwind(self.value);
         panic::set_hook(old_hook);
+        drop(_guard);
     
         let panic_message;
     
