@@ -23,6 +23,12 @@ impl WithMessage {
         }
     }
 
+    pub fn contains(self, expected_panic_message: &str) {
+        if !self.actual_panic_message.contains(expected_panic_message) {
+            
+        }
+    }
+
 }
 
 impl<F, R> PanicAsserter<F, R>  where F: FnOnce() -> R + panic::UnwindSafe{

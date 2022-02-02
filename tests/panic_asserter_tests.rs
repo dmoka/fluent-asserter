@@ -47,6 +47,13 @@ mod test {
                                     .with_message("another expected panic message");
     }
 
+    #[test]
+    fn test_that_panic_contains_panic_message() {
+        assert_that_code!(|| panic!("specific panic message"))
+                                .panics()
+                                .contains("panic message");
+    }
+
     //TODO: add test when panics containing message - we just need to ad to WithMessage, but also renaming it to PanicMessageAssertions
 
 }
