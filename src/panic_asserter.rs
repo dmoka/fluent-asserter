@@ -25,7 +25,7 @@ impl WithMessage {
 
     pub fn contains(self, expected_panic_message: &str) {
         if !self.actual_panic_message.contains(expected_panic_message) {
-            
+            panic!("The text '{}' is not present in the panic message '{}'", expected_panic_message, self.actual_panic_message)
         }
     }
 

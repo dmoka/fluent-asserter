@@ -54,6 +54,12 @@ mod test {
                                 .contains("panic message");
     }
 
-    //TODO: add test when panics containing message - we just need to ad to WithMessage, but also renaming it to PanicMessageAssertions
+    #[test]
+    #[should_panic(expected="The text 'bitcoin' is not present in the panic message 'specific panic message'")]
+    fn test_that_panic_contains_message_whereas_not() {
+        assert_that_code!(|| panic!("specific panic message"))
+                                .panics()
+                                .contains("bitcoin");
+    }
 
 }
