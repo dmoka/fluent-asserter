@@ -43,7 +43,8 @@ impl<F, R> PanicAsserter<F, R>  where F: FnOnce() -> R + panic::UnwindSafe{
         let global_buffer = Arc::new(Mutex::new(String::new()));
         let old_hook = panic::take_hook();
     
-        //try to use a thread local storage with RefCell or so 
+        //TODO: try to use a thread local storage with RefCell or so
+        //TODO: refactor 
         register_panic_hook_to_capture_output(&global_buffer);
         let result = panic::catch_unwind(self.value);
         panic::set_hook(old_hook);

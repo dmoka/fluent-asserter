@@ -1,6 +1,7 @@
 use super::*;
 
 //TODO: add And
+//TODO: improve error messages with name
 impl<T> Asserter<T> where T : Into<String> + Clone{ //TODO: Display is also implemented for int,etc, so it would work
     pub fn contains(&self, expected_value_to_be_contained: &str) {
         let string = self.value.clone().into();
