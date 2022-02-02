@@ -22,6 +22,7 @@ impl WithMessage {
             panic!("Expected a panic message '{}', but found '{}'",self.actual_panic_message, expected_panic_message)
         }
     }
+
 }
 
 impl<F, R> PanicAsserter<F, R>  where F: FnOnce() -> R + panic::UnwindSafe{
@@ -46,8 +47,7 @@ impl<F, R> PanicAsserter<F, R>  where F: FnOnce() -> R + panic::UnwindSafe{
     
         match result {
             Ok(_res) => {
-                //assert!(result.is_err());
-                panic!("There was no panic, but it was expected!") //TODO: add better panic error message
+                panic!("There was no panic, but it was expected.")
             },
             Err(_) => {
                 panic_message = global_buffer.lock().unwrap();

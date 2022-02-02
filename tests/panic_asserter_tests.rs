@@ -39,4 +39,14 @@ mod test {
                                     .with_message("another expected panic message");
     }
 
+    #[test]
+    #[should_panic(expected="There was no panic, but it was expected.")]
+    fn test_that_code_panics_whereas_not() {
+        assert_that_code!(|| println!("specific panic message"))
+                                    .panics()
+                                    .with_message("another expected panic message");
+    }
+
+    //TODO: add test when panics containing message - we just need to ad to WithMessage, but also renaming it to PanicMessageAssertions
+
 }
