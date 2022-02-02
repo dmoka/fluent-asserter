@@ -51,7 +51,7 @@ mod test {
     fn test_that_panic_contains_panic_message() {
         assert_that_code!(|| panic!("specific panic message"))
                                 .panics()
-                                .contains("panic message");
+                                .with_having_having("panic message");
     }
 
     #[test]
@@ -59,7 +59,7 @@ mod test {
     fn test_that_panic_contains_message_whereas_not() {
         assert_that_code!(|| panic!("specific panic message"))
                                 .panics()
-                                .contains("bitcoin");
+                                .with_having_having("bitcoin");
     }
 
 }
