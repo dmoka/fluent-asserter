@@ -6,13 +6,13 @@ TODO: this is non-deterministic and results in failing test due set_hook set the
 Idea how to solve: One option could be to make a panic hook that delegates to some thread-local state. Have all of your tests install that hook and then setup the thread local hook to what they want.
 */
 
-pub struct WithMessage {
+pub struct PanicAssertions {
     actual_panic_message: String,
 }
 
-impl WithMessage {
-    pub fn new(actual_panic_message: String) -> WithMessage {
-        WithMessage {
+impl PanicAssertions {
+    pub fn new(actual_panic_message: String) -> PanicAssertions {
+        PanicAssertions {
             actual_panic_message
         }  
     }
@@ -38,7 +38,7 @@ impl<F, R> PanicAsserter<F, R>  where F: FnOnce() -> R + panic::UnwindSafe{
         }
     }
 
-    pub fn panics(self) -> WithMessage {
+    pub fn panics(self) -> PanicAssertions {
         let _guard = LOCK_FOR_PANIC_ASSERTER.lock();
         let global_buffer = Arc::new(Mutex::new(String::new()));
         let old_hook = panic::take_hook();
@@ -62,7 +62,7 @@ impl<F, R> PanicAsserter<F, R>  where F: FnOnce() -> R + panic::UnwindSafe{
         }
         
 
-        WithMessage {
+        PanicAssertions {
             actual_panic_message: panic_message.to_string()
         }
     }
