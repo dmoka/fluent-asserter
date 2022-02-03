@@ -1,6 +1,6 @@
 use super::*;
 
-impl<T> Asserter<T> where T : Copy + PartialOrd + std::ops::Sub  + Default + std::fmt::Debug + std::fmt::Display {
+impl<T> Asserter<T> where T : Copy + PartialOrd + std::fmt::Debug + std::fmt::Display {
     pub fn is_smaller_than(self, expected: T) {
         if self.value >= expected {
             panic!("The value {} is not smaller than {}", self.value, expected)
