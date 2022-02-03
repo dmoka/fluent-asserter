@@ -33,6 +33,11 @@ mod test_number_approx_asserter {
         assert_that_code!(||assert_that!(6.14159f64).is_approx_equal_to(6.14157,0.00001))
             .panics()
             .with_message("The number '6.14159f64' is not approximately equal to '6.14157' within delta '0.00001'");
+
+        let float_var = 6.14159f64;
+        assert_that_code!(||assert_that!(float_var).is_approx_equal_to(6.14157,0.00001))
+                .panics()
+                .with_message("The number 'float_var' is not approximately equal to '6.14157' within delta '0.00001'");    
     }
 
     #[test]
