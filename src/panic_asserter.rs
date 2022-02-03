@@ -1,4 +1,4 @@
-use std::panic;
+use std::{panic};
 use super::*;
 use std::sync::{Arc, Mutex};
 /*
@@ -39,31 +39,18 @@ impl<F, R> PanicAsserter<F, R>  where F: FnOnce() -> R + panic::UnwindSafe{
     }
 
     pub fn panics(self) -> PanicAssertions {
-        let _guard = LOCK_FOR_PANIC_ASSERTER.lock();
-        let global_buffer = Arc::new(Mutex::new(String::new()));
-        let old_hook = panic::take_hook();
-    
         //TODO: try to use a thread local storage with RefCell or so
-        //TODO: refactor 
+        let _guard = LOCK_FOR_PANIC_ASSERTER.lock();
+        let old_hook = panic::take_hook();
+        let global_buffer = Arc::new(Mutex::new(String::new()));
+
         register_panic_hook_to_capture_output(&global_buffer);
         let result = panic::catch_unwind(self.value);
         panic::set_hook(old_hook);
         drop(_guard);
     
-        let panic_message;
-    
-        match result {
-            Ok(_res) => {
-                panic!("There was no panic, but it was expected.")
-            },
-            Err(_) => {
-                panic_message = global_buffer.lock().unwrap();
-            }
-        }
-        
-
         PanicAssertions {
-            actual_panic_message: panic_message.to_string()
+            actual_panic_message: get_panic_message_if_present(result,global_buffer)
         }
     }
     
@@ -76,10 +63,10 @@ impl<F, R> PanicAsserter<F, R>  where F: FnOnce() -> R + panic::UnwindSafe{
     }
 
     fn catch_unwind_silent(self) -> std::thread::Result<R> {
-        let prev_hook = panic::take_hook();
+        let old_hook = panic::take_hook();
         panic::set_hook(Box::new(|_| {}));
         let result = panic::catch_unwind(self.value);
-        panic::set_hook(prev_hook);
+        panic::set_hook(old_hook);
         result
     }
 }
@@ -102,4 +89,16 @@ fn register_panic_hook_to_capture_output(global_buffer: &Arc<Mutex<String>>) {
             }
         })
     });
+}
+
+
+fn get_panic_message_if_present<R>(result: Result<R, Box<dyn std::any::Any + Send>>, global_buffer: Arc<Mutex<String>>) -> String {
+    match result {
+        Ok(_res) => {
+            panic!("There was no panic, but it was expected.")
+        },
+        Err(_) => {
+            return global_buffer.lock().unwrap().to_string();
+        }
+    }
 }
