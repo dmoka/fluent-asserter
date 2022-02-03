@@ -11,7 +11,6 @@ mod string_asserter;
 mod panic_asserter;
 mod number_asserter;
 mod number_approx_asserter;
-mod assertion_failure_message;
 mod boolean_asserter;
 
 use std::{panic};
