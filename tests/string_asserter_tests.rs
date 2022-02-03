@@ -40,8 +40,14 @@ mod test_string_asserter {
         assert_that!(&String::from("test string")).contains("st");
         assert_that!(&String::from("bitcoin")).contains("co");
 
-        assert_that_code!(|| assert_that!(&String::from("test string")).contains("asd")).panics();
-        assert_that_code!(|| assert_that!(&String::from("bitcoin")).contains("eth")).panics();
+        assert_that_code!(|| assert_that!(&String::from("test string")).contains("asd"))
+            .panics()
+            .with_message("Expected &String::from(\"test string\") to contain 'asd', but it does not.");
+
+        let string_var = &String::from("bitcoin");
+        assert_that_code!(|| assert_that!(string_var).contains("eth"))
+            .panics()
+            .with_message("Expected string_var to contain 'eth', but it does not.");
     }
 
     #[test]
@@ -49,8 +55,12 @@ mod test_string_asserter {
         assert_that!(&String::from("test string")).starts_with("te");
         assert_that!(&String::from("bitcoin")).starts_with("bitcoin");
 
-        assert_that_code!(|| assert_that!(&String::from("test string")).contains("asd")).panics();
-        assert_that_code!(|| assert_that!(&String::from("bitcoin")).contains("eth")).panics();
+        assert_that_code!(|| assert_that!(&String::from("test string")).starts_with("asd")).panics();
+
+        let string_var = &String::from("bitcoin");
+        assert_that_code!(|| assert_that!(string_var).starts_with("eth"))
+            .panics()
+            .with_message("Expected string_var to start with 'eth', but it does not.");
     }
 
     #[test]
@@ -59,7 +69,11 @@ mod test_string_asserter {
         assert_that!(&String::from("bitcoin")).ends_with("coin");
 
         assert_that_code!(|| assert_that!(&String::from("test string")).ends_with("asd")).panics();
-        assert_that_code!(|| assert_that!(&String::from("bitcoin")).ends_with("eth")).panics();
+
+        let string_var = &String::from("bitcoin");
+        assert_that_code!(|| assert_that!(string_var).ends_with("eth"))
+            .panics()
+            .with_message("Expected string_var to end with 'eth', but it does not.");
     }
 
     #[test]
@@ -67,15 +81,10 @@ mod test_string_asserter {
         assert_that!(&String::from("")).is_empty();
         assert_that!("").is_empty();
 
-        assert_that_code!(|| assert_that!(&String::from("test string")).is_empty()).panics();
-    }
-
-    #[test]
-    fn test_has_length() {
-        assert_that!(&String::from("bitcoin")).has_length(7);
-        assert_that!("ethereum").has_length(8);
-
-        assert_that_code!(|| assert_that!(&String::from("test string")).has_length(1)).panics();
+        let string_var = &String::from("test string");
+        assert_that_code!(|| assert_that!(string_var).is_empty())
+            .panics()
+            .with_message("Expected string_var to be empty, but it is not.");
     }
 
     #[test]
@@ -83,21 +92,42 @@ mod test_string_asserter {
         assert_that!(&String::from("test string")).is_not_empty();
         assert_that!("bitcoin").is_not_empty();
 
-        assert_that_code!(|| assert_that!(&String::from("")).is_not_empty()).panics();
+        let empty_string = &String::from("");
+        assert_that_code!(|| assert_that!(empty_string).is_not_empty())
+            .panics()
+            .with_message("Expected empty_string to not be empty, but it is.");
+    }
+
+    #[test]
+    fn test_has_length() {
+        assert_that!(&String::from("bitcoin")).has_length(7);
+        assert_that!("ethereum").has_length(8);
+
+        let string_var = &String::from("test string");
+        assert_that_code!(|| assert_that!(string_var).has_length(1))
+            .panics()
+            .with_message("Expected string_var to have length 1, but it has 11");
     }
 
     #[test]
     fn test_contains_all() {
         assert_that!("bitcoin ethereum solana").contains_all(&["ethereum", "bitcoin", "solana"]);
 
-        assert_that_code!(|| assert_that!("bitcoin ethereum solana").contains_all(&["ethereum", "bitcoin", "solana", "polygon"])).panics();
+        let string_var = "bitcoin ethereum solana";
+        assert_that_code!(|| assert_that!(string_var).contains_all(&["ethereum", "bitcoin", "solana", "polygon"]))
+            .panics()
+            .with_message("Expected string_var 'bitcoin ethereum solana' to contain the strings [\"ethereum\", \"bitcoin\", \"solana\", \"polygon\"], but it does not.");
     }
 
     #[test]
     fn test_contains_any() {
         assert_that!("bitcoin ethereum solana").contains_any(&["solana"]);
 
-        assert_that_code!(|| assert_that!("bitcoin ethereum solana").contains_any(&["tezos", "litecoin", "luna"])).panics();
+        let string_var = "bitcoin ethereum solana";
+        assert_that_code!(|| assert_that!(string_var)
+            .contains_any(&["tezos", "litecoin", "luna"]))
+            .panics()
+            .with_message("Expected string_var 'bitcoin ethereum solana' to contain at least one of the strings [\"tezos\", \"litecoin\", \"luna\"], but it does not.");
     }
 
     #[test]
