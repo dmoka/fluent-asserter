@@ -50,11 +50,10 @@ impl<T> ApproximatelyEqual<T,FloatApproxEqual> for Asserter<T> where T :Float + 
         let delta_f64 =  round(delta, rounder);
 
         if diff_f64 > delta_f64 {
-            panic!("AssertionError: Not equal")
+            panic!("The number '{}' is not approximately equal to '{}' within delta '{}'",self.name,expected,delta)
         }
     }
 }
-
 
 //TODO: add abstraction for this, either in a new struct with new or some logic class
 fn get_length_of_rounder<T>(delta: T) -> f64 where T: ToString {
