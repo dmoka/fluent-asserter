@@ -9,8 +9,14 @@ mod test_string_asserter {
         assert_that!(&String::from("test string")).is_equal_to(&String::from("test string"));
         assert_that!(&String::from("bitcoin")).is_equal_to(&String::from("bitcoin"));
 
-        assert_that_code!(|| assert_that!(&String::from("test string")).is_equal_to(&String::from("test"))).panics();
-        assert_that_code!(|| assert_that!(&String::from("bitcoin")).is_equal_to(&String::from("ethereum"))).panics();
+        assert_that_code!(|| assert_that!(&String::from("test string")).is_equal_to(&String::from("test")))
+            .panics()
+            .with_message("Expected &String::from(\"test string\") to be 'test', but was 'test string'");
+
+        let string_var = String::from("bitcoin");
+        assert_that_code!(|| assert_that!(&string_var).is_equal_to(&String::from("ethereum")))
+            .panics()
+            .with_message("Expected &string_var to be 'ethereum', but was 'bitcoin'");
     }
 
 
@@ -19,8 +25,14 @@ mod test_string_asserter {
         assert_that!("test string").is_equal_to("test string");
         assert_that!("bitcoin").is_equal_to("bitcoin");
         
-        assert_that_code!(|| assert_that!("test string").is_equal_to("string")).panics();
-        assert_that_code!(|| assert_that!("bitcoin").is_equal_to("ethereum")).panics();
+        assert_that_code!(|| assert_that!("test string").is_equal_to("string"))
+            .panics()
+            .with_message("Expected \"test string\" to be 'string', but was 'test string'");
+
+        let string_var = "bitcoin";
+        assert_that_code!(|| assert_that!(string_var).is_equal_to("ethereum"))
+            .panics()
+            .with_message("Expected string_var to be 'ethereum', but was 'bitcoin'");
     }
 
     #[test]
