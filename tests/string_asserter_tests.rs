@@ -124,8 +124,7 @@ mod test_string_asserter {
         assert_that!("bitcoin ethereum solana").contains_any(&["solana"]);
 
         let string_var = "bitcoin ethereum solana";
-        assert_that_code!(|| assert_that!(string_var)
-            .contains_any(&["tezos", "litecoin", "luna"]))
+        assert_that_code!(|| assert_that!(string_var).contains_any(&["tezos", "litecoin", "luna"]))
             .panics()
             .with_message("Expected string_var 'bitcoin ethereum solana' to contain at least one of the strings [\"tezos\", \"litecoin\", \"luna\"], but it does not.");
     }
