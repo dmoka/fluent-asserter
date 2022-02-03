@@ -19,7 +19,7 @@ impl PanicAssertions {
     
     pub fn with_message(self, expected_panic_message: &str) {        
         if self.actual_panic_message != expected_panic_message {
-            panic!("Expected a panic message '{}', but found '{}'",self.actual_panic_message, expected_panic_message)
+            panic!("Expected a panic message '{}', but found '{}'", expected_panic_message, self.actual_panic_message)
         }
     }
 

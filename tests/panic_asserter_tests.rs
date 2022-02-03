@@ -32,11 +32,11 @@ mod test {
     }
 
     #[test]
-    #[should_panic(expected="Expected a panic message 'specific panic message', but found 'another expected panic message'")]
+    #[should_panic(expected="Expected a panic message 'expected panic message', but found 'specific panic message'")]
     fn test_panics_when_panic_assertion_fails() {
         assert_that_code!(|| panic!("specific panic message"))
                                     .panics()
-                                    .with_message("another expected panic message");
+                                    .with_message("expected panic message");
     }
 
     #[test]
