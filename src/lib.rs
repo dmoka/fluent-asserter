@@ -3,6 +3,7 @@
 //TODO: follow these practices: https://pascalhertleif.de/artikel/good-practices-for-writing-rust-libraries/
 
 //TODO: add theory via annotation
+//TODO: add path assertions - exists,doesNotExists, is a file, is a directory, hasfile name
 
 //TODO: add our answer here: https://stackoverflow.com/questions/26469715/how-do-i-write-a-rust-unit-test-that-ensures-that-a-panic-has-occurred
 //And here too± https://stackoverflow.com/questions/60965319/problems-using-paniccatch-unwind-in-a-macro-context-test-for-panics-in-unit-te
@@ -12,6 +13,7 @@ mod panic_asserter;
 mod number_asserter;
 mod number_approx_asserter;
 mod boolean_asserter;
+mod iterator_asserter;
 
 use std::{panic};
 use std::borrow::Borrow;
@@ -26,7 +28,7 @@ lazy_static! {
 #[macro_export]
 macro_rules! assert_that {
     ($value:expr) => {
-        Asserter::new($value, stringify!($value).to_string())
+        create_asserter($value, stringify!($value).to_string())
     };
 }
 
@@ -46,7 +48,7 @@ pub struct PanicAsserter <F, R> where F: FnOnce() -> R + panic::UnwindSafe {
     value :  F
 }
 
-impl<T> Asserter<T> where T: Debug + PartialEq + ToString {
+impl<T> Asserter<T> where T: Debug + PartialEq{
     pub fn new(value: T, name: String) -> Asserter<T> {
         Asserter {
             value,
@@ -57,7 +59,7 @@ impl<T> Asserter<T> where T: Debug + PartialEq + ToString {
     pub fn is_equal_to(&self, expected_value: T) {
         let expected = expected_value.borrow();
         if &self.value != expected {
-            let error_msg = format!("Expected {} to be '{}', but was '{}'",self.name,expected_value.to_string(),self.value.to_string());
+            let error_msg = format!("Expected {} to be {:?}, but was {:?}",self.name,expected,self.value);
             panic!("{}",error_msg)
         }
     }
@@ -65,6 +67,13 @@ impl<T> Asserter<T> where T: Debug + PartialEq + ToString {
     pub fn is_not_equal_to(&self, expected_value: T) {
         let expected = expected_value.borrow();
         assert_ne!(&self.value, expected);
+    }
+}
+
+pub fn create_asserter<T>(value: T, name: String) -> Asserter<T> {
+    Asserter {
+        value,
+        name
     }
 }
 
