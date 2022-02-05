@@ -1,7 +1,16 @@
 use super::*;
 
+//TODO: add And
+
 pub trait StrAssertions<T> where  T : Into<String> + Clone{
     fn contains(&self, expected: &str);
+    fn starts_with(&self, expected_start: &str);
+    fn ends_with(&self, expected_end: &str);
+    fn is_empty(&self);
+    fn is_not_empty(&self);
+    fn has_length(&self, expected_length: usize);
+    fn contains_all(&self, args: &[&str]);
+    fn contains_any(&self, args: &[&str]);
 }
 
 impl<T> StrAssertions<T> for Asserter<T> where  T : Into<String> + Clone{
@@ -13,13 +22,7 @@ impl<T> StrAssertions<T> for Asserter<T> where  T : Into<String> + Clone{
             panic!("Expected {} to contain '{}', but it does not.", self.name, expected);
         }
     }
-}
-
-//TODO: add And
-//TODO: improve error messages with name
-
-impl<T> Asserter<T> where T : Into<String> + Clone{ //TODO: Display is also implemented for int,etc, so it would work
-    pub fn starts_with(&self, expected_start: &str) {
+    fn starts_with(&self, expected_start: &str) {
         let string = self.value.clone().into();
         let starts_with = string.starts_with(expected_start);
 
@@ -28,7 +31,7 @@ impl<T> Asserter<T> where T : Into<String> + Clone{ //TODO: Display is also impl
         }
     }
 
-    pub fn ends_with(&self, expected_end: &str) {
+    fn ends_with(&self, expected_end: &str) {
         let string = self.value.clone().into();
         let ends_with = string.ends_with(expected_end);
 
@@ -37,7 +40,7 @@ impl<T> Asserter<T> where T : Into<String> + Clone{ //TODO: Display is also impl
         }
     }
 
-    pub fn is_empty(&self){
+    fn is_empty(&self){
         let string = self.value.clone().into();
 
         if !string.is_empty() {
@@ -45,7 +48,7 @@ impl<T> Asserter<T> where T : Into<String> + Clone{ //TODO: Display is also impl
         }
     }
 
-    pub fn is_not_empty(&self){
+    fn is_not_empty(&self){
         let string = self.value.clone().into();
 
         if string.is_empty() {
@@ -53,7 +56,7 @@ impl<T> Asserter<T> where T : Into<String> + Clone{ //TODO: Display is also impl
         }
     }
 
-    pub fn has_length(&self, expected_length: usize){
+    fn has_length(&self, expected_length: usize){
         let string = self.value.clone().into();
         let len = string.len();
 
@@ -62,7 +65,7 @@ impl<T> Asserter<T> where T : Into<String> + Clone{ //TODO: Display is also impl
         }
     }
 
-    pub fn contains_all(&self, args: &[&str]) {
+    fn contains_all(&self, args: &[&str]) {
         //TODO: create ctor field value with string?
         let string = self.value.clone().into();
         let contains_all = args.iter().all(|&w| string.contains(&w));
@@ -73,7 +76,7 @@ impl<T> Asserter<T> where T : Into<String> + Clone{ //TODO: Display is also impl
         }
     }
 
-    pub fn contains_any(&self, args: &[&str]) {
+    fn contains_any(&self, args: &[&str]) {
         let string = self.value.clone().into();
         let contains_any = args.iter().any(|&w| string.contains(&w));
 

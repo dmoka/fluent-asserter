@@ -97,7 +97,7 @@ pub trait ApproximatelyEqual<T, S:ApproxEqualMarkerTrait  > {
 //TODO: S - add this to tests folder
 #[cfg(test)]
 mod test {
-    use super::*;
+    use super::prelude::*;
 
     #[test]
     fn test_macro_syntax() {
