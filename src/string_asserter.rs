@@ -1,17 +1,24 @@
 use super::*;
 
-//TODO: add And
-//TODO: improve error messages with name
-impl<T> Asserter<T> where T : Into<String> + Clone{ //TODO: Display is also implemented for int,etc, so it would work
-    pub fn contains(&self, expected_value_to_be_contained: &str) {
+pub trait StrAssertions<T> where  T : Into<String> + Clone{
+    fn contains(&self, expected: &str);
+}
+
+impl<T> StrAssertions<T> for Asserter<T> where  T : Into<String> + Clone{
+   fn contains(&self, expected: &str) {
         let string = self.value.clone().into();
-        let is_present = string.contains(expected_value_to_be_contained);
+        let is_present = string.contains(expected);
         
         if !is_present {
-            panic!("Expected {} to contain '{}', but it does not.", self.name, expected_value_to_be_contained);
+            panic!("Expected {} to contain '{}', but it does not.", self.name, expected);
         }
     }
+}
 
+//TODO: add And
+//TODO: improve error messages with name
+
+impl<T> Asserter<T> where T : Into<String> + Clone{ //TODO: Display is also implemented for int,etc, so it would work
     pub fn starts_with(&self, expected_start: &str) {
         let string = self.value.clone().into();
         let starts_with = string.starts_with(expected_start);
