@@ -11,12 +11,12 @@ mod test_string_asserter {
 
         assert_that_code!(|| assert_that!(&String::from("test string")).is_equal_to(&String::from("test")))
             .panics()
-            .with_message("Expected &String::from(\"test string\") to be \"test\", but was \"test string\"");
+            .with_message("Expected &String::from(\"test string\") to be \"test\", but was \"test string\".");
 
         let string_var = String::from("bitcoin");
         assert_that_code!(|| assert_that!(&string_var).is_equal_to(&String::from("ethereum")))
             .panics()
-            .with_message("Expected &string_var to be \"ethereum\", but was \"bitcoin\"");
+            .with_message("Expected &string_var to be \"ethereum\", but was \"bitcoin\".");
     }
 
 
@@ -27,12 +27,12 @@ mod test_string_asserter {
         
         assert_that_code!(|| assert_that!("test string").is_equal_to("string"))
             .panics()
-            .with_message("Expected \"test string\" to be \"string\", but was \"test string\"");
+            .with_message("Expected \"test string\" to be \"string\", but was \"test string\".");
 
         let string_var = "bitcoin";
         assert_that_code!(|| assert_that!(string_var).is_equal_to("ethereum"))
             .panics()
-            .with_message("Expected string_var to be \"ethereum\", but was \"bitcoin\"");
+            .with_message("Expected string_var to be \"ethereum\", but was \"bitcoin\".");
     }
 
     #[test]
@@ -136,7 +136,7 @@ mod test_string_asserter {
         assert_that_code!(code)
             .panics()
             .with_message(
-                "Expected \"test1\" to be \"test2\", but was \"test1\"");
+                "Expected \"test1\" to be \"test2\", but was \"test1\".");
     }
 
     #[test]
@@ -147,6 +147,6 @@ mod test_string_asserter {
         assert_that_code!(code)
             .panics()
             .with_message(
-                "Expected string_var to be \"test2\", but was \"test1\"");
+                "Expected string_var to be \"test2\", but was \"test1\".");
     }
 }

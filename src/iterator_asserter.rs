@@ -13,7 +13,7 @@ impl<T,K> IteratorAssertions<T> for Asserter<K> where T: Debug + PartialEq, K: I
     fn contains(&self, expected_value: T) {
         let contains = &self.value.clone().into_iter().any(|i| i==expected_value);
         if !contains {
-            panic!("Expected iterator {:?} to contain {:?}, but it does not",self.name,expected_value);
+            panic!("Expected iterator {:?} to contain {:?}, but it does not.",self.name,expected_value);
         }
     }
 
@@ -27,14 +27,14 @@ impl<T,K> IteratorAssertions<T> for Asserter<K> where T: Debug + PartialEq, K: I
         }
 
         if !missing_items.is_empty() {
-            panic!("Expected iterator {:?} to contain items {:?}, but it does not contain {:?}",self.name,expected_values, missing_items);
+            panic!("Expected iterator {:?} to contain items {:?}, but it does not contain {:?}.",self.name,expected_values, missing_items);
         }
     }
 
     fn has_count(&self, expected_count: usize) {
         let count = &self.value.clone().into_iter().count();
         if *count != expected_count {
-            panic!("Expected iterator {:?} to have count '{}', but it has '{}'", &self.name,expected_count,count);
+            panic!("Expected iterator {:?} to have count '{}', but it has '{}'.", &self.name,expected_count,count);
         }
     }
 
@@ -49,7 +49,7 @@ impl<T,K> IteratorAssertions<T> for Asserter<K> where T: Debug + PartialEq, K: I
         }
 
         if !missing_items.is_empty() {
-            panic!("Expected iterator {:?} to not contain items {:?}, but it contains {:?}",self.name,not_expected_values, missing_items);
+            panic!("Expected iterator {:?} to not contain items {:?}, but it contains {:?}.",self.name,not_expected_values, missing_items);
         }
     }
 

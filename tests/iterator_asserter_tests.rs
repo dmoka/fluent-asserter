@@ -12,7 +12,7 @@ mod test_iterator_asserter {
         let list = vec!["item1"];
         assert_that_code!(||assert_that!(list).is_equal_to(vec!["item2"]))
             .panics()
-            .with_message("Expected list to be [\"item2\"], but was [\"item1\"]")
+            .with_message("Expected list to be [\"item2\"], but was [\"item1\"].")
     }
 
     #[test]
@@ -22,7 +22,7 @@ mod test_iterator_asserter {
         let list = vec!["item1"];
         assert_that_code!(||assert_that!(list).contains("item2"))
             .panics()
-            .with_message("Expected iterator \"list\" to contain \"item2\", but it does not");
+            .with_message("Expected iterator \"list\" to contain \"item2\", but it does not.");
     }
 
     #[test]
@@ -32,12 +32,12 @@ mod test_iterator_asserter {
         let list = vec![2,3,4];
         assert_that_code!(||assert_that!(list).contains_all_of(&[4,5,6]))
             .panics()
-            .with_message("Expected iterator \"list\" to contain items [4, 5, 6], but it does not contain [5, 6]");
+            .with_message("Expected iterator \"list\" to contain items [4, 5, 6], but it does not contain [5, 6].");
 
         let list = vec![2,3,4];
         assert_that_code!(||assert_that!(list).contains_all_of(&[5,6]))
             .panics()
-            .with_message("Expected iterator \"list\" to contain items [5, 6], but it does not contain [5, 6]")
+            .with_message("Expected iterator \"list\" to contain items [5, 6], but it does not contain [5, 6].")
     }
 
     
@@ -48,7 +48,7 @@ mod test_iterator_asserter {
         let list = vec![2,3,4];
         assert_that_code!(||assert_that!(list).has_count(4))
             .panics()
-            .with_message("Expected iterator \"list\" to have count '4', but it has '3'");
+            .with_message("Expected iterator \"list\" to have count '4', but it has '3'.");
     }
 
     
@@ -59,7 +59,7 @@ mod test_iterator_asserter {
         let list = vec![2,3,4];
         assert_that_code!(||assert_that!(list).does_not_contain_any(&[3,4,5]))
             .panics()
-            .with_message("Expected iterator \"list\" to not contain items [3, 4, 5], but it contains [3, 4]");
+            .with_message("Expected iterator \"list\" to not contain items [3, 4, 5], but it contains [3, 4].");
     }
 
     #[test]

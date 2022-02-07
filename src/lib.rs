@@ -60,7 +60,7 @@ impl<T> Asserter<T> where T: Debug + PartialEq{
     pub fn is_equal_to(&self, expected_value: T) {
         let expected = expected_value.borrow();
         if &self.value != expected {
-            let error_msg = format!("Expected {} to be {:?}, but was {:?}",self.name,expected,self.value);
+            let error_msg = format!("Expected {} to be {:?}, but was {:?}.",self.name,expected,self.value);
             panic!("{}",error_msg)
         }
     }
