@@ -60,6 +60,16 @@ mod test_iterator_asserter {
         assert_that_code!(||assert_that!(list).does_not_contain_any(&[3,4,5]))
             .panics()
             .with_message("Expected iterator \"list\" to not contain items [3, 4, 5], but it contains [3, 4]");
+    }
 
+    #[test]
+    fn test_is_empty() { 
+        let list = std::vec::Vec::<i32>::new();
+        assert_that!(list).is_empty();
+
+        let list_with_items = vec![32];
+        assert_that_code!(||assert_that!(list_with_items).is_empty())
+            .panics()
+            .with_message("Expected iterator \"list_with_items\" to be empty, but it is not.");
     }
 }

@@ -6,6 +6,7 @@ pub trait IteratorAssertions<T> where T: Debug + PartialEq {
     fn contains_all_of(&self, expected_values: &[T]);
     fn has_count(&self, expected_count: usize);
     fn does_not_contain_any(&self, not_expected_values: &[T]);
+    fn is_empty(&self);
 }
 
 impl<T,K> IteratorAssertions<T> for Asserter<K> where T: Debug + PartialEq, K: IntoIterator<Item = T> + Clone {
@@ -49,6 +50,14 @@ impl<T,K> IteratorAssertions<T> for Asserter<K> where T: Debug + PartialEq, K: I
 
         if !missing_items.is_empty() {
             panic!("Expected iterator {:?} to not contain items {:?}, but it contains {:?}",self.name,not_expected_values, missing_items);
+        }
+    }
+
+    fn is_empty(&self) {
+        let is_empty = &self.value.clone().into_iter().collect::<std::vec::Vec<T>>().is_empty();
+        
+        if !*is_empty {
+            panic!("Expected iterator {:?} to be empty, but it is not.",self.name);
         }
     }
 
