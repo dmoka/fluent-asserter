@@ -24,4 +24,14 @@ mod test_iterator_asserter {
             .panics()
             .with_message("Expected iterator \"list\" to contain \"item2\", but it does not");
     }
+
+    #[test]
+    fn test_contains_any() { 
+        assert_that!(vec![2,3,4]).contains_any(&[2,4]);
+
+        let list = vec![2,3,4];
+        assert_that_code!(||assert_that!(list).contains_any(&[5,6]))
+            .panics()
+            .with_message("Expected iterator \"list\" to contain items [5, 6], but it does not");
+    }
 }
