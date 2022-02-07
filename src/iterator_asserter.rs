@@ -4,6 +4,7 @@ pub trait IteratorAssertions<T> where T: Debug + PartialEq {
     //TODO: check if we need to use mutable, with a test with mutable variable
     fn contains(&self, expected_value: T);
     fn contains_any(&self, expected_value: &[T]);
+    fn has_count(&self, expected_count: usize);
 }
 
 impl<T,K> IteratorAssertions<T> for Asserter<K> where T: Debug + PartialEq, K: IntoIterator<Item = T> + Clone {
@@ -27,4 +28,12 @@ impl<T,K> IteratorAssertions<T> for Asserter<K> where T: Debug + PartialEq, K: I
             panic!("Expected iterator {:?} to contain items {:?}, but it does not contain {:?}",self.name,expected_values, missing_items);
         }
     }
+
+    fn has_count(&self, expected_count: usize) {
+        let count = &self.value.clone().into_iter().count();
+        if *count != expected_count {
+            panic!("Expected iterator {:?} to have count '{}', but it has '{}'", &self.name,expected_count,count);
+        }
+    }
+
 }

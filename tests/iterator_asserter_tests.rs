@@ -40,4 +40,14 @@ mod test_iterator_asserter {
             .with_message("Expected iterator \"list\" to contain items [5, 6], but it does not contain [5, 6]")
     }
 
+    
+    #[test]
+    fn test_has_count() { 
+        assert_that!(vec![2,3,4]).has_count(3);
+
+        let list = vec![2,3,4];
+        assert_that_code!(||assert_that!(list).has_count(4))
+            .panics()
+            .with_message("Expected iterator \"list\" to have count '4', but it has '3'");
+    }
 }
