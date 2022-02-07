@@ -78,7 +78,8 @@ pub fn create_asserter<T>(value: T, name: String) -> Asserter<T> {
     }
 }
 
-//TODO: can we put these to approx class? If we put there, we can not use is_approx_equal_to method in test project
+//TODO: can we put these to approx class? If we put there, we can not use is_approx_equal_to method in test project. 
+//TODO: S - We should put the PRELUDE
 pub trait ApproxEqualMarkerTrait {}
 
 pub struct UnsignedIntApproxEqual;

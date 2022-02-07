@@ -2,6 +2,7 @@ use super::*;
 
 //TODO: add And
 
+//TODO: S - rename to asserter?! if so, everywhere we need to rename
 pub trait StrAssertions<T> where  T : Into<String> + Clone{
     fn contains(&self, expected: &str);
     fn starts_with(&self, expected_start: &str);
@@ -9,8 +10,8 @@ pub trait StrAssertions<T> where  T : Into<String> + Clone{
     fn is_empty(&self);
     fn is_not_empty(&self);
     fn has_length(&self, expected_length: usize);
-    fn contains_all(&self, args: &[&str]);
-    fn contains_any(&self, args: &[&str]);
+    fn contains_all(&self, args: &[&str]);//TODO: S - rename 
+    fn contains_any(&self, args: &[&str]);//TODO: S - rename 
 }
 
 impl<T> StrAssertions<T> for Asserter<T> where  T : Into<String> + Clone{
