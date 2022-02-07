@@ -54,7 +54,7 @@ impl<T,K> IteratorAssertions<T> for Asserter<K> where T: Debug + PartialEq, K: I
     }
 
     fn is_empty(&self) {
-        let is_empty = &self.value.clone().into_iter().collect::<std::vec::Vec<T>>().is_empty();
+        let is_empty = &self.value.clone().into_iter().next().is_none();
         
         if !*is_empty {
             panic!("Expected iterator {:?} to be empty, but it is not.",self.name);
