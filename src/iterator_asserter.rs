@@ -15,11 +15,16 @@ impl<T,K> IteratorAssertions<T> for Asserter<K> where T: Debug + PartialEq, K: I
     }
 
     fn contains_any(&self, expected_values: &[T]) {
+        let mut missing_items = std::vec::Vec::<&T>::new();
         for expected_value in expected_values {
             let contains = &self.value.clone().into_iter().any(|i| &i==expected_value);
             if !contains {
-                panic!("Expected iterator {:?} to contain items {:?}, but it does not",self.name,expected_values);
+                missing_items.push(expected_value);
             }       
+        }
+
+        if !missing_items.is_empty() {
+            panic!("Expected iterator {:?} to contain items {:?}, but it does not contain {:?}",self.name,expected_values, missing_items);
         }
     }
 }

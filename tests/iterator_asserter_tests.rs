@@ -30,8 +30,14 @@ mod test_iterator_asserter {
         assert_that!(vec![2,3,4]).contains_any(&[2,4]);
 
         let list = vec![2,3,4];
+        assert_that_code!(||assert_that!(list).contains_any(&[4,5,6]))
+            .panics()
+            .with_message("Expected iterator \"list\" to contain items [4, 5, 6], but it does not contain [5, 6]");
+
+        let list = vec![2,3,4];
         assert_that_code!(||assert_that!(list).contains_any(&[5,6]))
             .panics()
-            .with_message("Expected iterator \"list\" to contain items [5, 6], but it does not");
+            .with_message("Expected iterator \"list\" to contain items [5, 6], but it does not contain [5, 6]")
     }
+
 }
