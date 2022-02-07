@@ -50,4 +50,16 @@ mod test_iterator_asserter {
             .panics()
             .with_message("Expected iterator \"list\" to have count '4', but it has '3'");
     }
+
+    
+    #[test]
+    fn test_does_not_contain_any() { 
+        assert_that!(vec![2,3,4]).does_not_contain_any(&[1,5]);
+
+        let list = vec![2,3,4];
+        assert_that_code!(||assert_that!(list).does_not_contain_any(&[3,4,5]))
+            .panics()
+            .with_message("Expected iterator \"list\" to not contain items [3, 4, 5], but it contains [3, 4]");
+
+    }
 }
