@@ -72,4 +72,15 @@ mod test_iterator_asserter {
             .panics()
             .with_message("Expected iterator \"list_with_items\" to be empty, but it is not.");
     }
+
+    #[test]
+    fn test_is_not_empty() { 
+        let list = vec![1];
+        assert_that!(list).is_not_empty();
+
+        let list = std::vec::Vec::<i32>::new();
+        assert_that_code!(||assert_that!(list).is_not_empty())
+            .panics()
+            .with_message("Expected iterator \"list\" to be not empty, but it is.");
+    }
 }

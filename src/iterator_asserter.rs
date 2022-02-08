@@ -7,6 +7,7 @@ pub trait IteratorAssertions<T> where T: Debug + PartialEq {
     fn has_count(&self, expected_count: usize);
     fn does_not_contain_any(&self, not_expected_values: &[T]);
     fn is_empty(&self);
+    fn is_not_empty(&self);
 }
 
 impl<T,K> IteratorAssertions<T> for Asserter<K> where T: Debug + PartialEq, K: IntoIterator<Item = T> + Clone {
@@ -58,6 +59,14 @@ impl<T,K> IteratorAssertions<T> for Asserter<K> where T: Debug + PartialEq, K: I
         
         if !*is_empty {
             panic!("Expected iterator {:?} to be empty, but it is not.",self.name);
+        }
+    }
+
+    fn is_not_empty(&self) {
+        let is_empty = &self.value.clone().into_iter().next().is_none();
+        
+        if *is_empty {
+            panic!("Expected iterator {:?} to be not empty, but it is.",self.name);
         }
     }
 
