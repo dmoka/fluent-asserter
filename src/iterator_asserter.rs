@@ -3,7 +3,7 @@ use super::*;
 pub trait IteratorAssertions<T> where T: Debug + PartialEq {
     //TODO: check if we need to use mutable, with a test with mutable variable
     fn contains(&self, expected_value: T);
-    fn contains_all_of(&self, expected_values: &[T]);
+    fn contains_all(&self, expected_values: &[T]);
     fn has_count(&self, expected_count: usize);
     fn does_not_contain_any(&self, not_expected_values: &[T]);
     fn is_empty(&self);
@@ -18,7 +18,7 @@ impl<T,K> IteratorAssertions<T> for Asserter<K> where T: Debug + PartialEq, K: I
         }
     }
 
-    fn contains_all_of(&self, expected_values: &[T]) {
+    fn contains_all(&self, expected_values: &[T]) {
         let mut missing_items = std::vec::Vec::<&T>::new();
         for expected_value in expected_values {
             let contains = contains(&self.value, expected_value);

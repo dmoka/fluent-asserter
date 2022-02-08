@@ -27,15 +27,15 @@ mod test_iterator_asserter {
 
     #[test]
     fn test_contains_any() { 
-        assert_that!(vec![2,3,4]).contains_all_of(&[2,4]);
+        assert_that!(vec![2,3,4]).contains_all(&[2,4]);
 
         let list = vec![2,3,4];
-        assert_that_code!(||assert_that!(list).contains_all_of(&[4,5,6]))
+        assert_that_code!(||assert_that!(list).contains_all(&[4,5,6]))
             .panics()
             .with_message("Expected iterator \"list\" to contain items [4, 5, 6], but it does not contain [5, 6].");
 
         let list = vec![2,3,4];
-        assert_that_code!(||assert_that!(list).contains_all_of(&[5,6]))
+        assert_that_code!(||assert_that!(list).contains_all(&[5,6]))
             .panics()
             .with_message("Expected iterator \"list\" to contain items [5, 6], but it does not contain [5, 6].")
     }
