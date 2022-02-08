@@ -21,7 +21,7 @@ impl<T,K> IteratorAssertions<T> for Asserter<K> where T: Debug + PartialEq, K: I
     fn contains_all_of(&self, expected_values: &[T]) {
         let mut missing_items = std::vec::Vec::<&T>::new();
         for expected_value in expected_values {
-            let contains = &self.value.clone().into_iter().any(|i| &i==expected_value);
+            let contains = contains(&self.value, expected_value);
             if !contains {
                 missing_items.push(expected_value);
             }       
@@ -43,8 +43,8 @@ impl<T,K> IteratorAssertions<T> for Asserter<K> where T: Debug + PartialEq, K: I
         let mut missing_items = std::vec::Vec::<&T>::new();
 
         for not_expected_value in not_expected_values {
-            let contains = &self.value.clone().into_iter().any(|i| &i==not_expected_value);
-            if *contains {
+            let contains = contains(&self.value, not_expected_value);
+            if contains {
                 missing_items.push(not_expected_value);
             }       
         }
@@ -55,19 +55,27 @@ impl<T,K> IteratorAssertions<T> for Asserter<K> where T: Debug + PartialEq, K: I
     }
 
     fn is_empty(&self) {
-        let is_empty = &self.value.clone().into_iter().next().is_none();
+        let is_empty = is_empty(&self.value);
         
-        if !*is_empty {
+        if !is_empty {
             panic!("Expected iterator {:?} to be empty, but it is not.",self.name);
         }
     }
 
     fn is_not_empty(&self) {
-        let is_empty = &self.value.clone().into_iter().next().is_none();
+        let is_empty = is_empty(&self.value);
         
-        if *is_empty {
+        if is_empty {
             panic!("Expected iterator {:?} to be not empty, but it is.",self.name);
         }
     }
 
+}
+
+fn is_empty<T,K>(iterator: &K) -> bool where K: Clone + IntoIterator<Item=T>, T: Debug + PartialEq {
+    iterator.clone().into_iter().next().is_none()
+}
+
+fn contains<T,K>(iterator: &K, expected_value: &T) -> bool where K: Clone + IntoIterator<Item=T>, T: Debug + PartialEq {
+    iterator.clone().into_iter().any(|i| i==*expected_value)
 }
