@@ -72,7 +72,7 @@ impl<T,K> IteratorAssertions<T> for Asserter<K> where T: Debug + PartialEq, K: I
     }
 
     fn satisfies_respectively<F>(&self, asserter: F) where F: Fn(&T) {
-        let mut iter = &self.value.clone().into_iter().collect::<Vec::<T>>();
+        let iter = &self.value.clone().into_iter().collect::<Vec::<T>>();
         
         for item in iter {
             asserter(item);
