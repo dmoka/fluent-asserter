@@ -8,6 +8,9 @@ pub trait IteratorAssertions<T> where T: Debug + PartialEq {
     fn does_not_contain_any(&self, not_expected_values: &[T]);
     fn is_empty(&self);
     fn is_not_empty(&self);
+}
+
+pub trait IteratorSatisfiesAssertion<T> {
     fn satisfies_respectively<F>(&self, asserter: F) where F: Fn(&T);
 }
 
@@ -71,14 +74,6 @@ impl<T,K> IteratorAssertions<T> for Asserter<K> where T: Debug + PartialEq, K: I
         }
     }
 
-    fn satisfies_respectively<F>(&self, asserter: F) where F: Fn(&T) {
-        let iter = &self.value.clone().into_iter().collect::<Vec::<T>>();
-        
-        for item in iter {
-            asserter(item);
-        }
-    }
-
 }
 
 fn is_empty<T,K>(iterator: &K) -> bool where K: Clone + IntoIterator<Item=T>, T: Debug + PartialEq {
@@ -87,4 +82,14 @@ fn is_empty<T,K>(iterator: &K) -> bool where K: Clone + IntoIterator<Item=T>, T:
 
 fn contains<T,K>(iterator: &K, expected_value: &T) -> bool where K: Clone + IntoIterator<Item=T>, T: Debug + PartialEq {
     iterator.clone().into_iter().any(|i| i==*expected_value)
+}
+
+impl<T,K> IteratorSatisfiesAssertion<T> for Asserter<K> where K: IntoIterator<Item = T> + Clone {
+    fn satisfies_respectively<F>(&self, asserter: F) where F: Fn(&T) {
+        let iter = &self.value.clone().into_iter().collect::<Vec::<T>>();
+        
+        for item in iter {
+            asserter(item);
+        }
+    }
 }

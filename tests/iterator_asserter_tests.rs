@@ -6,7 +6,7 @@ use fluent_asserter::prelude::*;
 mod test_iterator_asserter {
     use super::*;
 
-    #[derive(Clone,Debug,PartialEq)]
+    #[derive(Clone)]
     struct TestObject {
         name: String,
         age: i32,
