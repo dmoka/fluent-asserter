@@ -7,7 +7,7 @@ mod test_iterator_asserter {
     use super::*;
 
     #[derive(Clone,Debug,PartialEq)]
-    struct Test {
+    struct TestObject {
         name: String,
         age: i32,
     }
@@ -104,9 +104,9 @@ mod test_iterator_asserter {
 
     #[test]
     fn test_is_equal_respectively_with_complex_type() { 
-        let list: Vec<Test> = vec![Test {name: String::from("name"),age:3}];
+        let list: Vec<TestObject> = vec![TestObject {name: String::from("name"),age:3}];
         assert_that!(list).is_equal_respectively(
-            |item1: &Test| {
+            |item1: &TestObject| {
                 assert_that!(&item1.name).is_equal_to(&String::from("name"));
                 assert_that!(item1.age).is_equal_to(3);
             }
