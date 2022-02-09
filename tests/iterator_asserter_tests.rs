@@ -5,7 +5,13 @@ use fluent_asserter::prelude::*;
 
 mod test_iterator_asserter {
     use super::*;
-    
+
+    #[derive(Clone,Debug,PartialEq)]
+    struct Test {
+        name: String,
+        age: i32,
+    }
+
     #[test]
     fn test_is_equal_to() { 
         assert_that!(vec!["item1"]).is_equal_to(vec!["item1"]);
@@ -85,13 +91,26 @@ mod test_iterator_asserter {
             .with_message("Expected iterator \"list\" to be not empty, but it is.");
     }
 
+    
     #[test]
-    fn test_is_equal_respectively() { 
+    fn test_is_equal_respectively_with_simple_type() { 
         let list = vec![2];
         assert_that!(list).is_equal_respectively(
             |item1| {
-                assert_that!(*item1).is_equal_to(3);
+                assert_that!(*item1).is_equal_to(2);
             }
-        )
+        );
+    }
+
+    #[test]
+    fn test_is_equal_respectively_with_complex_type() { 
+        let list: Vec<Test> = vec![Test {name: String::from("name"),age:3}];
+        assert_that!(list).is_equal_respectively(
+            |item1: &Test| {
+                assert_that!(&item1.name).is_equal_to(&String::from("name"));
+                assert_that!(item1.age).is_equal_to(3);
+            }
+        );
+        //TODO: check spectral how it handles
     }
 }
