@@ -95,7 +95,7 @@ mod test_iterator_asserter {
     #[test]
     fn test_is_equal_respectively_with_simple_type() { 
         let list = vec![2];
-        assert_that!(list).is_equal_respectively(
+        assert_that!(list).satisfies_respectively(
             |item1| {
                 assert_that!(*item1).is_equal_to(2);
             }
@@ -105,7 +105,7 @@ mod test_iterator_asserter {
     #[test]
     fn test_is_equal_respectively_with_complex_type() { 
         let list: Vec<TestObject> = vec![TestObject {name: String::from("name"),age:3}];
-        assert_that!(list).is_equal_respectively(
+        assert_that!(list).satisfies_respectively(
             |item1: &TestObject| {
                 assert_that!(&item1.name).is_equal_to(&String::from("name"));
                 assert_that!(item1.age).is_equal_to(3);

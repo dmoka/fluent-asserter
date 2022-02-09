@@ -8,7 +8,7 @@ pub trait IteratorAssertions<T> where T: Debug + PartialEq {
     fn does_not_contain_any(&self, not_expected_values: &[T]);
     fn is_empty(&self);
     fn is_not_empty(&self);
-    fn is_equal_respectively<F>(&self, asserter: F) where F: Fn(&T);
+    fn satisfies_respectively<F>(&self, asserter: F) where F: Fn(&T);
 }
 
 impl<T,K> IteratorAssertions<T> for Asserter<K> where T: Debug + PartialEq, K: IntoIterator<Item = T> + Clone {
@@ -71,7 +71,7 @@ impl<T,K> IteratorAssertions<T> for Asserter<K> where T: Debug + PartialEq, K: I
         }
     }
 
-    fn is_equal_respectively<F>(&self, asserter: F) where F: Fn(&T) {
+    fn satisfies_respectively<F>(&self, asserter: F) where F: Fn(&T) {
         let mut iter = &self.value.clone().into_iter().collect::<Vec::<T>>();
         
         for item in iter {
