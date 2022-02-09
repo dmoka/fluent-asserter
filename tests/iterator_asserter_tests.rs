@@ -2,9 +2,10 @@ extern crate fluent_asserter;
 use fluent_asserter::*;
 use fluent_asserter::prelude::*;
 
+
 mod test_iterator_asserter {
     use super::*;
-
+    
     #[test]
     fn test_is_equal_to() { 
         assert_that!(vec!["item1"]).is_equal_to(vec!["item1"]);
@@ -82,5 +83,15 @@ mod test_iterator_asserter {
         assert_that_code!(||assert_that!(list).is_not_empty())
             .panics()
             .with_message("Expected iterator \"list\" to be not empty, but it is.");
+    }
+
+    #[test]
+    fn test_is_equal_respectively() { 
+        let list = vec![2];
+        assert_that!(list).is_equal_respectively(
+            |item1| {
+                assert_that!(*item1).is_equal_to(3);
+            }
+        )
     }
 }
