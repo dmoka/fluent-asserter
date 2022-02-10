@@ -94,17 +94,3 @@ impl ApproxEqualMarkerTrait for UnsignedIntApproxEqual{}
 pub trait ApproximatelyEqual<T, S:ApproxEqualMarkerTrait  > {
     fn is_approx_equal_to(self, expected: T, delta: T);
 }
-
-//TODO: S - add this to tests folder
-#[cfg(test)]
-mod test {
-    use super::prelude::*;
-
-    #[test]
-    fn test_macro_syntax() {
-        assert_that_code!(|| panic!("")).panics();
-
-        assert_that!("value").is_not_empty();
-    }
-
-}
