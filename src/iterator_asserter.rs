@@ -11,7 +11,7 @@ pub trait IteratorAssertions<T> where T: Debug + PartialEq {
 }
 
 pub trait IteratorSatisfiesAssertion<T> {
-    fn satisfies_respectively<F>(&self, asserter: F) where F: Fn(&T);
+    fn satisfies_respectively(&self, asserter: Vec<Box<dyn Fn(&T)>>);
 }
 
 impl<T,K> IteratorAssertions<T> for Asserter<K> where T: Debug + PartialEq, K: IntoIterator<Item = T> + Clone {
@@ -85,11 +85,12 @@ fn contains<T,K>(iterator: &K, expected_value: &T) -> bool where K: Clone + Into
 }
 
 impl<T,K> IteratorSatisfiesAssertion<T> for Asserter<K> where K: IntoIterator<Item = T> + Clone {
-    fn satisfies_respectively<F>(&self, asserter: F) where F: Fn(&T) {
+    fn satisfies_respectively(&self, asserter: Vec<Box<dyn Fn(&T)>>) {//TODO: S - rename to asserters
+
         let iter = &self.value.clone().into_iter().collect::<Vec::<T>>();
         
-        for item in iter {
-            asserter(item);
+        for i in 0..asserter.len() {
+            asserter[i](&iter[i])
         }
     }
 }

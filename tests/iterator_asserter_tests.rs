@@ -93,24 +93,48 @@ mod test_iterator_asserter {
 
     
     #[test]
-    fn test_is_equal_respectively_with_simple_type() { 
-        let list = vec![2];
-        assert_that!(list).satisfies_respectively(
-            |item1| {
-                assert_that!(*item1).is_equal_to(2);
-            }
+    fn test_is_equal_respectively_with_simple_single_type() { 
+        let list = vec![2i32];
+        assert_that!(list).satisfies_respectively(vec![
+            Box::new(|item1| {
+                assert_that!(item1).is_equal_to(&2);
+            })]
         );
     }
 
     #[test]
-    fn test_is_equal_respectively_with_complex_type() { 
+    fn test_is_equal_respectively_with_complex_single_type() { 
         let list: Vec<TestObject> = vec![TestObject {name: String::from("name"),age:3}];
-        assert_that!(list).satisfies_respectively(
-            |item1: &TestObject| {
+        assert_that!(list).satisfies_respectively(vec![
+            Box::new(|item1: &TestObject| {
                 assert_that!(&item1.name).is_equal_to(&String::from("name"));
                 assert_that!(item1.age).is_equal_to(3);
-            }
+            })
+            ]
         );
         //TODO: check spectral how it handles
     }
+
+    //TODO: S - use more meaningful names in this class test doubles
+    #[test]
+    fn test_is_equal_respectively_with_for_multiple_items() { 
+        let list: Vec<TestObject> = vec![TestObject {name: String::from("name1"),age:5}, TestObject {name: String::from("name2"),age:11}];
+        
+        assert_that!(list).satisfies_respectively(vec![
+                Box::new(|item1: &TestObject| {
+                    assert_that!(&item1.name).is_equal_to(&String::from("name1"));
+                    assert_that!(&item1.age).is_equal_to(&5);
+                }),
+                Box::new(|item2: &TestObject| {
+                    assert_that!(&item2.name).is_equal_to(&String::from("name2"));
+                    assert_that!(&item2.age).is_equal_to(&11);
+                })
+            ]
+        );
+    }
+
+    //TODO: create a varargs! macro where once can pass closures, that returns a vec with closures
+    //TODO: CHECK THIS: https://users.rust-lang.org/t/how-to-match-a-closure-in-rust/59586/2
+    //TODO: add test when the size is different of the list and asserters
+
 }
