@@ -77,20 +77,3 @@ pub fn create_asserter<T>(value: T, name: String) -> Asserter<T> {
         name
     }
 }
-
-//TODO: can we put these to approx class? If we put there, we can not use is_approx_equal_to method in test project. 
-//TODO: S - We should put the PRELUDE
-pub trait ApproxEqualMarkerTrait {}
-
-pub struct UnsignedIntApproxEqual;
-pub struct SignedIntApproxEqual;
-pub struct FloatApproxEqual;
-
-impl ApproxEqualMarkerTrait for SignedIntApproxEqual{}
-impl ApproxEqualMarkerTrait for FloatApproxEqual{}
-impl ApproxEqualMarkerTrait for UnsignedIntApproxEqual{}
-
-#[allow(clippy::wrong_self_convention)] 
-pub trait ApproximatelyEqual<T, S:ApproxEqualMarkerTrait  > {
-    fn is_approx_equal_to(self, expected: T, delta: T);
-}

@@ -1,7 +1,9 @@
 use super::*;
-use num::Unsigned;
 use num::traits::Pow;
-use num::{Integer, Signed, Float};
+
+pub trait IsApproxEqual<T> {
+    fn is_approx_equal(&self, expected_value: T, delta: T);
+}
 
 macro_rules! abs_diff_unsigned_eq {
     ($x:expr, $y:expr, $d:expr) => {
@@ -27,51 +29,104 @@ macro_rules! abs_diff {
     }
 }
 
-impl<T> ApproximatelyEqual<T, UnsignedIntApproxEqual> for Asserter<T> where T : Unsigned + Integer {
-    fn is_approx_equal_to(self, expected: T, delta: T) {
-        abs_diff_unsigned_eq!(self.value,expected,delta);
-    }
+macro_rules! generate_is_approx_equal_impl_for_signed {
+    ($TStructType:ident)  => {
+        impl IsApproxEqual<$TStructType> for Asserter<$TStructType> {
+            fn is_approx_equal(&self, expected: $TStructType, delta: $TStructType) {
+                abs_diff_signed_eq!(self.value,expected,delta);
+            }
+        }     
+    };
 }
 
-impl<T> ApproximatelyEqual<T, SignedIntApproxEqual> for Asserter<T> where T : Signed + Integer {
-    fn is_approx_equal_to(self, expected: T, delta: T) {
-        abs_diff_signed_eq!(self.value,expected,delta);
-    }
+generate_is_approx_equal_impl_for_signed!(i8);
+generate_is_approx_equal_impl_for_signed!(i16);
+generate_is_approx_equal_impl_for_signed!(i32);
+generate_is_approx_equal_impl_for_signed!(i64);
+generate_is_approx_equal_impl_for_signed!(i128);
+
+
+macro_rules! generate_is_approx_equal_impl_for_unsigned {
+    ($TStructType:ident)  => {
+        impl IsApproxEqual<$TStructType> for Asserter<$TStructType> {
+            fn is_approx_equal(&self, expected: $TStructType, delta: $TStructType) {
+                abs_diff_unsigned_eq!(self.value,expected,delta);
+            }
+        }     
+    };
 }
 
-//TODO: is it fine for f32, or we should create separate for that?
-impl<T> ApproximatelyEqual<T,FloatApproxEqual> for Asserter<T> where T :Float + std::fmt::Display{
-    fn is_approx_equal_to(self, expected: T, delta: T) {
-        let rounder = 10f64.pow(get_length_of_rounder(delta));
+generate_is_approx_equal_impl_for_unsigned!(u8);
+generate_is_approx_equal_impl_for_unsigned!(u16);
+generate_is_approx_equal_impl_for_unsigned!(u32);
+generate_is_approx_equal_impl_for_unsigned!(u64);
+generate_is_approx_equal_impl_for_unsigned!(u128);
+
+macro_rules! get_length_of_rounder {
+    ($delta:expr)  => {
+        $delta.to_string()
+            .split('.')
+            .last()
+            .unwrap()
+            .len()
+            .to_string()
+            .parse()
+            .unwrap()
+    };
+}
+
+macro_rules! round {
+    ($TStructType:ident, $diff:expr,$rounder:expr)  => {{
+        let number : $TStructType = format!("{}",$diff).parse().unwrap();
+        let number: $TStructType = (number * $rounder).round() / $rounder;
+
+        return number;
+    }}
+}
+
+impl IsApproxEqual<f64> for Asserter<f64> {
+    fn is_approx_equal(&self, expected_value: f64, delta: f64) {
+        let rounder = 10f64.pow(get_length_of_rounder_f64(delta));
         
-        let diff = abs_diff!(self.value,expected);
+        let diff = abs_diff!(self.value,expected_value);
 
-        let diff_f64 = round(diff, rounder);
-        let delta_f64 =  round(delta, rounder);
+        let diff_f64 = round_f64(diff, rounder);
+        let delta_f64 =  round_f64(delta, rounder);
 
         if diff_f64 > delta_f64 {
-            panic!("The number '{}' is not approximately equal to '{}' within delta '{}'",self.name,expected,delta)
+            panic!("The number '{}' is not approximately equal to '{}' within delta '{}'",self.name,expected_value,delta)
         }
     }
 }
 
-//TODO: add abstraction for this, either in a new struct with new or some logic class
-fn get_length_of_rounder<T>(delta: T) -> f64 where T: ToString {
-    //TODO: Shall we handle error here?
-    return delta.to_string()
-        .split('.')
-        .last()
-        .unwrap()
-        .len()
-        .to_string()
-        .parse()
-        .unwrap();
+impl IsApproxEqual<f32> for Asserter<f32> {
+    fn is_approx_equal(&self, expected_value: f32, delta: f32) {
+        let rounder = 10f32.pow(get_length_of_rounder_f32(delta));
+        
+        let diff = abs_diff!(self.value,expected_value);
+
+        let diff_f32 = round_f32(diff, rounder);
+        let delta_f32 =  round_f32(delta, rounder);
+
+        if diff_f32 > delta_f32 {
+            panic!("The number '{}' is not approximately equal to '{}' within delta '{}'",self.name,expected_value,delta)
+        }
+    }
 }
 
-fn round<T>(diff: T, rounder: f64) -> f64 where T: std::fmt::Display {
-    let number : f64 = format!("{}",diff).parse().unwrap();
-    let number: f64 = (number * rounder).round() / rounder;
-    
-    number
+fn get_length_of_rounder_f64<T>(delta: T) -> f64 where T: ToString {
+    return get_length_of_rounder!(delta);
+}
+
+fn get_length_of_rounder_f32<T>(delta: T) -> f32 where T: ToString {
+    return get_length_of_rounder!(delta);
+}
+
+fn round_f64<T>(diff: T, rounder: f64) -> f64 where T: std::fmt::Display {
+    round!(f64,diff,rounder)
+}
+
+fn round_f32<T>(diff: T, rounder: f32) -> f32 where T: std::fmt::Display {
+    round!(f32,diff,rounder)
 }
 
