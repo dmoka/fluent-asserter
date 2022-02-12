@@ -136,7 +136,7 @@ mod test_iterator_asserter {
     fn test_satisfies_respectively_with_for_multiple_items_by_using_helper_macro() { 
         let list: Vec<TestObject> = vec![TestObject {name: String::from("name1"),age:5}, TestObject {name: String::from("name2"),age:11}];
         
-        assert_that!(list).satisfies_respectively(asserters!(TestObject,
+        assert_that!(list).satisfies_respectively(asserters!(
             |item1: &TestObject| {
                 assert_that!(&item1.age).is_equal_to(&5);
                 assert_that!(&item1.name).is_equal_to(&String::from("name1"));
@@ -152,7 +152,7 @@ mod test_iterator_asserter {
     fn test_that_satisfies_respectively_fails() { 
         let list: Vec<TestObject> = vec![TestObject {name: String::from("name1"),age:5}];
         
-        assert_that!(list).satisfies_respectively(asserters!(TestObject,
+        assert_that!(list).satisfies_respectively(asserters!(
             |item1: &TestObject| {
                 assert_that!(&item1.age).is_equal_to(&6);
             }));
@@ -161,13 +161,11 @@ mod test_iterator_asserter {
     #[should_panic(expected="Expected number of items to be 1, but was 2.")]
     #[test]
     fn test_that_satisfies_respectively_fails_when_different_size_if_asserters_specified() { 
-        let list = vec![2i32, 5i32];
-        assert_that!(list).satisfies_respectively(asserters!(i32,
-            |item| assert_that!(item).is_equal_to(&2)
-        ));
+        let list: Vec<TestObject> = vec![TestObject {name: String::from("name1"),age:5}, TestObject {name: String::from("name2"),age:11}];
+        
+        assert_that!(list).satisfies_respectively(asserters!(
+            |item1: &TestObject| {
+                assert_that!(&item1.age).is_equal_to(&6);
+            }));
     }
-
-
-    //TODO: CHECK THIS: https://users.rust-lang.org/t/how-to-match-a-closure-in-rust/59586/2
-
 }
