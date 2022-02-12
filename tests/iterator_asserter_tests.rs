@@ -103,7 +103,7 @@ mod test_iterator_asserter {
     }
 
     #[test]
-    fn test_is_equal_respectively_with_complex_single_type() { 
+    fn test_satisfies_respectively_with_complex_single_type() { 
         let list: Vec<TestObject> = vec![TestObject {name: String::from("name"),age:3}];
         assert_that!(list).satisfies_respectively(vec![
             Box::new(|item1: &TestObject| {
@@ -112,12 +112,11 @@ mod test_iterator_asserter {
             })
             ]
         );
-        //TODO: check spectral how it handles
     }
 
     //TODO: S - use more meaningful names in this class test doubles
     #[test]
-    fn test_is_equal_respectively_with_for_multiple_items() { 
+    fn test_satisfies_respectively_with_complex_multiple_types() { 
         let list: Vec<TestObject> = vec![TestObject {name: String::from("name1"),age:5}, TestObject {name: String::from("name2"),age:11}];
         
         assert_that!(list).satisfies_respectively(vec![
@@ -134,7 +133,7 @@ mod test_iterator_asserter {
     }
 
     #[test]
-    fn test_is_equal_respectively_with_for_multiple_items_by_using_helper_macro() { 
+    fn test_satisfies_respectively_with_for_multiple_items_by_using_helper_macro() { 
         let list: Vec<TestObject> = vec![TestObject {name: String::from("name1"),age:5}, TestObject {name: String::from("name2"),age:11}];
         
         assert_that!(list).satisfies_respectively(asserters!(TestObject,
