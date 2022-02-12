@@ -133,6 +133,21 @@ mod test_iterator_asserter {
     }
 
     #[test]
+    fn test_satisfies_respectively_with_for_multiple_simple_types_by_using_helper_macro() { 
+        let list =  vec![1u32,5u32];
+        
+        assert_that!(list).satisfies_respectively(asserters!(
+            |item1: &u32| {
+                assert_that!(item1).is_equal_to(&1);
+                assert_that!(item1).is_smaller_than(&2);
+            },
+            |item2: &u32| {
+                assert_that!(item2).is_equal_to(&5);
+                assert_that!(item2).is_greater_than(&4);
+            }));
+    }
+
+    #[test]
     fn test_satisfies_respectively_with_for_multiple_items_by_using_helper_macro() { 
         let list: Vec<TestObject> = vec![TestObject {name: String::from("name1"),age:5}, TestObject {name: String::from("name2"),age:11}];
         
@@ -168,4 +183,5 @@ mod test_iterator_asserter {
                 assert_that!(&item1.age).is_equal_to(&6);
             }));
     }
+
 }
