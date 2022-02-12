@@ -137,7 +137,7 @@ mod test_iterator_asserter {
     fn test_is_equal_respectively_with_for_multiple_items_by_using_helper_macro() { 
         let list: Vec<TestObject> = vec![TestObject {name: String::from("name1"),age:5}, TestObject {name: String::from("name2"),age:11}];
         
-        assert_that!(list).satisfies_respectively(args!(TestObject,
+        assert_that!(list).satisfies_respectively(asserters!(TestObject,
             |item1: &TestObject| {
                 assert_that!(&item1.age).is_equal_to(&5);
                 assert_that!(&item1.name).is_equal_to(&String::from("name1"));
@@ -149,19 +149,6 @@ mod test_iterator_asserter {
     }
 
     //TODO: add failing test
-
-    #[macro_export]
-    macro_rules! args {
-        ($T:ident, $($closure:expr),*)  => {
-            {
-                let mut temp_vec = Vec::<Box<dyn Fn(&$T)>>::new();
-                $(
-                    temp_vec.push(Box::new($closure));
-                )*
-                temp_vec            
-            }
-        };
-    }
     
 
     //TODO: CHECK THIS: https://users.rust-lang.org/t/how-to-match-a-closure-in-rust/59586/2

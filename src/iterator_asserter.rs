@@ -94,3 +94,16 @@ impl<T,K> IteratorSatisfiesAssertion<T> for Asserter<K> where K: IntoIterator<It
         }
     }
 }
+
+#[macro_export]
+macro_rules! asserters {
+    ($TStructType:ident, $($closure:expr),*)  => {
+        {
+            let mut temp_vec = Vec::<Box<dyn Fn(&$TStructType)>>::new();
+            $(
+                temp_vec.push(Box::new($closure));
+            )*
+            temp_vec            
+        }
+    };
+}
