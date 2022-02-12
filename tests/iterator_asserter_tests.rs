@@ -133,7 +133,37 @@ mod test_iterator_asserter {
         );
     }
 
-    //TODO: create a varargs! macro where once can pass closures, that returns a vec with closures
+    #[test]
+    fn test_is_equal_respectively_with_for_multiple_items_by_using_helper_macro() { 
+        let list: Vec<TestObject> = vec![TestObject {name: String::from("name1"),age:5}, TestObject {name: String::from("name2"),age:11}];
+        
+        assert_that!(list).satisfies_respectively(args!(TestObject,
+            |item1: &TestObject| {
+                assert_that!(&item1.age).is_equal_to(&5);
+                assert_that!(&item1.name).is_equal_to(&String::from("name1"));
+            },
+            |item2: &TestObject| {
+                assert_that!(&item2.name).is_equal_to(&String::from("name2"));
+                assert_that!(&item2.age).is_equal_to(&11);
+            }));
+    }
+
+    //TODO: add failing test
+
+    #[macro_export]
+    macro_rules! args {
+        ($T:ident, $($closure:expr),*)  => {
+            {
+                let mut temp_vec = Vec::<Box<dyn Fn(&$T)>>::new();
+                $(
+                    temp_vec.push(Box::new($closure));
+                )*
+                temp_vec            
+            }
+        };
+    }
+    
+
     //TODO: CHECK THIS: https://users.rust-lang.org/t/how-to-match-a-closure-in-rust/59586/2
     //TODO: add test when the size is different of the list and asserters
 
