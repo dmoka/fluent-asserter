@@ -158,10 +158,16 @@ mod test_iterator_asserter {
             }));
     }
 
-    //TODO: add failing test
-    
+    #[should_panic(expected="Expected number of items to be 1, but was 2.")]
+    #[test]
+    fn test_that_satisfies_respectively_fails_when_different_size_if_asserters_specified() { 
+        let list = vec![2i32, 5i32];
+        assert_that!(list).satisfies_respectively(asserters!(i32,
+            |item| assert_that!(item).is_equal_to(&2)
+        ));
+    }
+
 
     //TODO: CHECK THIS: https://users.rust-lang.org/t/how-to-match-a-closure-in-rust/59586/2
-    //TODO: add test when the size is different of the list and asserters
 
 }
