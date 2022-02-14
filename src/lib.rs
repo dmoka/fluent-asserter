@@ -14,6 +14,7 @@ mod number_asserter;
 mod number_approx_asserter;
 mod boolean_asserter;
 mod iterator_asserter;
+mod option_asserter;
 pub mod prelude;
 
 use std::{panic};
