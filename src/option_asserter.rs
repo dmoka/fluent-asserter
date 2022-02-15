@@ -13,17 +13,17 @@ impl<T> Asserter<Option<T>> where T : PartialEq + std::fmt::Display  {
         match &self.value {
             Some(val) => {
                 if *val != value {
-                    panic!("Expected '{}' to be Some({}), but it is Some({}).",&self.name, value, val);
+                    panic!("Expected '{}' to be Some({}), but found Some({}).",&self.name, value, val);
                 }
             },
-            None => panic!("Expected '{}' to be Some({}), but it is None.",&self.name, value),
+            None => panic!("Expected '{}' to be Some({}), but found None.",&self.name, value),
         }
     }
 
     pub fn is_none(&self) {
         match &self.value {
             None => {}
-            Some(val) => panic!("Expected '{}' to be None, but it is Some({}).",&self.name, val)
+            Some(val) => panic!("Expected '{}' to be None, but found Some({}).",&self.name, val)
         }
     }
 
@@ -53,7 +53,7 @@ mod test_option_asserter {
 
         assert_that_code!(||assert_that!(option).is_some_with_value(4))
             .panics()
-            .with_message("Expected 'option' to be Some(4), but it is Some(3).");
+            .with_message("Expected 'option' to be Some(4), but found Some(3).");
     }
 
     #[test]
@@ -62,7 +62,7 @@ mod test_option_asserter {
 
         assert_that_code!(||assert_that!(option).is_some_with_value(4))
             .panics()
-            .with_message("Expected 'option' to be Some(4), but it is None.");
+            .with_message("Expected 'option' to be Some(4), but found None.");
     }
 
     #[test]
@@ -77,7 +77,7 @@ mod test_option_asserter {
 
         assert_that_code!(||assert_that!(option).is_none())
             .panics()
-            .with_message("Expected 'option' to be None, but it is Some(3).");
+            .with_message("Expected 'option' to be None, but found Some(3).");
     }
 
 }
