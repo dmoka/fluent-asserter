@@ -2,10 +2,10 @@
 
 //TODO: follow these practices: https://pascalhertleif.de/artikel/good-practices-for-writing-rust-libraries/
 
-//TODO: add theory via annotation
 //TODO: add path assertions - exists,doesNotExists, is a file, is a directory, hasfile name
 
 //TODO: add our answer here: https://stackoverflow.com/questions/26469715/how-do-i-write-a-rust-unit-test-that-ensures-that-a-panic-has-occurred
+//TODO: add hashmap asserter
 //And here too± https://stackoverflow.com/questions/60965319/problems-using-paniccatch-unwind-in-a-macro-context-test-for-panics-in-unit-te
 //and also to other place
 mod string_asserter;
@@ -15,6 +15,7 @@ mod number_approx_asserter;
 mod boolean_asserter;
 mod iterator_asserter;
 mod option_asserter;
+mod result_asserter;
 pub mod prelude;
 
 use std::{panic};
