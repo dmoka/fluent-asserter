@@ -5,10 +5,10 @@ impl<T> Asserter<Option<T>> where T : PartialEq + std::fmt::Display  {
         match &self.value {
             Some(val) => {
                 if *val != value {
-                    panic!("Expected '{}' to have value {}, but it has {}.",&self.name, value, val);
+                    panic!("Expected '{}' to be Some({}), but it is Some({}).",&self.name, value, val);
                 }
             },
-            None => panic!("Expected '{}' to have value {}, but it is None.",&self.name, value),
+            None => panic!("Expected '{}' to be Some({}), but it is None.",&self.name, value),
         }
     }
 
@@ -33,7 +33,7 @@ mod test {
 
         assert_that_code!(||assert_that!(option).is_some(4))
             .panics()
-            .with_message("Expected 'option' to have value 4, but it has 3.");
+            .with_message("Expected 'option' to be Some(4), but it is Some(3).");
     }
 
     #[test]
@@ -42,7 +42,7 @@ mod test {
 
         assert_that_code!(||assert_that!(option).is_some(4))
             .panics()
-            .with_message("Expected 'option' to have value 4, but it is None.");
+            .with_message("Expected 'option' to be Some(4), but it is None.");
     }
 
     #[test]
