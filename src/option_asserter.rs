@@ -1,7 +1,7 @@
 use super::*;
 
 impl<T> Asserter<Option<T>> where T : PartialEq + std::fmt::Display  {
-    pub fn is_some(&self, value: T) {
+    pub fn is_some_with_value(&self, value: T) {
         match &self.value {
             Some(val) => {
                 if *val != value {
@@ -29,9 +29,9 @@ mod test {
     #[test]
     fn test_is_some_with_some() {
         let option = Option::Some(3);
-        assert_that!(option).is_some(3);
+        assert_that!(option).is_some_with_value(3);
 
-        assert_that_code!(||assert_that!(option).is_some(4))
+        assert_that_code!(||assert_that!(option).is_some_with_value(4))
             .panics()
             .with_message("Expected 'option' to be Some(4), but it is Some(3).");
     }
@@ -40,7 +40,7 @@ mod test {
     fn test_is_some_with_none() {
         let option = Option::None;
 
-        assert_that_code!(||assert_that!(option).is_some(4))
+        assert_that_code!(||assert_that!(option).is_some_with_value(4))
             .panics()
             .with_message("Expected 'option' to be Some(4), but it is None.");
     }
