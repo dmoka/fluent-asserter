@@ -98,8 +98,9 @@ impl<T,K> IteratorSatisfiesAssertion<T> for Asserter<K> where K: IntoIterator<It
     }
 }
 
+//rename to with_asserters?
 #[macro_export]
-macro_rules! asserters {
+macro_rules! with_asserters {
     ($($closure:expr),*)  => {
         vec![
             $( Box::new($closure) as Box<dyn for<'a> Fn(&'a _) -> _> ),*
