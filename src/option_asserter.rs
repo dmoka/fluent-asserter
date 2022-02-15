@@ -1,7 +1,7 @@
 use super::*;
 
 impl<T> Asserter<Option<T>> where T : PartialEq + std::fmt::Display  {
-    pub fn has_some(&self, value: T) {
+    pub fn is_some(&self, value: T) {
         match &self.value {
             Some(val) => {
                 if *val != value {
@@ -12,7 +12,7 @@ impl<T> Asserter<Option<T>> where T : PartialEq + std::fmt::Display  {
         }
     }
 
-    pub fn has_none(&self) {
+    pub fn is_none(&self) {
         match &self.value {
             None => {}
             Some(val) => panic!("Expected '{}' to be None, but it is Some({}).",&self.name, val)
@@ -29,9 +29,9 @@ mod test {
     #[test]
     fn test_has_some_with_some() {
         let option = Option::Some(3);
-        assert_that!(option).has_some(3);
+        assert_that!(option).is_some(3);
 
-        assert_that_code!(||assert_that!(option).has_some(4))
+        assert_that_code!(||assert_that!(option).is_some(4))
             .panics()
             .with_message("Expected 'option' to have value 4, but it has 3.");
     }
@@ -40,7 +40,7 @@ mod test {
     fn test_has_some_with_none() {
         let option = Option::None;
 
-        assert_that_code!(||assert_that!(option).has_some(4))
+        assert_that_code!(||assert_that!(option).is_some(4))
             .panics()
             .with_message("Expected 'option' to have value 4, but it is None.");
     }
@@ -48,14 +48,14 @@ mod test {
     #[test]
     fn test_has_none_with_none() {
         let option = Option::<String>::None;
-        assert_that!(option).has_none();
+        assert_that!(option).is_none();
     }
 
     #[test]
     fn test_has_none_with_some() {
         let option = Option::Some(3);
 
-        assert_that_code!(||assert_that!(option).has_none())
+        assert_that_code!(||assert_that!(option).is_none())
             .panics()
             .with_message("Expected 'option' to be None, but it is Some(3).");
     }
