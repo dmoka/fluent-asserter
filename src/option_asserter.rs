@@ -27,7 +27,7 @@ mod test {
     use super::*;
 
     #[test]
-    fn test_has_some_with_some() {
+    fn test_is_some_with_some() {
         let option = Option::Some(3);
         assert_that!(option).is_some(3);
 
@@ -37,7 +37,7 @@ mod test {
     }
 
     #[test]
-    fn test_has_some_with_none() {
+    fn test_is_some_with_none() {
         let option = Option::None;
 
         assert_that_code!(||assert_that!(option).is_some(4))
@@ -46,13 +46,13 @@ mod test {
     }
 
     #[test]
-    fn test_has_none_with_none() {
+    fn test_is_none_with_none() {
         let option = Option::<String>::None;
         assert_that!(option).is_none();
     }
 
     #[test]
-    fn test_has_none_with_some() {
+    fn test_is_none_with_some() {
         let option = Option::Some(3);
 
         assert_that_code!(||assert_that!(option).is_none())
