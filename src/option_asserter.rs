@@ -1,6 +1,14 @@
 use super::*;
 
 impl<T> Asserter<Option<T>> where T : PartialEq + std::fmt::Display  {
+    pub fn is_some(&self) {
+        match &self.value {
+            None => {panic!("Expected '{}' to be Some(_), but found None", &self.name)}
+            Some(_) => {}
+        }
+
+    }
+
     pub fn is_some_with_value(&self, value: T) {
         match &self.value {
             Some(val) => {
@@ -23,8 +31,20 @@ impl<T> Asserter<Option<T>> where T : PartialEq + std::fmt::Display  {
 
 //TODO: S - add this to tests folder
 #[cfg(test)]
-mod test {
+mod test_option_asserter {
     use super::*;
+
+    #[test]
+    fn test_is_some_without_value() {
+        let option = Option::Some(3);
+        assert_that!(option).is_some();
+
+        let option = Option::<i32>::None;
+
+        assert_that_code!(||assert_that!(option).is_some())
+            .panics()
+            .with_message("Expected 'option' to be Some(_), but found None");
+    }
 
     #[test]
     fn test_is_some_with_some() {
