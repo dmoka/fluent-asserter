@@ -16,6 +16,7 @@ mod boolean_asserter;
 mod iterator_asserter;
 mod option_asserter;
 mod result_asserter;
+mod hashmap_asserter;
 pub mod prelude;
 
 use std::{panic};
