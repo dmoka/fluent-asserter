@@ -1,6 +1,8 @@
 use std::fmt::Display;
 use crate::*;
 
+//TODO: make trait and implement it
+
 impl<T, K> Asserter<Result<T,K>> where T : PartialEq + Display, K : PartialEq + Display{
     pub fn is_ok(&self) {
         match &self.value {

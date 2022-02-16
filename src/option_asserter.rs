@@ -1,5 +1,7 @@
 use super::*;
 
+//TODO: make trait and implement it
+
 impl<T> Asserter<Option<T>> where T : PartialEq + std::fmt::Display  {
     pub fn is_some(&self) {
         match &self.value {

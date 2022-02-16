@@ -1,5 +1,7 @@
 use super::*;
 
+//TODO: make trait and implement it
+
 impl<T> Asserter<T> where T : Copy + PartialOrd + std::fmt::Debug + std::fmt::Display {
     pub fn is_smaller_than(self, expected: T) {
         if self.value >= expected {

@@ -1,5 +1,6 @@
 use super::*;
 
+//TODO: make trait and implement it
 impl Asserter<bool> {
     pub fn is_true(&self) 
     {
