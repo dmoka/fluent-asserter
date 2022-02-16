@@ -1,5 +1,4 @@
-//! A fluent library to make the Rustaceans life easier to write clean tests.
-//! Writing clean tests is as important as writing clean code.
+//! A fluent library to write clean tests. Writing clean tests is as important as writing clean code.
 //! This library contains test asserters with a fluent-like syntax to be used for making clean assertions for most of the standard Rust types.
 //! Also ideal for enhancing the Test-Driven Development (TDD) experience to design code.
 
