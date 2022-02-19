@@ -40,6 +40,7 @@ macro_rules! assert_that {
     };
 }
 
+///  NOTE: Do not use this and should_panic at the same time with multi-core text executions, as it can have non-deterministic behaviour
 #[macro_export]
 macro_rules! assert_that_code {
     ($value:expr) => {
