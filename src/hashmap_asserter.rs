@@ -112,13 +112,15 @@ mod test_hashmap_asserter {
         assert_that!(&hash_map).contains_key(&String::from("key"));
     }
 
+
     #[test]
-    #[should_panic(expected="Expected &hash_map to contain key2, but it does not.")]
     fn test_contains_key_error_handling() {
         let mut hash_map = HashMap::<String,String>::new();
         hash_map.insert(String::from("key"),String::from("value"));
 
-        assert_that!(&hash_map).contains_key(&String::from("key2"));
+        assert_that_code!(||assert_that!(&hash_map).contains_key(&String::from("key2")).with_value(String::from("value")))
+            .panics()
+            .with_message("Expected &hash_map to contain key2, but it does not.")
     }
 
     #[test]
