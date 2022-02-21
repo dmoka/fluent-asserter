@@ -1,7 +1,29 @@
 //! A library to write test assertions in a fluent syntax. Writing clean tests is as important as writing clean code.
 //! This library contains test asserters to be used to make clean assertions in our automated tests.
 //! It also helps to enhance the Test-Driven Development (TDD) experience, resulting in clean, readable and maintainable tests.
-
+//!
+//! ## Usage
+//!
+//! Add the dependency to your `Cargo.toml`:
+//!
+//! ```toml
+//! [dependencies]
+//! spectral = "0.6.0"
+//! ```
+//!
+//! Then add this to your crate:
+//!
+//! ```rust
+//! extern crate fluent_asserter;
+//! ```
+//! And finally, import the the predefined traits from the prelude
+//! ```rust
+//! use fluent_asserter::prelude::*;
+//! ```
+//!
+//! Now you will be able to write test assertions in a fluent syntax
+//!
+//! ## Examples
 //Idiomatic rust https://cheats.rs/#idiomatic-rust
 
 //TODO: follow these practices: https://pascalhertleif.de/artikel/good-practices-for-writing-rust-libraries/
