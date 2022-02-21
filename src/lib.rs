@@ -1,6 +1,6 @@
-//! A fluent library to write clean tests. Writing clean tests is as important as writing clean code.
-//! This library contains test asserters with a fluent-like syntax to be used for making clean assertions for most of the standard Rust types.
-//! Also ideal for enhancing the Test-Driven Development (TDD) experience to design code.
+//! A library to write test assertions in a fluent syntax. Writing clean tests is as important as writing clean code.
+//! This library contains test asserters to be used to make clean assertions in our automated tests.
+//! It also helps to enhance the Test-Driven Development (TDD) experience, resulting in clean, readable and maintainable tests.
 
 //Idiomatic rust https://cheats.rs/#idiomatic-rust
 
