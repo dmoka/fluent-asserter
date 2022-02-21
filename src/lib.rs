@@ -8,7 +8,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! spectral = "0.6.0"
+//! fluent-asserter = "0.1.0"
 //! ```
 //!
 //! Then add this to your crate:
