@@ -21,9 +21,26 @@
 //! use fluent_asserter::prelude::*;
 //! ```
 //!
-//! Now you will be able to write test assertions in a fluent syntax
+//! Now you should be able to write test assertions with a fluent syntax in your tests.
 //!
-//! ## Examples
+//! ## String and string slice assertions
+//! You can write string assertions for both String and str slices
+//! ```rust
+//!#[test]
+//!fn test_string_assertions() {
+//!    assert_that!("Life tastes great!").is_equal_to("Life tastes great!");
+//!    assert_that!("Life tastes great!").contains("great");
+//!    assert_that!("Life tastes great!").starts_with("Life");
+//!    assert_that!("Life tastes great!").ends_with("!");
+//!    assert_that!("Life tastes great!").is_not_empty();
+//!    assert_that!("Life tastes great!").has_length(18);
+//!    assert_that!("Life tastes great!").contains_any(&["Life", "awesome"]);
+//!    assert_that!("Life tastes great!").contains_all(&["Life", "tastes", "great!"]);
+//!}
+//! ```
+//!
+//!
+//!
 //Idiomatic rust https://cheats.rs/#idiomatic-rust
 
 //TODO: follow these practices: https://pascalhertleif.de/artikel/good-practices-for-writing-rust-libraries/
