@@ -82,12 +82,41 @@
 //! ```rust
 //! #[test]
 //! fn iterator_assertions() {
-//!     assert_that!(vec!["tasty", "delicious", "lovely"]).is_equal_to(vec!["tasty", "delicious"]);
+//!     assert_that!(vec!["tasty", "delicious", "lovely"]).is_equal_to(vec!["tasty", "delicious", "lovely"]);
 //!     assert_that!(vec!["tasty", "delicious", "lovely"]).contains("delicious");
 //!     assert_that!(vec!["tasty", "delicious", "lovely"]).contains_all(&["tasty", "delicious", "lovely"]);
 //!     assert_that!(vec!["tasty", "delicious", "lovely"]).has_count(3);
 //!     assert_that!(vec!["tasty", "delicious", "lovely"]).does_not_contain_any(&["awesome", "amazing"]);
 //!     assert_that!(vec!["tasty", "delicious", "lovely"]).is_not_empty();
+//! }
+//! ```
+//!
+//! ## Iterator assertions for structs
+//!
+//! ```rust
+//! #[test]
+//! fn iterator_assertion_for_struct() {
+//!     let people: Vec<Person> = vec![
+//!         Person {
+//!             name: String::from("Daniel"),
+//!             age: 32,
+//!         },
+//!         Person {
+//!             name: String::from("Jimmy"),
+//!             age: 45,
+//!         },
+//!     ];
+//!
+//!     assert_that!(people).satisfies_respectively(with_asserters!(
+//!             |person1: &Person| {
+//!                 assert_that!(&person1.name).is_equal_to(&String::from("Daniel"));
+//!                 assert_that!(&person1.age).is_equal_to(&32);
+//!             },
+//!             |person2: &Person| {
+//!                 assert_that!(&person2.name).is_equal_to(&String::from("Jimmy"));
+//!                 assert_that!(&person2.age).is_equal_to(&45);
+//!             }
+//!         ));
 //! }
 //! ```
 //!
@@ -103,21 +132,21 @@
 //TODO: add hashmap asserter
 //And here too± https://stackoverflow.com/questions/60965319/problems-using-paniccatch-unwind-in-a-macro-context-test-for-panics-in-unit-te
 //and also to other place
-mod string_asserter;
-mod panic_asserter;
-mod number_asserter;
-mod number_approx_asserter;
 mod boolean_asserter;
-mod iterator_asserter;
-mod option_asserter;
-mod result_asserter;
 mod hashmap_asserter;
+mod iterator_asserter;
+mod number_approx_asserter;
+mod number_asserter;
+mod option_asserter;
+mod panic_asserter;
 pub mod prelude;
+mod result_asserter;
+mod string_asserter;
 
-use std::{panic};
+use lazy_static::lazy_static;
 use std::borrow::Borrow;
 use std::fmt::Debug;
-use lazy_static::lazy_static;
+use std::panic;
 use std::sync::Mutex;
 
 lazy_static! {
@@ -140,27 +169,33 @@ macro_rules! assert_that_code {
 }
 
 pub struct Asserter<T> {
-    value : T,
-    name: String
+    value: T,
+    name: String,
 }
 
-pub struct PanicAsserter <F, R> where F: FnOnce() -> R + panic::UnwindSafe {
-    value :  F
+pub struct PanicAsserter<F, R>
+where
+    F: FnOnce() -> R + panic::UnwindSafe,
+{
+    value: F,
 }
 
-impl<T> Asserter<T> where T: Debug + PartialEq{
+impl<T> Asserter<T>
+where
+    T: Debug + PartialEq,
+{
     pub fn new(value: T, name: String) -> Asserter<T> {
-        Asserter {
-            value,
-            name
-        }
+        Asserter { value, name }
     }
 
     pub fn is_equal_to(&self, expected_value: T) {
         let expected = expected_value.borrow();
         if &self.value != expected {
-            let error_msg = format!("Expected {} to be {:?}, but was {:?}.",self.name,expected,self.value);
-            panic!("{}",error_msg)
+            let error_msg = format!(
+                "Expected {} to be {:?}, but was {:?}.",
+                self.name, expected, self.value
+            );
+            panic!("{}", error_msg)
         }
     }
 
@@ -171,8 +206,5 @@ impl<T> Asserter<T> where T: Debug + PartialEq{
 }
 
 pub fn create_asserter<T>(value: T, name: String) -> Asserter<T> {
-    Asserter {
-        value,
-        name
-    }
+    Asserter { value, name }
 }
