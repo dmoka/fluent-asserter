@@ -91,9 +91,15 @@
 //! }
 //! ```
 //!
-//! ## Iterator assertions for structs
+//! ## Iterator assertion for structs
 //!
 //! ```rust
+//! #[derive(Clone)]
+//! struct Person {
+//!     name: String,
+//!     age: i32,
+//! }
+//!
 //! #[test]
 //! fn iterator_assertion_for_struct() {
 //!     let people: Vec<Person> = vec![
