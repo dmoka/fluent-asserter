@@ -27,7 +27,7 @@
 //! You can write string assertions for both String and str slices
 //! ```rust
 //!#[test]
-//!fn test_string_assertions() {
+//!fn string_assertions() {
 //!    assert_that!("Life tastes great!").is_equal_to("Life tastes great!");
 //!    assert_that!("Life tastes great!").contains("great");
 //!    assert_that!("Life tastes great!").starts_with("Life");
@@ -39,14 +39,66 @@
 //!}
 //! ```
 //!
+//! ## Number assertions
 //!
+//! ```rust
+//!#[test]
+//!fn number_assertions() {
+//!    assert_that!(21).is_equal_to(21);
+//!    assert_that!(21).is_smaller_than(22);
+//!    assert_that!(21).is_smaller_than_or_equal_to(21);
+//!    assert_that!(21).is_greater_than(20);
+//!    assert_that!(21).is_in_range(21,31);
+//!    assert_that!(21).is_not_in_range(10,20);
+//!    assert_that!(3.14159).is_approx_equal(3.142, 0.001);
+//!}
+//! ```
 //!
+//! ## Boolean assertions
+//!
+//! ```rust
+//!#[test]
+//!fn boolean_assertions() {
+//!    assert_that!(true).is_true();
+//!    assert_that!(false).is_false();
+//!}
+//! ```
+//!
+//! ## Panic assertions
+//!
+//! ```rust
+//! #[test]
+//! fn panic_assertions() {
+//!     assert_that_code!(|| panic!("An error occurred!"))
+//!         .panics()
+//!         .with_message("An error occurred!");
+//!
+//!     assert_that_code!(|| println!("Life tastes great!")).does_not_panic();
+//! }
+//! ```
+//!
+//! ## Iterator assertions
+//!
+//! ```rust
+//! #[test]
+//! fn iterator_assertions() {
+//!     assert_that!(vec!["tasty", "delicious", "lovely"]).is_equal_to(vec!["tasty", "delicious"]);
+//!     assert_that!(vec!["tasty", "delicious", "lovely"]).contains("delicious");
+//!     assert_that!(vec!["tasty", "delicious", "lovely"]).contains_all(&["tasty", "delicious", "lovely"]);
+//!     assert_that!(vec!["tasty", "delicious", "lovely"]).has_count(3);
+//!     assert_that!(vec!["tasty", "delicious", "lovely"]).does_not_contain_any(&["awesome", "amazing"]);
+//!     assert_that!(vec!["tasty", "delicious", "lovely"]).is_not_empty();
+//! }
+//! ```
+//!
+//! TODO: other types such as boolean etc
+//! TODO: panic explanation
+//! TODO: clear error messages including the subjects
+//TODO: follow these practices: https://pascalhertleif.de/artikel/good-practices-for-writing-rust-libraries/
 //Idiomatic rust https://cheats.rs/#idiomatic-rust
 
-//TODO: follow these practices: https://pascalhertleif.de/artikel/good-practices-for-writing-rust-libraries/
-
 //TODO: add path assertions - exists,doesNotExists, is a file, is a directory, hasfile name
-
+//TODO: add Result asserter
 //TODO: add our answer here: https://stackoverflow.com/questions/26469715/how-do-i-write-a-rust-unit-test-that-ensures-that-a-panic-has-occurred
 //TODO: add hashmap asserter
 //And here too± https://stackoverflow.com/questions/60965319/problems-using-paniccatch-unwind-in-a-macro-context-test-for-panics-in-unit-te
