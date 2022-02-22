@@ -84,7 +84,7 @@ fn contains<T,K>(iterator: &K, expected_value: &T) -> bool where K: Clone + Into
     iterator.clone().into_iter().any(|i| i==*expected_value)
 }
 
-impl<T,K> IteratorSatisfiesAssertion<T> for Asserter<K> where K: IntoIterator<Item = T> + Clone {
+impl<T,K> IteratorSatisfiesAssertion<T> for Asserter<K> where K: IntoIterator<Item = T> + Clone { //TODO: remove Clone somehow
     fn satisfies_respectively(&self, asserter: Vec<Box<dyn Fn(&T)>>) {//TODO: S - rename to asserters
         let iter = &self.value.clone().into_iter().collect::<Vec::<T>>();
 
@@ -98,7 +98,6 @@ impl<T,K> IteratorSatisfiesAssertion<T> for Asserter<K> where K: IntoIterator<It
     }
 }
 
-//rename to with_asserters?
 #[macro_export]
 macro_rules! with_asserters {
     ($($closure:expr),*)  => {
