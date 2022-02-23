@@ -169,7 +169,6 @@ use lazy_static::lazy_static;
 use std::borrow::Borrow;
 use std::fmt::Debug;
 use std::panic;
-use std::sync::Mutex;
 
 /// Creating fluent assertion for the specified type.
 /// Depending on the specified type, there are different assertion methods available.
