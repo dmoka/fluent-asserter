@@ -159,6 +159,18 @@ lazy_static! {
     static ref LOCK_FOR_PANIC_ASSERTER: std::sync::Mutex<()> = Mutex::new(());
 }
 
+/// Creating fluent assertion for the specified type.
+/// Depending on the specified type, there are different assertion methods available.
+///
+/// # Examples
+/// ```rust
+/// # #[macro_use] extern crate fluent_asserter;use fluent_asserter::*; fn main() {
+/// assert_that!("awesome").is_equal_to("awesome");
+/// assert_that!(3.14).is_smaller_than(3.15);
+/// assert_that!(true).is_true();
+/// # }
+/// ```
+///
 #[macro_export]
 macro_rules! assert_that {
     ($value:expr) => {
