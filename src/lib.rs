@@ -126,8 +126,26 @@
 //! }
 //! ```
 //!
-//! TODO: other types such as boolean etc
-//! TODO: panic explanation
+//! ## Clear and concise error messages
+//!
+//! In case of a failing assertion, the error message is clear and on the point, containing all the information relating to the domain context.
+//!
+//! ```rust
+//! #[test]
+//! fn test() {
+//!    let string_variable = String::from("Hello Rust!");
+//!
+//!    assert_that!(string_variable).is_equal_to(String::from("Hello C#!"));
+//! }
+//! ```
+//!
+//! This test produces the assertion error message:
+//!
+//! ```doc
+//! Expected string_variable to be "Hello C#!", but was "Hello Rust!".
+//! ```
+//!
+//!
 //! TODO: clear error messages including the subjects
 //TODO: follow these practices: https://pascalhertleif.de/artikel/good-practices-for-writing-rust-libraries/
 //Idiomatic rust https://cheats.rs/#idiomatic-rust
