@@ -30,6 +30,7 @@ impl<'a, K, V> Asserter<&HashMap<K, V>>
 where
     K: Eq + Hash + Display,
 {
+    /// Checks the length of the HashMap
     pub fn has_length(&self, expected_length: usize) {
         if self.value.len() != expected_length {
             panic!(
@@ -41,6 +42,7 @@ where
         }
     }
 
+    /// Checks if the HashMap is empty
     pub fn is_empty(&self) {
         if self.value.len() > 0 {
             panic!(
@@ -50,12 +52,15 @@ where
             )
         }
     }
+
+    /// Checks if the HashMap is not empty
     pub fn is_not_empty(&self) {
         if self.value.len() == 0 {
             panic!("Expected {} to not to be empty, but it is.", &self.name)
         }
     }
 
+    /// Checks if the HashMap contains the specified key
     pub fn contains_key<'b>(&'a self, expected_key: &'a K) -> ValueAssertions<'a, K, V> {
         if !&self.value.contains_key(&expected_key) {
             panic!(
@@ -74,6 +79,7 @@ where
         }
     }
 
+    /// Checks if the HashMap does not contain the specified key
     pub fn does_not_contain_key(&self, not_expected_key: K) {
         if *&self.value.contains_key(&not_expected_key) {
             panic!(
