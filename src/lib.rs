@@ -128,7 +128,7 @@
 //!
 //! ## Clear and concise error messages
 //!
-//! In case of a failing assertion, the error message is clear and on the point, containing all the information relating to the domain context.
+//! In case of a failing assertion, the error message is clear and on the point, containing all the information relating to the domain subject.
 //!
 //! ```rust
 //! #[test]
