@@ -178,7 +178,20 @@ macro_rules! assert_that {
     };
 }
 
-///  NOTE: Do not use this and should_panic at the same time with multi-core text executions, as it can have non-deterministic behaviour
+/// Creating fluent assertion to check if a closure panics
+///
+///  NOTE: Do not use this and the native #\[should_panic\] attribute at the same time while executing the tests parallel, as it can have non-deterministic behaviour
+/// # Examples
+/// ```rust
+/// # #[macro_use] extern crate fluent_asserter;use fluent_asserter::*; fn main() {
+///     assert_that_code!(|| panic!("An error occurred!"))
+///         .panics()
+///         .with_message("An error occurred!");
+///
+///     assert_that_code!(|| println!("Life tastes great!"))
+///         .does_not_panic();
+/// # }
+/// ```
 #[macro_export]
 macro_rules! assert_that_code {
     ($value:expr) => {
