@@ -146,14 +146,12 @@
 //! ```
 //!
 //!
-//! TODO: clear error messages including the subjects
 //TODO: follow these practices: https://pascalhertleif.de/artikel/good-practices-for-writing-rust-libraries/
 //Idiomatic rust https://cheats.rs/#idiomatic-rust
 
 //TODO: add path assertions - exists,doesNotExists, is a file, is a directory, hasfile name
 //TODO: add Result asserter
 //TODO: add our answer here: https://stackoverflow.com/questions/26469715/how-do-i-write-a-rust-unit-test-that-ensures-that-a-panic-has-occurred
-//TODO: add hashmap asserter
 //And here too± https://stackoverflow.com/questions/60965319/problems-using-paniccatch-unwind-in-a-macro-context-test-for-panics-in-unit-te
 //and also to other place
 mod boolean_asserter;
