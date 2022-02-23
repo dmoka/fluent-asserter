@@ -171,10 +171,6 @@ use std::fmt::Debug;
 use std::panic;
 use std::sync::Mutex;
 
-lazy_static! {
-    static ref LOCK_FOR_PANIC_ASSERTER: std::sync::Mutex<()> = Mutex::new(());
-}
-
 /// Creating fluent assertion for the specified type.
 /// Depending on the specified type, there are different assertion methods available.
 ///

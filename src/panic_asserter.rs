@@ -1,10 +1,14 @@
-use std::{panic};
 use super::*;
+use std::panic;
 use std::sync::{Arc, Mutex};
 /*
 TODO: this is non-deterministic and results in failing test due set_hook set the panic handling globally!!!
 Idea how to solve: One option could be to make a panic hook that delegates to some thread-local state. Have all of your tests install that hook and then setup the thread local hook to what they want.
 */
+
+lazy_static! {
+    static ref LOCK_FOR_PANIC_ASSERTER: std::sync::Mutex<()> = Mutex::new(());
+}
 
 pub struct PanicAssertions {
     actual_panic_message: String,
@@ -13,29 +17,35 @@ pub struct PanicAssertions {
 impl PanicAssertions {
     pub fn new(actual_panic_message: String) -> PanicAssertions {
         PanicAssertions {
-            actual_panic_message
-        }  
+            actual_panic_message,
+        }
     }
-    
-    pub fn with_message(self, expected_panic_message: &str) {        
+
+    pub fn with_message(self, expected_panic_message: &str) {
         if self.actual_panic_message != expected_panic_message {
-            panic!("Expected a panic message '{}', but found '{}'", expected_panic_message, self.actual_panic_message)
+            panic!(
+                "Expected a panic message '{}', but found '{}'",
+                expected_panic_message, self.actual_panic_message
+            )
         }
     }
 
     pub fn with_having_message(self, expected_panic_message: &str) {
         if !self.actual_panic_message.contains(expected_panic_message) {
-            panic!("The text '{}' is not present in the panic message '{}'", expected_panic_message, self.actual_panic_message)
+            panic!(
+                "The text '{}' is not present in the panic message '{}'",
+                expected_panic_message, self.actual_panic_message
+            )
         }
     }
-
 }
 
-impl<F, R> PanicAsserter<F, R>  where F: FnOnce() -> R + panic::UnwindSafe{
-    pub fn new(f:  F) -> Self {
-        PanicAsserter{
-            value: f
-        }
+impl<F, R> PanicAsserter<F, R>
+where
+    F: FnOnce() -> R + panic::UnwindSafe,
+{
+    pub fn new(f: F) -> Self {
+        PanicAsserter { value: f }
     }
 
     pub fn panics(self) -> PanicAssertions {
@@ -47,17 +57,17 @@ impl<F, R> PanicAsserter<F, R>  where F: FnOnce() -> R + panic::UnwindSafe{
         register_panic_hook_to_capture_output(&global_buffer);
         let result = panic::catch_unwind(self.value);
         panic::set_hook(old_hook);
-    
+
         PanicAssertions {
-            actual_panic_message: get_panic_message_if_present(result,global_buffer)
+            actual_panic_message: get_panic_message_if_present(result, global_buffer),
         }
     }
-    
+
     pub fn does_not_panic(self) {
         let result = self.catch_unwind_silent();
-        
+
         if result.is_err() {
-            panic!("Expected code to panic, but it does not panic.");//TODO: "did" instead of "does"
+            panic!("Expected code to panic, but it does not panic."); //TODO: "did" instead of "does"
         }
     }
 
@@ -69,7 +79,6 @@ impl<F, R> PanicAsserter<F, R>  where F: FnOnce() -> R + panic::UnwindSafe{
         result
     }
 }
-
 
 fn register_panic_hook_to_capture_output(global_buffer: &Arc<Mutex<String>>) {
     panic::set_hook({
@@ -90,12 +99,14 @@ fn register_panic_hook_to_capture_output(global_buffer: &Arc<Mutex<String>>) {
     });
 }
 
-
-fn get_panic_message_if_present<R>(result: Result<R, Box<dyn std::any::Any + Send>>, global_buffer: Arc<Mutex<String>>) -> String {
+fn get_panic_message_if_present<R>(
+    result: Result<R, Box<dyn std::any::Any + Send>>,
+    global_buffer: Arc<Mutex<String>>,
+) -> String {
     match result {
         Ok(_res) => {
             panic!("There was no panic, but it was expected.")
-        },
+        }
         Err(_) => {
             return global_buffer.lock().unwrap().to_string();
         }
