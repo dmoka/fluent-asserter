@@ -10,7 +10,7 @@
 //! [dependencies]
 //! fluent-asserter = "0.1.0"
 //! ```
-//! 
+//!
 //! Then import the asserters via the prelude
 //! ```rust
 //! use fluent_asserter::prelude::*;
