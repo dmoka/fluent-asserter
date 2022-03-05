@@ -55,25 +55,25 @@ where
 
     /// Checks if the HashMap is not empty
     pub fn is_not_empty(&self) {
-        if self.value.len() == 0 {
+        if self.value.is_empty() {
             panic!("Expected {} to not to be empty, but it is.", &self.name)
         }
     }
 
     /// Checks if the HashMap contains the specified key
-    pub fn contains_key<'b>(&'a self, expected_key: &'a K) -> ValueAssertions<'a, K, V> {
-        if !&self.value.contains_key(&expected_key) {
+    pub fn contains_key(&'a self, expected_key: &'a K) -> ValueAssertions<'a, K, V> {
+        if !&self.value.contains_key(expected_key) {
             panic!(
                 "Expected {} to contain {}, but it does not.",
                 &self.name, &expected_key
             );
         }
 
-        let value = &self.value.get(&expected_key);
+        let value = &self.value.get(expected_key);
         let value_for_key = value.unwrap();
 
         ValueAssertions {
-            key: &expected_key,
+            key: expected_key,
             value: value_for_key,
             hash_map_name: String::from(&self.name),
         }
@@ -81,7 +81,7 @@ where
 
     /// Checks if the HashMap does not contain the specified key
     pub fn does_not_contain_key(&self, not_expected_key: K) {
-        if *&self.value.contains_key(&not_expected_key) {
+        if self.value.contains_key(&not_expected_key) {
             panic!(
                 "Expected {} to not to contain {}, but it does.",
                 &self.name, &not_expected_key

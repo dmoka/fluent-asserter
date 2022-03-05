@@ -1,6 +1,5 @@
 extern crate fluent_asserter;
 use fluent_asserter::prelude::*;
-use fluent_asserter::*;
 
 mod test_iterator_asserter {
     use super::*;
