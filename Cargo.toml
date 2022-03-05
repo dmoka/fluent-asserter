@@ -1,10 +1,11 @@
 [package]
 name = "fluent-asserter"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
-authors = ["Daniel Moka <mokadaniel89@gmail.com>"]
+authors = ["Daniel Moka <danielmoka@protonmail.com>"]
 license = "Apache-2.0"
-description = "A library enabling fluent test assertions"
+description = "A library enabling fluent test assertions in Rust"
+documentation = "https://github.com/mirind4/fluent-asserter"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
