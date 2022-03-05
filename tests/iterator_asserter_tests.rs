@@ -183,11 +183,11 @@ mod test_iterator_asserter {
 
         assert_that_code!(
             || assert_that!(list).satisfies_respectively(with_asserters!(|item1: &TestObject| {
-                    assert_that!(&item1.age).is_equal_to(&6);
-                }))
-            )
-            .panics()
-            .with_message("Expected &item1.age to be 6, but was 5.");
+                assert_that!(&item1.age).is_equal_to(&6);
+            }))
+        )
+        .panics()
+        .with_message("Expected &item1.age to be 6, but was 5.");
     }
 
     #[test]
@@ -207,8 +207,8 @@ mod test_iterator_asserter {
             || assert_that!(list).satisfies_respectively(with_asserters!(|item1: &TestObject| {
                 assert_that!(&item1.age).is_equal_to(&6);
             }))
-            )
-            .panics()
-            .with_message("Expected number of items to be 1, but was 2.");
+        )
+        .panics()
+        .with_message("Expected number of items to be 1, but was 2.");
     }
 }
