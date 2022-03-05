@@ -10,13 +10,8 @@
 //! [dependencies]
 //! fluent-asserter = "0.1.0"
 //! ```
-//!
-//! Then add this to your crate:
-//!
-//! ```rust
-//! extern crate fluent_asserter;
-//! ```
-//! And finally, import the the predefined traits from the prelude
+//! 
+//! Then import the asserters via the prelude
 //! ```rust
 //! use fluent_asserter::prelude::*;
 //! ```
