@@ -125,7 +125,53 @@
 //!         ));
 //! }
 //! ```
+//! 
+//! ## Hashmap assertions
 //!
+//!```rust
+//!#[test]
+//!fn hashmap_assertions() {
+//!    let mut hash_map = HashMap::<String, String>::new();
+//!    assert_that!(&hash_map).is_empty();
+//!
+//!    hash_map.insert(String::from("key"), String::from("value"));
+//!    assert_that!(&hash_map).has_length(1);
+//!    assert_that!(&hash_map).is_not_empty();
+//!    assert_that!(&hash_map).contains_key(&String::from("key"));
+//!    assert_that!(&hash_map).does_not_contain_key(String::from("key2"));
+//!}
+//!```
+//!
+//! 
+//!## Option assertions
+//!
+//!```rust
+//!#[test]
+//!fn option_assertions() {
+//!    let option = Option::Some("Winner!");
+//!    assert_that!(option).is_some();
+//!    assert_that!(option).is_some_with_value("Winner!");
+//!
+//!    let none = Option::<i32>::None;
+//!    assert_that!(none).is_none();
+//!}
+//!```
+//!
+//!## Result assertions
+//!
+//!```rust
+//!#[test]
+//!pub fn result_assertions() {
+//!    let result : Result<i32,i32> = Ok(3);
+//!    assert_that!(&result).is_ok();
+//!    assert_that!(&result).is_ok_with_value(3);
+//!
+//!    let error : Result<i32,String> = Err(String::from("error message"));
+//!    assert_that!(&error).is_error();
+//!    assert_that!(&error).is_error_with_value(String::from("error message"));
+//!}
+//!```
+
 //! ## Clear and concise error messages
 //!
 //! In case of a failing assertion, the error message is clear and on the point, containing all the information relating to the domain subject.
@@ -139,7 +185,7 @@
 //! }
 //! ```
 //!
-//! This test produces the assertion error message:
+//! This test produces the following assertion error message:
 //!
 //! ```doc
 //! Expected string_variable to be "Hello C#!", but was "Hello Rust!".
