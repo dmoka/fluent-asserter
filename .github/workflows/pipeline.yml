@@ -95,4 +95,4 @@ jobs:
       - name: Run coverage via cargo-tarpaulin
         uses: actions-rs/tarpaulin@v0.1
         with:
-          args: '--ignore-tests --fail-under 90'
+          args: '--ignore-tests --fail-under 85'
