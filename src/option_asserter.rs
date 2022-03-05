@@ -2,33 +2,45 @@ use super::*;
 
 //TODO: make trait and implement it
 
-impl<T> Asserter<Option<T>> where T : PartialEq + std::fmt::Display  {
+impl<T> Asserter<Option<T>>
+where
+    T: PartialEq + std::fmt::Display,
+{
     pub fn is_some(&self) {
         match &self.value {
-            None => {panic!("Expected '{}' to be Some(_), but found None", &self.name)}
+            None => {
+                panic!("Expected '{}' to be Some(_), but found None", &self.name)
+            }
             Some(_) => {}
         }
-
     }
 
     pub fn is_some_with_value(&self, value: T) {
         match &self.value {
             Some(val) => {
                 if *val != value {
-                    panic!("Expected '{}' to be Some({}), but found Some({}).",&self.name, value, val);
+                    panic!(
+                        "Expected '{}' to be Some({}), but found Some({}).",
+                        &self.name, value, val
+                    );
                 }
-            },
-            None => panic!("Expected '{}' to be Some({}), but found None.",&self.name, value),
+            }
+            None => panic!(
+                "Expected '{}' to be Some({}), but found None.",
+                &self.name, value
+            ),
         }
     }
 
     pub fn is_none(&self) {
         match &self.value {
             None => {}
-            Some(val) => panic!("Expected '{}' to be None, but found Some({}).",&self.name, val)
+            Some(val) => panic!(
+                "Expected '{}' to be None, but found Some({}).",
+                &self.name, val
+            ),
         }
     }
-
 }
 
 //TODO: S - add this to tests folder
@@ -43,7 +55,7 @@ mod test_option_asserter {
 
         let option = Option::<i32>::None;
 
-        assert_that_code!(||assert_that!(option).is_some())
+        assert_that_code!(|| assert_that!(option).is_some())
             .panics()
             .with_message("Expected 'option' to be Some(_), but found None");
     }
@@ -53,7 +65,7 @@ mod test_option_asserter {
         let option = Option::Some(3);
         assert_that!(option).is_some_with_value(3);
 
-        assert_that_code!(||assert_that!(option).is_some_with_value(4))
+        assert_that_code!(|| assert_that!(option).is_some_with_value(4))
             .panics()
             .with_message("Expected 'option' to be Some(4), but found Some(3).");
     }
@@ -62,7 +74,7 @@ mod test_option_asserter {
     fn test_is_some_with_none() {
         let option = Option::None;
 
-        assert_that_code!(||assert_that!(option).is_some_with_value(4))
+        assert_that_code!(|| assert_that!(option).is_some_with_value(4))
             .panics()
             .with_message("Expected 'option' to be Some(4), but found None.");
     }
@@ -77,9 +89,8 @@ mod test_option_asserter {
     fn test_is_none_with_some() {
         let option = Option::Some(3);
 
-        assert_that_code!(||assert_that!(option).is_none())
+        assert_that_code!(|| assert_that!(option).is_none())
             .panics()
             .with_message("Expected 'option' to be None, but found Some(3).");
     }
-
 }

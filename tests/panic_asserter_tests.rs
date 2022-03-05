@@ -18,7 +18,7 @@ mod test_panic_asserter {
 
         assert_that_code!(|| println!("WAGMI")).does_not_panic();
 
-        let failing_assertion = ||assert_that_code!(|| panic!("WAGMI")).does_not_panic();
+        let failing_assertion = || assert_that_code!(|| panic!("WAGMI")).does_not_panic();
         assert_that_code!(failing_assertion)
             .panics()
             .with_message("Expected code to panic, but it does not panic.")
@@ -27,39 +27,42 @@ mod test_panic_asserter {
     #[test]
     fn test_panics_with_message() {
         assert_that_code!(|| panic!("specific panic message"))
-                                .panics()
-                                .with_message("specific panic message");
+            .panics()
+            .with_message("specific panic message");
     }
 
     #[test]
-    #[should_panic(expected="Expected a panic message 'expected panic message', but found 'specific panic message'")]
+    #[should_panic(
+        expected = "Expected a panic message 'expected panic message', but found 'specific panic message'"
+    )]
     fn test_panics_when_panic_assertion_fails() {
         assert_that_code!(|| panic!("specific panic message"))
-                                    .panics()
-                                    .with_message("expected panic message");
+            .panics()
+            .with_message("expected panic message");
     }
 
     #[test]
-    #[should_panic(expected="There was no panic, but it was expected.")]
+    #[should_panic(expected = "There was no panic, but it was expected.")]
     fn test_that_code_panics_whereas_not() {
         assert_that_code!(|| println!("specific panic message"))
-                                    .panics()
-                                    .with_message("another expected panic message");
+            .panics()
+            .with_message("another expected panic message");
     }
 
     #[test]
     fn test_that_panic_contains_panic_message() {
         assert_that_code!(|| panic!("specific panic message"))
-                                .panics()
-                                .with_having_message("panic message");
+            .panics()
+            .with_having_message("panic message");
     }
 
     #[test]
-    #[should_panic(expected="The text 'bitcoin' is not present in the panic message 'specific panic message'")]
+    #[should_panic(
+        expected = "The text 'bitcoin' is not present in the panic message 'specific panic message'"
+    )]
     fn test_that_panic_contains_message_whereas_not() {
         assert_that_code!(|| panic!("specific panic message"))
-                                .panics()
-                                .with_having_message("bitcoin");
+            .panics()
+            .with_having_message("bitcoin");
     }
-
 }

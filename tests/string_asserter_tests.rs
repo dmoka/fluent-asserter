@@ -9,9 +9,13 @@ mod test_string_asserter {
         assert_that!(&String::from("test string")).is_equal_to(&String::from("test string"));
         assert_that!(&String::from("bitcoin")).is_equal_to(&String::from("bitcoin"));
 
-        assert_that_code!(|| assert_that!(&String::from("test string")).is_equal_to(&String::from("test")))
-            .panics()
-            .with_message("Expected &String::from(\"test string\") to be \"test\", but was \"test string\".");
+        assert_that_code!(
+            || assert_that!(&String::from("test string")).is_equal_to(&String::from("test"))
+        )
+        .panics()
+        .with_message(
+            "Expected &String::from(\"test string\") to be \"test\", but was \"test string\".",
+        );
 
         let string_var = String::from("bitcoin");
         assert_that_code!(|| assert_that!(&string_var).is_equal_to(&String::from("ethereum")))
@@ -19,12 +23,11 @@ mod test_string_asserter {
             .with_message("Expected &string_var to be \"ethereum\", but was \"bitcoin\".");
     }
 
-
     #[test]
     fn test_is_equal_to_for_str() {
         assert_that!("test string").is_equal_to("test string");
         assert_that!("bitcoin").is_equal_to("bitcoin");
-        
+
         assert_that_code!(|| assert_that!("test string").is_equal_to("string"))
             .panics()
             .with_message("Expected \"test string\" to be \"string\", but was \"test string\".");
@@ -42,7 +45,9 @@ mod test_string_asserter {
 
         assert_that_code!(|| assert_that!(&String::from("test string")).contains("asd"))
             .panics()
-            .with_message("Expected &String::from(\"test string\") to contain 'asd', but it does not.");
+            .with_message(
+                "Expected &String::from(\"test string\") to contain 'asd', but it does not.",
+            );
 
         let string_var = &String::from("bitcoin");
         assert_that_code!(|| assert_that!(string_var).contains("eth"))
@@ -55,7 +60,8 @@ mod test_string_asserter {
         assert_that!(&String::from("test string")).starts_with("te");
         assert_that!(&String::from("bitcoin")).starts_with("bitcoin");
 
-        assert_that_code!(|| assert_that!(&String::from("test string")).starts_with("asd")).panics();
+        assert_that_code!(|| assert_that!(&String::from("test string")).starts_with("asd"))
+            .panics();
 
         let string_var = &String::from("bitcoin");
         assert_that_code!(|| assert_that!(string_var).starts_with("eth"))
@@ -131,22 +137,20 @@ mod test_string_asserter {
 
     #[test]
     fn test_that_error_message_contains_variable_name() {
-        let code = ||assert_that!("test1").is_equal_to("test2");
+        let code = || assert_that!("test1").is_equal_to("test2");
 
         assert_that_code!(code)
             .panics()
-            .with_message(
-                "Expected \"test1\" to be \"test2\", but was \"test1\".");
+            .with_message("Expected \"test1\" to be \"test2\", but was \"test1\".");
     }
 
     #[test]
     fn test_that_error_message_contains_inline_value() {
         let string_var = "test1";
-        let code = ||assert_that!(string_var).is_equal_to("test2");
+        let code = || assert_that!(string_var).is_equal_to("test2");
 
         assert_that_code!(code)
             .panics()
-            .with_message(
-                "Expected string_var to be \"test2\", but was \"test1\".");
+            .with_message("Expected string_var to be \"test2\", but was \"test1\".");
     }
 }
