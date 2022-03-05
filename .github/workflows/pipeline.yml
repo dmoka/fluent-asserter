@@ -16,8 +16,17 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Build
-      run: cargo build --verbose
+    - name: Install stable toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        override: true
+    - name: Build project
+      uses: actions-rs/cargo@v1
+      with:
+        command: build
+        args: --verbose
       
   test:
     name: Test
