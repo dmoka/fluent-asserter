@@ -175,19 +175,21 @@ mod test_iterator_asserter {
     }
 
     #[test]
-    #[should_panic(expected = "Expected &item1.age to be 6, but was 5.")]
     fn test_that_satisfies_respectively_fails() {
         let list: Vec<TestObject> = vec![TestObject {
             name: String::from("name1"),
             age: 5,
         }];
 
-        assert_that!(list).satisfies_respectively(with_asserters!(|item1: &TestObject| {
-            assert_that!(&item1.age).is_equal_to(&6);
-        }));
+        assert_that_code!(
+            || assert_that!(list).satisfies_respectively(with_asserters!(|item1: &TestObject| {
+                    assert_that!(&item1.age).is_equal_to(&6);
+                }))
+            )
+            .panics()
+            .with_message("Expected &item1.age to be 6, but was 5.");
     }
 
-    #[should_panic(expected = "Expected number of items to be 1, but was 2.")]
     #[test]
     fn test_that_satisfies_respectively_fails_when_different_size_if_asserters_specified() {
         let list: Vec<TestObject> = vec![
@@ -201,8 +203,12 @@ mod test_iterator_asserter {
             },
         ];
 
-        assert_that!(list).satisfies_respectively(with_asserters!(|item1: &TestObject| {
-            assert_that!(&item1.age).is_equal_to(&6);
-        }));
+        assert_that_code!(
+            || assert_that!(list).satisfies_respectively(with_asserters!(|item1: &TestObject| {
+                assert_that!(&item1.age).is_equal_to(&6);
+            }))
+            )
+            .panics()
+            .with_message("Expected number of items to be 1, but was 2.");
     }
 }
