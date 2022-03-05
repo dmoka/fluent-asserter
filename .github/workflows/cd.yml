@@ -23,6 +23,10 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
+      - name: Install cargo-bump
+        run: cargo install cargo-bump
+      - name: Increase Patch Version
+        run: cargo-bump patch     
       - name: Publish to crates.io
         run: cargo publish --token ${CRATES_TOKEN}
         env:
