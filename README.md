@@ -7,7 +7,7 @@
 
 ## Introduction
 
-A library to write test assertions in a fluent syntax. Writing clean tests is as important as writing clean code.
+A library to write test assertions with a fluent interface. Writing clean tests is as important as writing clean code.
 This library contains test asserters to be used to make clean assertions in your automated tests.
 It also helps to enhance the Test-Driven Development (TDD) experience, resulting in clean, readable and maintainable tests.
 
