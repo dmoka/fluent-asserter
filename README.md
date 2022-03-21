@@ -7,9 +7,9 @@
 
 ## Introduction
 
-A library to write test assertions with a fluent interface. Writing clean tests is as important as writing clean code.
-This library contains test asserters to be used to make clean assertions in your automated tests.
-It also helps to enhance the Test-Driven Development (TDD) experience, resulting in clean, readable and maintainable tests.
+A library to write test assertions with a fluent interface. Writing clean tests is as important as writing clean production code.
+This library contains test asserters for many kind of Rust types to produce clean assertions in our automated tests.
+It also helps to enhance the Test-Driven Development (TDD) experience, resulting in clean, ergonomic and maintainable tests.
 
 ## Usage
 
