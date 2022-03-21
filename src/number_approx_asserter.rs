@@ -8,7 +8,7 @@ pub trait IsApproxEqual<T> {
 macro_rules! abs_diff_unsigned_eq {
     ($x:expr, $y:expr, $d:expr) => {
         if (if $x > $y { $x - $y } else { $y - $x }) > $d {
-            panic!("AssertionError: not equal within delta");
+            panic!("AssertionError: not equal within delta"); //TODO: improve error message
         }
     };
 }
@@ -16,7 +16,7 @@ macro_rules! abs_diff_unsigned_eq {
 macro_rules! abs_diff_signed_eq {
     ($x:expr, $y:expr, $d:expr) => {
         if (($x - $y).abs() > $d) {
-            panic!("AssertionError: not equal within delta");
+            panic!("AssertionError: not equal within delta"); //TODO: improve error message
         }
     };
 }
