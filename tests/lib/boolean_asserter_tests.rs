@@ -2,7 +2,7 @@ extern crate fluent_asserter;
 use fluent_asserter::*;
 
 #[cfg(test)]
-mod test {
+mod boolean_asserter_tests {
     use super::*;
 
     #[test]

@@ -1,7 +1,7 @@
 extern crate fluent_asserter;
 use fluent_asserter::*;
 
-mod test_number_asserter {
+mod number_asserter_tests {
     use super::*;
 
     #[test]

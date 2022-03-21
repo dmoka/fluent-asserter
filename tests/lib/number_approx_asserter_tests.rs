@@ -2,7 +2,7 @@ extern crate fluent_asserter;
 use fluent_asserter::*;
 
 #[cfg(test)]
-mod test_number_approx_asserter {
+mod number_approx_asserter_tests {
     use fluent_asserter::prelude::IsApproxEqual;
 
     use super::*;

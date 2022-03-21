@@ -1,7 +1,7 @@
 extern crate fluent_asserter;
 use fluent_asserter::*;
 
-mod test_panic_asserter {
+mod panic_asserter_tests {
 
     use super::*;
 

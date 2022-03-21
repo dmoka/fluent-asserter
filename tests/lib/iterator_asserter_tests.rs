@@ -1,7 +1,7 @@
 extern crate fluent_asserter;
 use fluent_asserter::prelude::*;
 
-mod test_iterator_asserter {
+mod iterator_asserter_tests {
     use super::*;
 
     #[derive(Clone)]

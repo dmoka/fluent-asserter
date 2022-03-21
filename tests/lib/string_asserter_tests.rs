@@ -1,7 +1,7 @@
 extern crate fluent_asserter;
 use fluent_asserter::prelude::*;
 
-mod test_string_asserter {
+mod string_asserter_tests {
     use super::*;
 
     #[test]

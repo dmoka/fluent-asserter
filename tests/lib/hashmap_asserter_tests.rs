@@ -2,7 +2,7 @@ extern crate fluent_asserter;
 use fluent_asserter::*;
 
 #[cfg(test)]
-mod test_hashmap_asserter {
+mod hashmap_asserter_tests {
     use super::*;
     use std::collections::HashMap;
 
