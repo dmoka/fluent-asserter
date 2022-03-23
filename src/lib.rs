@@ -8,7 +8,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! fluent-asserter = "0.1.0"
+//! fluent-asserter = "0.1.7"
 //! ```
 //!
 //! Then import the asserters via the prelude
