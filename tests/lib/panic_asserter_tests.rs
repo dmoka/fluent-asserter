@@ -2,7 +2,6 @@ extern crate fluent_asserter;
 use fluent_asserter::*;
 
 mod panic_asserter_tests {
-
     use super::*;
 
     #[test]
@@ -64,5 +63,18 @@ mod panic_asserter_tests {
         assert_that_code!(|| panic!("specific panic message"))
             .panics()
             .with_having_message("bitcoin");
+    }
+
+    #[allow(unreachable_code)]
+    #[test]
+    fn test_that_provider_closure_panics() {
+        let panicking_provider = || {
+            panic!("Provider panicked");
+            return 3;
+        };
+
+        assert_that_code!(|| panicking_provider())
+            .panics()
+            .with_message("Provider panicked");
     }
 }
