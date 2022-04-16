@@ -8,4 +8,5 @@
 ## Checklist before requesting a review
 - [ ] I have performed a self-review of my code
 - [ ] I added automated tests for the code, with high mutation score
+- [ ] I updated the README according to the changes I made
 - [ ] The code is properly formatted according to fmt and it contains no unexpected clippy warnings
