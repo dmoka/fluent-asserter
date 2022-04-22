@@ -186,9 +186,7 @@
 //! Expected string_variable to be "Hello C#!", but was "Hello Rust!".
 //! ```
 //!
-//TODO: add our answer here: https://stackoverflow.com/questions/26469715/how-do-i-write-a-rust-unit-test-that-ensures-that-a-panic-has-occurred
-//And here too± https://stackoverflow.com/questions/60965319/problems-using-paniccatch-unwind-in-a-macro-context-test-for-panics-in-unit-te
-//and also to other place
+
 mod boolean_asserter;
 mod hashmap_asserter;
 mod iterator_asserter;
