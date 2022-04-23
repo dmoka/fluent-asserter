@@ -1,9 +1,11 @@
 # Contributing
 
-The repository is totally open source and change are welcomed from anyone.
+The repository is open source and changes are welcomed from anyone.
 
 ## Feature ideas
-- Path assertions with APIs like exists, does_not_exist,  is_a_file, is_a_directory, has_file(filename), etc
+
+- Path assertions
+    -  with APIs like does_not_exist, is_a_file,is_a_directory, has_file(filename), etc
 - json assertion
 - big decimal asserter
 
