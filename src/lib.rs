@@ -45,7 +45,7 @@
 //!    assert_that!(21).is_greater_than(20);
 //!    assert_that!(21).is_in_range(21,31);
 //!    assert_that!(21).is_not_in_range(10,20);
-//!    assert_that!(3.14159).is_approx_equal(3.142, 0.001);
+//!    assert_that!(3.94159).is_approx_equal(3.942, 0.001);
 //!}
 //! ```
 //!
