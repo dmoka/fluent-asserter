@@ -12,7 +12,7 @@ mod panic_asserter_tests {
     }
 
     #[test]
-    fn test_assert_that_does_not_panics() {
+    fn test_assert_that_does_not_panic() {
         assert_that_code!(|| println!("gm")).does_not_panic();
 
         assert_that_code!(|| println!("WAGMI")).does_not_panic();
