@@ -1,6 +1,7 @@
 use super::*;
 use std::panic;
-use std::sync::{Arc, Mutex};
+use std::panic::PanicInfo;
+use std::sync::{Arc, Mutex, MutexGuard};
 /*
 TODO: this is non-deterministic and results in failing test due set_hook set the panic handling globally!!!
 Idea how to solve: One option could be to make a panic hook that delegates to some thread-local state. Have all of your tests install that hook and then setup the thread local hook to what they want.
@@ -86,17 +87,28 @@ fn register_panic_hook_to_capture_output(global_buffer: &Arc<Mutex<String>>) {
         Box::new(move |info| {
             let mut global_buffer = global_buffer.lock().unwrap();
 
-            //Capture for string literal like panic("some string")
-            if let Some(s) = info.payload().downcast_ref::<&str>() {
-                global_buffer.push_str(s);
-            }
-
-            //Check for dynamically created String like panic("some {}", "string")
-            if let Some(s) = info.payload().downcast_ref::<String>() {
-                global_buffer.push_str(s);
-            }
+            capture_if_string_literal_is_used_in_panic_message(info, &mut global_buffer);
+            capture_if_string_is_dynamically_created_in_panic_message(info, global_buffer)
         })
     });
+}
+
+fn capture_if_string_literal_is_used_in_panic_message(
+    info: &PanicInfo,
+    global_buffer: &mut MutexGuard<String>,
+) {
+    if let Some(s) = info.payload().downcast_ref::<&str>() {
+        global_buffer.push_str(s);
+    }
+}
+
+fn capture_if_string_is_dynamically_created_in_panic_message(
+    info: &PanicInfo,
+    mut global_buffer: MutexGuard<String>,
+) {
+    if let Some(s) = info.payload().downcast_ref::<String>() {
+        global_buffer.push_str(s);
+    }
 }
 
 fn get_panic_message_if_present<R>(

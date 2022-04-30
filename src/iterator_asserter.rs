@@ -167,18 +167,18 @@ where
     //TODO: remove Clone somehow
     fn satisfies_respectively(&self, asserter: Vec<Box<dyn Fn(&T)>>) {
         //TODO: S - rename to asserters
-        let iter = &self.value.clone().into_iter().collect::<Vec<T>>();
+        let actual_iter_values = &self.value.clone().into_iter().collect::<Vec<T>>();
 
-        if iter.len() != asserter.len() {
+        if actual_iter_values.len() != asserter.len() {
             panic!(
                 "Expected number of items to be {}, but was {}.",
                 asserter.len(),
-                iter.len()
+                actual_iter_values.len()
             )
         }
 
         for i in 0..asserter.len() {
-            asserter[i](&iter[i])
+            asserter[i](&actual_iter_values[i])
         }
     }
 }
