@@ -1,8 +1,9 @@
 use super::*;
 use num::traits::Pow;
 
-pub trait IsApproxEqual<T> {
-    fn is_approx_equal(&self, expected_value: T, delta: T);
+pub trait IsApproxEqual {
+    type NumberType;
+    fn is_approx_equal(&self, expected_value: Self::NumberType, delta: Self::NumberType);
 }
 
 macro_rules! abs_diff_unsigned_eq {
@@ -29,7 +30,8 @@ macro_rules! abs_diff {
 
 macro_rules! generate_is_approx_equal_impl_for_signed {
     ($TStructType:ident) => {
-        impl IsApproxEqual<$TStructType> for Asserter<$TStructType> {
+        impl IsApproxEqual for Asserter<$TStructType> {
+            type NumberType = $TStructType;
             fn is_approx_equal(&self, expected: $TStructType, delta: $TStructType) {
                 abs_diff_signed_eq!(self.value, expected, delta);
             }
@@ -45,7 +47,8 @@ generate_is_approx_equal_impl_for_signed!(i128);
 
 macro_rules! generate_is_approx_equal_impl_for_unsigned {
     ($TStructType:ident) => {
-        impl IsApproxEqual<$TStructType> for Asserter<$TStructType> {
+        impl IsApproxEqual for Asserter<$TStructType> {
+            type NumberType = $TStructType;
             fn is_approx_equal(&self, expected: $TStructType, delta: $TStructType) {
                 abs_diff_unsigned_eq!(self.value, expected, delta);
             }
@@ -82,7 +85,8 @@ macro_rules! round {
     }};
 }
 
-impl IsApproxEqual<f64> for Asserter<f64> {
+impl IsApproxEqual for Asserter<f64> {
+    type NumberType = f64;
     fn is_approx_equal(&self, expected_value: f64, delta: f64) {
         let rounder = 10f64.pow(get_length_of_rounder_f64(delta));
 
@@ -100,7 +104,8 @@ impl IsApproxEqual<f64> for Asserter<f64> {
     }
 }
 
-impl IsApproxEqual<f32> for Asserter<f32> {
+impl IsApproxEqual for Asserter<f32> {
+    type NumberType = f32;
     fn is_approx_equal(&self, expected_value: f32, delta: f32) {
         let rounder = 10f32.pow(get_length_of_rounder_f32(delta));
 
